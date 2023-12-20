@@ -6,6 +6,8 @@ use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
 use App\Http\Resources\ExpenseResource;
 use App\Models\Expense;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 
@@ -14,9 +16,10 @@ class ExpenseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $expense = Expense::latest("id")->paginate(10)->withQueryString();
+        $expense = HelperController::findAllQuery(Expense::class, $request, ["description", "amount"]);
+
         return ExpenseResource::collection($expense);
     }
 
