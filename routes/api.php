@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix("v1")->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::prefix("users")->group(function () {
-            Route::post("create", [AuthController::class, "create"]);
+            Route::post("users/create", [AuthController::class, "createUser"]);
             Route::post("logout", [AuthController::class, 'logout']);
             Route::put("update/{id}", [AuthController::class, 'update']);
         });
