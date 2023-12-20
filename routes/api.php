@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 
 
 
+
+
 Route::prefix("v1")->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::prefix("users")->group(function () {
@@ -26,6 +29,8 @@ Route::prefix("v1")->group(function () {
             Route::post("logout", [AuthController::class, 'logout']);
             Route::put("update/{id}", [AuthController::class, 'update']);
         });
+      
+        Route::apiResource("expense",ExpenseController::class)->except("show");
       
         Route::apiResource("app-settings", AppSettingController::class)->only(["index","update"]);
     });
