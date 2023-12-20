@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AppSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class AppSettingController extends Controller
@@ -48,7 +49,7 @@ class AppSettingController extends Controller
             'google_map_url' => 'required|url|max:255',
             'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Adjust image validation rules
         ]);
-        
+
         // Assuming you only have one row in the settings table
         $setting = AppSetting::firstOrFail();
 
@@ -60,7 +61,7 @@ class AppSettingController extends Controller
             'email' => $request->input('email', $setting->email),
             'address' => $request->input('address', $setting->address),
             'google_map_url' => $request->input('google_map_url', $setting->google_map_url),
-            'user_id' => 1,
+            'user_id' => Auth::id(),
             // You can add other fields here
 
             // Handle logo update
