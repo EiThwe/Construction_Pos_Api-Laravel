@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller
+class UserController extends Controller
 {
-    //
     public function createUser(Request $request)
     {
         $request->validate([
@@ -21,7 +20,7 @@ class AuthController extends Controller
             "role" => "required|in:admin,manager,cashier",
             "address" => "required|min:50",
             "salary" => "required",
-            "password" => "required|min:8|confirmed",
+            "password" => "required|min:6|confirmed",
         ]);
 
 
@@ -38,37 +37,7 @@ class AuthController extends Controller
         ]);
 
         return response()->json([
-            "message" => "user has been created successfully",
-        ]);
-    }
-
-    public function login(Request $request)
-    {
-
-        $request->validate([
-            "name" => "required",
-            "password" => "required|min:8"
-        ]);
-
-        if (!Auth::attempt($request->only('name', 'password'))) {
-            return response()->json([
-                "message" => "name or password wrong",
-            ]);
-        }
-
-        $token = Auth::user()->createToken($request->has("device") ? $request->device : 'unknown')->plainTextToken;
-
-        return response()->json([
-            "message" => "login successfully",
-            "token" => $token
-        ]);
-    }
-
-    public function logout()
-    {
-        Auth::user()->currentAccessToken()->delete();
-        return response()->json([
-            "message" => "logout successful"
+            "message" => "အကောင့်ထည့်သွင်းခြင်း အောင်မြင်ပါသည်",
         ]);
     }
 
@@ -82,14 +51,14 @@ class AuthController extends Controller
             "gender" => "in:male,female",
             "role" => "in:admin,manager,cashier",
             "address" => "min:50",
-            "password" => "min:8",
+            "password" => "min:6",
             "salary" => "numeric",
         ]);
 
-        $user = User::where("id", $id);
+        $user = User::find($id);
 
         if (!$user) {
-            return response()->json(["message" => "user not found"], 400);
+            return response()->json(["message" => "အကောင့်ရှာမတွေ့ပါ"], 400);
         }
 
         // Update the fields
@@ -105,6 +74,6 @@ class AuthController extends Controller
             'salary' => $request->salary ?? $user->salary,
         ]);
 
-        return response()->json(["message" => "user updated successfully"]);
+        return response()->json(["message" => "အကောင့်ပြင်ဆင်ခြင်း အောင်မြင်ပါသည်"]);
     }
 }
