@@ -5,10 +5,10 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DebtController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\PaySalaryController;
 use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Route;
 
 /*
