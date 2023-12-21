@@ -3,11 +3,12 @@
 
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AppSettingController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DebtController;
-use App\Http\Controllers\PaySalaryController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\PaySalaryController;
+use App\Http\Controllers\User\UserController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,11 +27,14 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::prefix("v1")->group(function () {
-    Route::post("users/create", [AuthController::class, "createUser"]);
     Route::middleware('auth:sanctum')->group(function () {
+        Route::post("auth/logout", [AuthController::class, 'logout']);
+
         Route::prefix("users")->group(function () {
-            Route::post("logout", [AuthController::class, 'logout']);
-            Route::put("update/{id}", [AuthController::class, 'update']);
+            Route::controller(UserController::class)->group(function () {
+                Route::post("create",  "createUser");
+                Route::put("update/{id}", 'update');
+            });
 
             Route::post("pay-salary/{id}", [PaySalaryController::class, "paySalary"]);
         });
@@ -45,5 +49,6 @@ Route::prefix("v1")->group(function () {
 
         Route::apiResource("app-settings", AppSettingController::class)->only(["index", "update"]);
     });
-    Route::post("login", [AuthController::class, 'login']);
+
+    Route::post("auth/login", [AuthController::class, 'login']);
 });
