@@ -4,6 +4,7 @@
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DebtController;
 use App\Http\Controllers\PaySalaryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,9 @@ Route::prefix("v1")->group(function () {
         });
 
         Route::apiResource("expense", ExpenseController::class)->except("show");
+
+        Route::apiResource("debts", DebtController::class)->except("update");
+        Route::post("debts/pay", [DebtController::class, "payDebt"]);
 
         Route::apiResource("app-settings", AppSettingController::class)->only(["index", "update"]);
     });
