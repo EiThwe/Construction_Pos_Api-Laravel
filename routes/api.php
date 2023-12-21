@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DebtController;
 use App\Http\Controllers\PaySalaryController;
+use App\Http\Controllers\PurchaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,12 @@ Route::prefix("v1")->group(function () {
 
         Route::apiResource("debts", DebtController::class)->except("update");
         Route::post("debts/pay", [DebtController::class, "payDebt"]);
+        Route::get('/purchases', [PurchaseController::class, 'index']);
+        Route::get('/purchases/{id}', [PurchaseController::class, 'show']);
+        Route::delete('/purchases/{id}', [PurchaseController::class, 'destroy']);
+        Route::post("purchases/create", [PurchaseController::class, "purchase"]);
+
+
 
         Route::apiResource("app-settings", AppSettingController::class)->only(["index", "update"]);
     });
