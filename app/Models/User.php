@@ -27,6 +27,7 @@ class User extends Authenticatable
         "password",
         "role",
         "salary",
+        "profile"
     ];
 
     /**
@@ -48,4 +49,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function salaries()
+    {
+        return $this->hasMany(PaySalary::class);
+    }
 }

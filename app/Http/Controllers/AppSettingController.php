@@ -64,7 +64,7 @@ class AppSettingController extends Controller
             'user_id' => Auth::id(),
             // You can add other fields here
 
-            // Handle logo update
+            // Handle logo update 
             'logo' => $this->handleLogoUpload($request, $setting->logo),
         ]);
 

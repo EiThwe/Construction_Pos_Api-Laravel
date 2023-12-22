@@ -30,14 +30,8 @@ Route::prefix("v1")->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post("auth/logout", [AuthController::class, 'logout']);
 
-        Route::prefix("users")->group(function () {
-            Route::controller(UserController::class)->group(function () {
-                Route::post("create",  "createUser");
-                Route::put("update/{id}", 'update');
-            });
-
-            Route::post("pay-salary/{id}", [PaySalaryController::class, "paySalary"]);
-        });
+        Route::apiResource("users", UserController::class);
+        Route::post("users/pay-salary/{id}", [PaySalaryController::class, "paySalary"]);
 
         Route::apiResource("expense", ExpenseController::class)->except("show");
 
