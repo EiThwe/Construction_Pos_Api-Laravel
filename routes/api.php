@@ -36,7 +36,7 @@ Route::prefix("v1")->group(function () {
 
         Route::apiResource("expense", ExpenseController::class)->except("show");
 
-        Route::apiResource("categories", CategoryController::class)->except("show");
+        Route::apiResource("categories", CategoryController::class);
 
         Route::apiResource("products", ProductController::class);
 

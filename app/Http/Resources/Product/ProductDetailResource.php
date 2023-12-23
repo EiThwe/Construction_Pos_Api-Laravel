@@ -6,7 +6,7 @@ use App\Http\Resources\Category\ProductCategoryResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductResource extends JsonResource
+class ProductDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -24,7 +24,6 @@ class ProductResource extends JsonResource
             "primary_unit" => $this->primary_unit,
             "stock" => $this->stock,
             "categories" => ProductCategoryResource::collection($this->categories),
-            "units" => []
         ];
     }
 }
