@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class HelperController extends Controller
@@ -50,5 +51,27 @@ class HelperController extends Controller
 
         // If no new logo is provided, keep the current one
         return $currentLogo;
+    }
+
+    static function transaction(callable $callback)
+    {
+        try {
+            // Start a database transaction
+            DB::beginTransaction();
+
+            // Call the provided callback function
+            $result = $callback();
+
+            // Commit the transaction if all operations were successful
+            DB::commit();
+
+            return $result;
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an exception
+            DB::rollBack();
+
+            // Re-throw the exception after rollback
+            return response()->json(["error" => $e->getMessage()], 400);
+        }
     }
 }

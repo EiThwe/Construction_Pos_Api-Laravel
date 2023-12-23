@@ -23,9 +23,9 @@ class UserDetailResource extends JsonResource
             "role" => $this->role,
             "address" => $this->address,
             "birth_date" => $this->birth_date,
-            "join_date" => encrypt('my secret value'),
+            "join_date" => $this->join_date,
             // "password" => $this->password,
-            "salaries" => UserSalaryResource::collection($this->salaries)
+            "salary_records" => UserSalaryResource::collection($this->salaries)
         ];
     }
 }

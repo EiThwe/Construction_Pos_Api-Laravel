@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Resources\Product\ProductDetailResource;
 use App\Http\Resources\Product\ProductResource;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -27,6 +30,7 @@ class ProductController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
+
         $product = Product::create([
             "name" => $request->name,
             "actual_price" => $request->actual_price,
@@ -37,6 +41,16 @@ class ProductController extends Controller
             "image" => HelperController::handleLogoUpload($request->file('image'), null),
             "user_id" => Auth::id()
         ]);
+
+        foreach ($request->categories as $categoryId) {
+            $category = Category::find($categoryId);
+
+            if (!$category) {
+                throw new \Exception("Category with ID {$categoryId} not found");
+            }
+
+            $category->products()->attach($product->id);
+        }
 
         $units = array_map(function ($unit) use ($product) {
             $unit["product_id"] = $product->id;
@@ -54,7 +68,12 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::find($id);
+        if (is_null($product)) {
+            return response()->json(["message" => "ပစ္စည်းမရှီပါ"], 400);
+        }
+
+        return new ProductDetailResource($product);
     }
 
     /**
@@ -74,6 +93,21 @@ class ProductController extends Controller
         $product->remark = $request->remark ?? $product->remark;
         $product->image = HelperController::handleLogoUpload($request->file('image'), null);
         $product->user_id = Auth::id();
+
+        if ($request->categories) {
+            $product->categories()->detach();
+
+            foreach ($request->categories as $categoryId) {
+                $category = Category::find($categoryId);
+
+                if (!$category) {
+                    throw new \Exception("Category with ID {$categoryId} not found");
+                }
+
+                $category->products()->attach($product->id);
+            }
+        }
+
 
         $product->update();
 
