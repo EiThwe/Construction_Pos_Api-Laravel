@@ -18,7 +18,7 @@ class AuthController extends Controller
         if (!Auth::attempt($request->only('name', 'password'))) {
             return response()->json([
                 "message" => "မှားယွင်းနေပါသည်",
-            ]);
+            ], 400);
         }
 
         $token = Auth::user()->createToken($request->has("device") ? $request->device : 'unknown')->plainTextToken;
@@ -35,5 +35,10 @@ class AuthController extends Controller
         return response()->json([
             "message" => "အကောင့်ထွက်ခြင်း အောင်မြင်ပါသည်"
         ]);
+    }
+
+    public function check()
+    {
+        return response()->json([]);
     }
 }
