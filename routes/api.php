@@ -30,6 +30,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix("v1")->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post("auth/logout", [AuthController::class, 'logout']);
+        Route::post("auth/check", [AuthController::class, 'check']);
+
 
         Route::apiResource("users", UserController::class);
         Route::post("users/pay-salary/{id}", [PaySalaryController::class, "paySalary"]);
