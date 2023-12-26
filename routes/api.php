@@ -6,7 +6,9 @@ use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DebtController;
 use App\Http\Controllers\PaySalaryController;
+use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Resources\PromotionsResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +38,8 @@ Route::prefix("v1")->group(function () {
         });
 
         Route::apiResource("expense", ExpenseController::class)->except("show");
+        
+        Route::apiResource("promotions", PromotionController::class)->except("show");
 
         Route::apiResource("debts", DebtController::class)->except("update");
         Route::post("debts/pay", [DebtController::class, "payDebt"]);
