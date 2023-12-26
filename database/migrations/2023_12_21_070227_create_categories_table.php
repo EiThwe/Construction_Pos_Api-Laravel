@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('purchases', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('place');
-            $table->integer('cost');
-            $table->integer('item_quantity');
-            $table->text('remark')->nullable();
-            $table->foreignId('user_id');
-            $table->enum('status', ['received', 'left']);
+            $table->string("name");
+            $table->foreignId("parent_id")->nullable();
+            $table->text("remark")->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('purchases');
+        Schema::dropIfExists('categories');
     }
 };

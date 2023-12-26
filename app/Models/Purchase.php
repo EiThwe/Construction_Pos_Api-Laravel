@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Purchase extends Model
 {
     use HasFactory;
-    protected $fillable = ['place', 'cost', 'item_quantity', 'remark', 'user_id', 'all_received'];
+    protected $fillable = ['place', 'cost', 'item_quantity', 'remark', 'user_id', 'status'];
 
     public function purchaseItems()
     {

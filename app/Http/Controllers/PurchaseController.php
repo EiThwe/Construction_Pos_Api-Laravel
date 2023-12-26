@@ -36,7 +36,7 @@ class PurchaseController extends Controller
             'item_quantity' => count($request->purchase_items),
             'remark' => $request->remark,
             'user_id' => Auth::id(),
-            'all_received' => false,
+            'status' => 'left',
         ]);
 
         // Loop through purchase items and associate them with the purchase

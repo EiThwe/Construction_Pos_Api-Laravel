@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\PaySalary;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class PaySalaryController extends Controller
         $user = User::find($id);
         if (is_null($user)) {
             return response()->json([
-                "message" => "user not found"
+                "message" => "အကောင့်ရှာမတွေ့ပါ"
             ], 404);
         }
 
@@ -31,6 +32,6 @@ class PaySalaryController extends Controller
             "created_by" => Auth::user()->name,
         ]);
 
-        return response()->json(['message' => "salary has been paid successfully"], 201);
+        return response()->json(['message' => "လစာပေးချေမှု အောင်မြင်ပါသည်"], 201);
     }
 }
