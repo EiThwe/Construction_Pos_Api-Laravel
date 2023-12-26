@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('item_quantity');
             $table->text('remark')->nullable();
             $table->foreignId('user_id');
-            $table->boolean('all_received');
+            $table->enum('status', ['received', 'left']);
             $table->timestamps();
         });
     }
