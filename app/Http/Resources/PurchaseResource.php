@@ -18,7 +18,7 @@ class PurchaseResource extends JsonResource
             'item_quantity' => $this->item_quantity,
             'cost' => $this->cost,
             'place' => $this->place,
-            'all_received' => $this->all_received ? "true" : "false",
+            'status' => $this->status,
             'remark' => $this->remark,
         ];
     }

@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('purchases', function (Blueprint $table) {
+        Schema::create('promotions', function (Blueprint $table) {
             $table->id();
-            $table->string('place');
-            $table->integer('cost');
-            $table->integer('item_quantity');
-            $table->text('remark')->nullable();
+            $table->string('name');
+            $table->enum('type', ['percentage', 'amount']);
+            $table->float("amount");
+            $table->string('started_at');
+            $table->string('expired_at');
             $table->foreignId('user_id');
-            $table->enum('status', ['received', 'left']);
+            $table->foreignId('product_id');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('purchases');
+        Schema::dropIfExists('promotions');
     }
 };
