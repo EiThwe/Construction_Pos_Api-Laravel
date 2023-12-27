@@ -7,11 +7,11 @@ use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\Product\ProductDetailResource;
 use App\Http\Resources\Product\ProductResource;
 use App\Models\Category;
+use App\Models\ConversionFactor;
 use App\Models\Product;
 use App\Models\ProductUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -30,11 +30,19 @@ class ProductController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
+        foreach ($request->units as $unit) {
+            $isUnitRelation = ConversionFactor::where("from_unit_id", $request->primary_unit_id)
+                ->where("to_unit_id", $unit["unit_id"])->first();
+
+            if (is_null($isUnitRelation)) {
+                return response()->json(["message" => "ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
+            }
+        }
 
         $product = Product::create([
             "name" => $request->name,
             "actual_price" => $request->actual_price,
-            "primary_unit" => $request->primary_unit,
+            "primary_unit_id" => $request->primary_unit_id,
             "primary_price" => $request->primary_price,
             "remark" => $request->remark,
             "stock" => 0,
@@ -123,5 +131,10 @@ class ProductController extends Controller
         $product->delete();
 
         return response()->json(["message" => "ပစ္စည်းဖျက်သိမ်းခြင်း အောင်မြင်ပါသည်"]);
+    }
+
+    public function stockHistory(string $id)
+    {
+        $stocks = Stoc::where("product_id", $id);
     }
 }

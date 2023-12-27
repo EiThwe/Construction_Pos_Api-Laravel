@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             AppSettingSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            UnitTypeSeeder::class
         ]);
     }
 }
