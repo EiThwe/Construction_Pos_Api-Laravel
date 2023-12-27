@@ -13,7 +13,6 @@ use App\Http\Controllers\UnitController;
 use App\Http\Resources\PromotionsResource;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\AuthController;
-use App\Http\Controllers\User\PaySalaryController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -41,7 +40,7 @@ Route::prefix("v1")->group(function () {
         Route::post("users/pay-salary/{id}", [PaySalaryController::class, "paySalary"]);
 
         Route::apiResource("expense", ExpenseController::class)->except("show");
-        
+
         Route::apiResource("promotions", PromotionController::class)->except("show");
 
         Route::apiResource("categories", CategoryController::class);
