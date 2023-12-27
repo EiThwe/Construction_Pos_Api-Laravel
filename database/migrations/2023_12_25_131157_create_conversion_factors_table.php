@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('expenses', function (Blueprint $table) {
+        Schema::create('conversion_factors', function (Blueprint $table) {
             $table->id();
-            $table->text("description");
-            $table->float("amount");
-            $table->text("remark")->nullable();
-            $table->foreignId("user_id");
+            $table->foreignId("from_unit_id")->constrained('units')->onDelete('cascade');
+            $table->foreignId("to_unit_id")->constrained('units')->onDelete('cascade');
+            $table->float("value");
+            $table->enum("status", ["more", "less"]);
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('expenses');
+        Schema::dropIfExists('conversion_factors');
     }
 };

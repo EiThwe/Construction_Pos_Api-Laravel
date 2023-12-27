@@ -24,14 +24,14 @@ class CreateProductRequest extends FormRequest
         return [
             'name' => 'required|string|min:1',
             'actual_price' => 'required|numeric',
-            'primary_unit' => 'required|string',
+            'primary_unit_id' => 'required|exists:units,id',
             'primary_price' => 'required|numeric',
             'remark' => 'nullable|string|max:255',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'categories' => 'required|array',
             'categories.*' => 'integer|exists:categories,id',
             'units' => 'required|array',
-            'units.*.unit' => 'required|string|min:1',
+            'units.*.unit_id' => 'required|min:1',
             'units.*.price' => 'required|numeric|min:0',
         ];
     }

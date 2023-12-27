@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string("image")->nullable();
             $table->string("name");
             $table->float("actual_price");
-            $table->string("primary_unit");
+            $table->foreignId("primary_unit_id");
             $table->float("primary_price");
             $table->text("remark")->nullable();
             $table->float("stock");
