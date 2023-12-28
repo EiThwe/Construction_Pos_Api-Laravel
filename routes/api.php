@@ -5,10 +5,10 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DebtController;
-
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\PurchaseController;
-use App\Http\Resources\PromotionsResource;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\PaySalaryController;
@@ -34,8 +34,6 @@ use Illuminate\Support\Facades\Route;
 Route::prefix("v1")->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post("auth/logout", [AuthController::class, 'logout']);
-        Route::post("auth/check", [AuthController::class, 'check']);
-
 
         Route::apiResource("users", UserController::class);
         Route::post("users/pay-salary/{id}", [PaySalaryController::class, "paySalary"]);
@@ -47,6 +45,10 @@ Route::prefix("v1")->group(function () {
         Route::apiResource("categories", CategoryController::class);
 
         Route::apiResource("products", ProductController::class);
+
+        Route::apiResource("stocks", StockController::class);
+
+        Route::apiResource("units", UnitController::class);
 
         Route::apiResource("debts", DebtController::class)->except("update");
         Route::post("debts/pay", [DebtController::class, "payDebt"]);

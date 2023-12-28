@@ -10,7 +10,15 @@ use Illuminate\Support\Facades\Storage;
 
 class HelperController extends Controller
 {
-    public static function findAllQuery($Model, $request, $columns)
+    // $additionalConditions = [
+    //     ['status', '=', 'active'],
+    //     ['category', '!=', 'archived'],
+    // ];
+
+    // $orderBy = $request->input('order_by', 'id'); 
+    // $orderDirection = $request->input('order_direction', 'desc'); 
+
+    public static function findAllQuery($Model, $request, $columns, $additionalConditions = [], $orderBy = 'id', $orderDirection = 'desc')
     {
         return $Model::when($request->has("search"), function ($query) use ($columns, $request) {
             $query->where(function (Builder $builder) use ($columns, $request) {
@@ -28,9 +36,13 @@ class HelperController extends Controller
             $query->whereBetween('created_at', [$request->start_date, Carbon::parse($request->end_date)->addDay()]);
         })->when($request->has('filters'), function ($query) use ($request) {
             $filters = explode("_", $request->filters);
-
             $query->where($filters[0], $filters[1]);
-        })->latest("id")
+        })->when(!empty($additionalConditions), function ($query) use ($additionalConditions) {
+            // Add additional WHERE conditions based on the provided array
+            foreach ($additionalConditions as $condition) {
+                $query->where($condition[0], $condition[1], $condition[2]);
+            }
+        })->orderBy($orderBy, $orderDirection)
             ->paginate($request->limit ?? 20)
             ->withQueryString();
     }

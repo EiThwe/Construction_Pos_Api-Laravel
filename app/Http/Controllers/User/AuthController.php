@@ -36,9 +36,4 @@ class AuthController extends Controller
             "message" => "အကောင့်ထွက်ခြင်း အောင်မြင်ပါသည်"
         ]);
     }
-
-    public function check()
-    {
-        return response()->json([]);
-    }
 }

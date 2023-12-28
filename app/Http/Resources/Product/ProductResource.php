@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Product;
 
 use App\Http\Resources\Category\ProductCategoryResource;
+use App\Http\Resources\Stock\StockHistoryResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,11 +21,10 @@ class ProductResource extends JsonResource
             "name" => $this->name,
             "image" => $this->image,
             "actual_price" => $this->actual_price,
-            "primary_price" => $this->primary_price,
-            "primary_unit" => $this->primary_unit,
-            "stock" => $this->stock,
+            "sale_price" => $this->primary_price,
+            "unit" => $this->unit->name,
             "categories" => ProductCategoryResource::collection($this->categories),
-            "units" => []
+            "stock_histories" => StockHistoryResource::collection($this->stocks)
         ];
     }
 }
