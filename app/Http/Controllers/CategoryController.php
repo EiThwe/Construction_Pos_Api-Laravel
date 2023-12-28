@@ -25,11 +25,22 @@ class CategoryController extends Controller
      */
     public function store(CreateCategoryRequest $request)
     {
-        Category::create([
-            "name" => $request->name,
-            "parent_id" => $request->parent_id,
-            "remark" => $request->remark
-        ]);
+        if (!(is_null($request->parent_id))) {
+            $category = Category::find($request->parent_id);
+            if (!(is_null($category))) {
+                Category::create([
+                    "name" => $request->name,
+                    "parent_id" => $request->parent_id,
+                    "remark" => $request->remark
+                ]);
+            } else  return response()->json(["message" => "Category doesn't exist"], 400);
+        }else{
+            Category::create([
+                "name" => $request->name,
+                "parent_id" => null,
+                "remark" => $request->remark
+            ]);
+        }
 
         return response()->json(["message" => "အမျိုးအစားထည့်သွင်းခြင်း အောင်မြင်ပါသည်"]);
     }
