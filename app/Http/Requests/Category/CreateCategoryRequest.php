@@ -23,7 +23,7 @@ class CreateCategoryRequest extends FormRequest
     {
         return [
             "name" => "required|unique:categories,name",
-            "parent_id" => "numeric",
+            "parent_id" => "integer|exists:category,id",
             "remark" => "string"
         ];
     }
