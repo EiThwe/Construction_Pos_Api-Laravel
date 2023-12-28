@@ -30,14 +30,23 @@ class ProductController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
-        foreach ($request->units as $unit) {
-            $isUnitRelation = ConversionFactor::where("from_unit_id", $request->primary_unit_id)
-                ->where("to_unit_id", $unit["unit_id"])->first();
+        // logger($request);
 
-            if (is_null($isUnitRelation)) {
-                return response()->json(["message" => "ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
+
+        // return response()->json(["message" => "ရပါစေ"]);
+
+        if ($request->units) {
+            foreach ($request->units as $unit) {
+                logger($unit);
+                $isUnitRelation = ConversionFactor::where("from_unit_id", $request->primary_unit_id)
+                    ->where("to_unit_id", $unit["unit_id"])->first();
+
+                if (is_null($isUnitRelation)) {
+                    return response()->json(["message" => "ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
+                }
             }
         }
+
 
         $product = Product::create([
             "name" => $request->name,
@@ -60,13 +69,15 @@ class ProductController extends Controller
             $category->products()->attach($product->id);
         }
 
-        $units = array_map(function ($unit) use ($product) {
-            $unit["product_id"] = $product->id;
+        if ($request->units) {
+            $units = array_map(function ($unit) use ($product) {
+                $unit["product_id"] = $product->id;
 
-            return $unit;
-        }, $request->units);
+                return $unit;
+            }, $request->units);
 
-        ProductUnit::insert($units);
+            ProductUnit::insert($units);
+        }
 
         return response()->json(["message" => "ပစ္စည်းအသစ်ပြုလုပ်ခြင်း အောင်မြင်ပါသည်"]);
     }

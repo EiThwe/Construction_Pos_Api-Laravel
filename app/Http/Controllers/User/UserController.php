@@ -23,15 +23,14 @@ class UserController extends Controller
     {
         $request->validate([
             "name" => "required|min:3",
-            "phone" => "required|numeric|min:9",
+            "phone" => "required|min:6",
             "birth_date" => "required",
             "join_date" => "required",
-            "gender" => "required|in:male,female",
+            "gender" => "required|in:ကျား,မ",
             "role" => "required|in:admin,manager,cashier",
-            "address" => "required|min:50",
+            "address" => "required",
             "salary" => "required",
-            "password" => "required|min:6|confirmed",
-            'profile' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            "password" => "required|min:6",
         ]);
 
         User::create([
