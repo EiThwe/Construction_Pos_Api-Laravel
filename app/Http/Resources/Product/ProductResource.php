@@ -6,6 +6,7 @@ use App\Http\Resources\Category\ProductCategoryResource;
 use App\Http\Resources\Stock\StockHistoryResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class ProductResource extends JsonResource
 {
@@ -19,7 +20,7 @@ class ProductResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "image" => $this->image,
+            "image" =>  asset(Storage::url($this->image)),
             "actual_price" => $this->actual_price,
             "sale_price" => $this->primary_price,
             "unit" => $this->unit->name,
