@@ -34,7 +34,7 @@ class CategoryController extends Controller
                     "remark" => $request->remark
                 ]);
             } else  return response()->json(["message" => "Category doesn't exist"], 400);
-        }else{
+        } else {
             Category::create([
                 "name" => $request->name,
                 "parent_id" => null,

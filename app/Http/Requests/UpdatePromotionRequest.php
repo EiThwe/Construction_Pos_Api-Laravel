@@ -27,7 +27,7 @@ class UpdatePromotionRequest extends FormRequest
             'amount' => 'numeric',
             'started_at' => 'date',
             'expired_at' => 'date|after:started_at',
-            'product_id' => '',
+
         ];
     }
 }

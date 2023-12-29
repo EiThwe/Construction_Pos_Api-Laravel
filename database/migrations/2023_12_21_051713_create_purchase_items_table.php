@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId("purchase_id")->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->integer('quantity');
-            $table->string('unit');
+            $table->foreignId('unit_id');
             $table->timestamps();
         });
     }

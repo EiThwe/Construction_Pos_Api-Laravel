@@ -19,8 +19,8 @@ class StorePurchaseRequest extends FormRequest
             'remark' => 'nullable|string',
             'purchase_items' => 'required|array|min:1',
             'purchase_items.*.name' => 'required|string',
-            'purchase_items.*.quantity' => 'required|integer',
-            'purchase_items.*.unit' => 'required|string',
+            'purchase_items.*.quantity' => 'required|integer|min:1',
+            'purchase_items.*.unit_id' => 'required|exists:units,id',
         ];
     }
 }
