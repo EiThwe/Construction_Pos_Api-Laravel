@@ -19,10 +19,10 @@ class StorePromotionRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'type' => 'required|in:percentage,amount',
-            'amount'=>'required|numeric',
+            'amount' => 'required|numeric',
             'started_at' => 'required|date',
             'expired_at' => 'required|date|after:started_at',
-            'product_id' => 'required',
+
         ];
     }
 }

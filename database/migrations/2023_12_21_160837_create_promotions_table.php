@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('type', ['percentage', 'amount']);
-            $table->float("amount");
+            $table->integer("amount");
             $table->string('started_at');
             $table->string('expired_at');
             $table->foreignId('user_id');
             $table->foreignId('product_id');
+            $table->text("remark")->nullable();
             $table->timestamps();
         });
     }

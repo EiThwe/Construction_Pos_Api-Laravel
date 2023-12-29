@@ -20,6 +20,7 @@ class PromotionsResource extends JsonResource
             'amount' => $this->amount,
             'started_at' => $this->started_at,
             'expired_at' => $this->expired_at,
+            'remark' => $this->remark,
             'user' => $this->user->name,
             'product_id' => $this->product_id,
         ];

@@ -14,6 +14,7 @@ class Promotion extends Model
         'amount',
         'started_at',
         'expired_at',
+        'remark',
         'user_id',
         'product_id',
     ];

@@ -32,8 +32,10 @@ class PromotionController extends Controller
             'amount' => $request->amount,
             'started_at' => $request->started_at,
             'expired_at' => $request->expired_at,
+            'remark' => $request->remark,
             'user_id' => Auth::id(),
             'product_id' => 1,
+
         ]);
         return response()->json(['message' => 'Promotion saved successfully']);
     }
@@ -62,6 +64,7 @@ class PromotionController extends Controller
         $promotion->amount = $request->amount ?? $promotion->amount;
         $promotion->started_at = $request->started_at ?? $promotion->started_at;
         $promotion->expired_at = $request->expired_at ?? $promotion->expired_at;
+        $promotion->remark = $request->remark ?? $promotion->remark;
         $promotion->user_id = Auth::id();
         $promotion->product_id = $request->product_id ?? $promotion->product_id;
 
