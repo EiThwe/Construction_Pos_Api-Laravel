@@ -37,7 +37,18 @@ class ExpenseController extends Controller
         return response()->json(['message' => "Expense has been created successfully"], 201);
     }
 
+    public function show(string $id)
+    {
+        $expense = Expense::find($id);
 
+        if (is_null($expense)) {
+            return response()->json([
+                "message" => "expense not found"
+            ], 404);
+        }
+
+        return new ExpenseResource($expense);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -69,7 +80,9 @@ class ExpenseController extends Controller
                 "message" => "Expense is not found"
             ], 404);
         }
+        
         $expense->delete();
+
         return response()->json([
             "message" => "An expense is deleted successfully"
         ], 200);
