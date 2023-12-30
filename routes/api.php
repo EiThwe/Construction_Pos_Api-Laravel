@@ -38,7 +38,7 @@ Route::prefix("v1")->group(function () {
         Route::apiResource("users", UserController::class);
         Route::post("users/pay-salary/{id}", [PaySalaryController::class, "paySalary"]);
 
-        Route::apiResource("expense", ExpenseController::class)->except("show");
+        Route::apiResource("expenses", ExpenseController::class);
 
         Route::apiResource("promotions", PromotionController::class);
 

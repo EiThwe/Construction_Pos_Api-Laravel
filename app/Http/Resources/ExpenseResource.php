@@ -16,7 +16,7 @@ class ExpenseResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            // "id" => Crypt::encryptString($this->id),
+            "id" => $this->id,
             "description" => $this->description,
             "amount" => $this->amount,
             "remark" => $this->remark,
