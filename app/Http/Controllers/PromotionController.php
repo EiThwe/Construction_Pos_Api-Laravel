@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePromotionRequest;
 use App\Http\Requests\UpdatePromotionRequest;
+use App\Http\Resources\PromotionsDetailResource;
 use App\Http\Resources\PromotionsResource;
 use App\Models\Promotion;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,12 +32,9 @@ class PromotionController extends Controller
             'name' => $request->name,
             'type' => $request->type,
             'amount' => $request->amount,
-            'started_at' => $request->started_at,
-            'expired_at' => $request->expired_at,
-            'remark' => $request->remark,
+            'started_at' => Carbon::parse($request->started_at)->startOfDay()->toDateTimeString(),
+            'expired_at' => Carbon::parse($request->expired_at)->endOfDay()->toDateTimeString(),
             'user_id' => Auth::id(),
-            'product_id' => 1,
-
         ]);
         return response()->json(['message' => 'Promotion saved successfully']);
     }
@@ -45,7 +44,14 @@ class PromotionController extends Controller
      */
     public function show(string $id)
     {
-        //
+
+        $promotion = Promotion::find($id);
+        if (is_null($promotion)) {
+            return response()->json([
+                "message" => "promotion not found"
+            ], 404);
+        }
+        return new PromotionsDetailResource($promotion);
     }
 
     /**
@@ -62,11 +68,9 @@ class PromotionController extends Controller
         $promotion->name = $request->name ?? $promotion->name;
         $promotion->type = $request->type ?? $promotion->type;
         $promotion->amount = $request->amount ?? $promotion->amount;
-        $promotion->started_at = $request->started_at ?? $promotion->started_at;
-        $promotion->expired_at = $request->expired_at ?? $promotion->expired_at;
-        $promotion->remark = $request->remark ?? $promotion->remark;
+        $promotion->started_at = $request->started_at ? Carbon::parse($request->started_at)->toDateTimeString() : $promotion->started_at;
+        $promotion->expired_at = $request->expired_at ? Carbon::parse($request->expired_at)->toDateTimeString() : $promotion->expired_at;
         $promotion->user_id = Auth::id();
-        $promotion->product_id = $request->product_id ?? $promotion->product_id;
 
         $promotion->update();
 
@@ -85,7 +89,7 @@ class PromotionController extends Controller
         }
 
         // Delete the promotion
-         $promotion->delete();
+        $promotion->delete();
 
         return response()->json(['message' => 'Promotion deleted successfully']);
     }

@@ -16,7 +16,6 @@ class Promotion extends Model
         'expired_at',
         'remark',
         'user_id',
-        'product_id',
     ];
 
     // Make sure the user relationship is defined in your model

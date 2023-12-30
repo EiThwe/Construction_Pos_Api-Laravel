@@ -40,7 +40,7 @@ Route::prefix("v1")->group(function () {
 
         Route::apiResource("expense", ExpenseController::class)->except("show");
 
-        Route::apiResource("promotions", PromotionController::class)->except("show");
+        Route::apiResource("promotions", PromotionController::class);
 
         Route::apiResource("categories", CategoryController::class);
 
