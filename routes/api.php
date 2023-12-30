@@ -61,7 +61,7 @@ Route::prefix("v1")->group(function () {
 
         Route::post("/checkout", [CheckoutController::class, "checkout"]);
 
-        Route::apiResource("app-settings", AppSettingController::class)->only(["index", "update"]);
+        Route::apiResource("app-settings", AppSettingController::class)->only(["index", "store"]);
     });
 
     Route::post("auth/login", [AuthController::class, 'login']);

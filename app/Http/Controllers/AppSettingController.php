@@ -14,10 +14,10 @@ class AppSettingController extends Controller
      */
     public function index()
     {
-
         $setting = AppSetting::latest()->first();
+        $setting["logo"] = asset(Storage::url($setting->logo));
 
-        return response()->json($setting);
+        return response()->json(["data" => $setting]);
     }
 
     /**
@@ -25,29 +25,12 @@ class AppSettingController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request)
-    {
         $this->validate($request, [
             'name' => 'required|string|min:3',
             'phone' => 'required|string|max:20',
             'email' => 'required|email|max:255',
             'address' => 'required|string|max:255',
             'google_map_url' => 'required|url|max:255',
-            'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Adjust image validation rules
         ]);
 
         // Assuming you only have one row in the settings table
@@ -62,39 +45,9 @@ class AppSettingController extends Controller
             'address' => $request->input('address', $setting->address),
             'google_map_url' => $request->input('google_map_url', $setting->google_map_url),
             'user_id' => Auth::id(),
-            // You can add other fields here
-
-            // Handle logo update 
-            'logo' => $this->handleLogoUpload($request, $setting->logo),
+            'logo' => HelperController::handleLogoUpload($request->file('logo'), null),
         ]);
 
-        return response()->json($setting);
-    }
-
-    // Helper method to handle logo upload
-    private function handleLogoUpload(Request $request, $currentLogo)
-    {
-        if ($request->hasFile('logo')) {
-            // Delete the current logo if it exists
-            if ($currentLogo) {
-                Storage::disk('public')->delete($currentLogo);
-            }
-
-            // Upload the new logo
-            $path = $request->file('logo')->store('logos', 'public');
-
-            return $path;
-        }
-
-        // If no new logo is provided, keep the current one
-        return $currentLogo;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json(["message" => "ပြင်ဆင်ခြင်းအောင်မြင်ပါသည်"]);
     }
 }
