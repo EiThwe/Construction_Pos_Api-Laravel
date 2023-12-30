@@ -15,7 +15,6 @@ class Promotion extends Model
         'started_at',
         'expired_at',
         'user_id',
-        'product_id',
     ];
 
     // Make sure the user relationship is defined in your model

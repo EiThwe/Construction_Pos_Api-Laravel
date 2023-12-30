@@ -16,10 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->enum('type', ['percentage', 'amount']);
             $table->float("amount");
-            $table->string('started_at');
-            $table->string('expired_at');
+            $table->timestamp('started_at');
+            $table->timestamp('expired_at')->default(now());
             $table->foreignId('user_id');
-            $table->foreignId('product_id');
             $table->timestamps();
         });
     }

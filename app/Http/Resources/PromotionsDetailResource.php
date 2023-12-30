@@ -2,11 +2,10 @@
 
 namespace App\Http\Resources;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PromotionsResource extends JsonResource
+class PromotionsDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,15 +14,15 @@ class PromotionsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        return  [
             'id' => $this->id,
             'name' => $this->name,
-            'type' => $this->type === "percentage" ? "ရာခိုင်နှုန်း" : "ပမာဏနှုတ်",
+            'type' => $this->type,
             'amount' => $this->amount,
-            'started_at' => Carbon::parse($this->started_at)->format('j M Y'),
-            'expired_at' => Carbon::parse($this->expired_at)->format('j M Y'),
+            'started_at' => $this->started_at,
+            'expired_at' => $this->expired_at,
             'user' => $this->user->name,
             'product_id' => $this->product_id,
-        ];
+        ];;
     }
 }
