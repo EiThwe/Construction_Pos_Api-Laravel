@@ -28,14 +28,15 @@ class PromotionController extends Controller
      */
     public function store(StorePromotionRequest $request)
     {
-        $promotion = Promotion::create([
+        Promotion::create([
             'name' => $request->name,
             'type' => $request->type,
             'amount' => $request->amount,
-            'started_at' => Carbon::parse($request->started_at)->startOfDay()->toDateTimeString(),
+            'started_at' => Carbon::parse($request->started_at)->endOfDay()->toDateTimeString(),
             'expired_at' => Carbon::parse($request->expired_at)->endOfDay()->toDateTimeString(),
             'user_id' => Auth::id(),
         ]);
+
         return response()->json(['message' => 'Promotion saved successfully']);
     }
 
@@ -68,8 +69,8 @@ class PromotionController extends Controller
         $promotion->name = $request->name ?? $promotion->name;
         $promotion->type = $request->type ?? $promotion->type;
         $promotion->amount = $request->amount ?? $promotion->amount;
-        $promotion->started_at = $request->started_at ? Carbon::parse($request->started_at)->toDateTimeString() : $promotion->started_at;
-        $promotion->expired_at = $request->expired_at ? Carbon::parse($request->expired_at)->toDateTimeString() : $promotion->expired_at;
+        $promotion->started_at = $request->started_at ? Carbon::parse($request->started_at)->endOfDay()->toDateTimeString() : $promotion->started_at;
+        $promotion->expired_at = $request->expired_at ? Carbon::parse($request->expired_at)->endOfDay()->toDateTimeString() : $promotion->expired_at;
         $promotion->user_id = Auth::id();
 
         $promotion->update();

@@ -15,6 +15,7 @@ class PurchaseDetailResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'place' => $this->place,
             'cost' => $this->cost,
             'item_quantity' => $this->item_quantity,
