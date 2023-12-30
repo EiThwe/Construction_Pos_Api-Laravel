@@ -30,11 +30,6 @@ class ProductController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
-        // logger($request);
-
-
-        // return response()->json(["message" => "ရပါစေ"]);
-
         if ($request->units) {
             foreach ($request->units as $unit) {
                 logger($unit);
@@ -61,10 +56,6 @@ class ProductController extends Controller
 
         foreach ($request->categories as $categoryId) {
             $category = Category::find($categoryId);
-
-            if (!$category) {
-                throw new \Exception("Category with ID {$categoryId} not found");
-            }
 
             $category->products()->attach($product->id);
         }
@@ -100,6 +91,17 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, string $id)
     {
+        if ($request->units) {
+            foreach ($request->units as $unit) {
+                $isUnitRelation = ConversionFactor::where("from_unit_id", $request->primary_unit_id)
+                    ->where("to_unit_id", $unit["unit_id"])->first();
+
+                if (is_null($isUnitRelation)) {
+                    return response()->json(["message" => "ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
+                }
+            }
+        }
+
         $product = Product::find($id);
         if (is_null($product)) {
             return response()->json(["message" => "ပစ္စည်းမရှီပါ"], 400);
@@ -107,7 +109,7 @@ class ProductController extends Controller
 
         $product->name = $request->name ?? $product->name;
         $product->actual_price = $request->actual_price ?? $product->actual_price;
-        $product->primary_unit = $request->primary_unit ?? $product->primary_unit;
+        $product->primary_unit_id = $request->primary_unit_id ?? $product->primary_unit_id;
         $product->primary_price = $request->primary_price ?? $product->primary_price;
         $product->remark = $request->remark ?? $product->remark;
         $product->image = HelperController::handleLogoUpload($request->file('image'), null);
@@ -119,12 +121,20 @@ class ProductController extends Controller
             foreach ($request->categories as $categoryId) {
                 $category = Category::find($categoryId);
 
-                if (!$category) {
-                    throw new \Exception("Category with ID {$categoryId} not found");
-                }
-
                 $category->products()->attach($product->id);
             }
+        }
+
+        if ($request->units) {
+            ProductUnit::where("product_id", $product->id)->delete();
+
+            $units = array_map(function ($unit) use ($product) {
+                $unit["product_id"] = $product->id;
+
+                return $unit;
+            }, $request->units);
+
+            ProductUnit::insert($units);
         }
 
 

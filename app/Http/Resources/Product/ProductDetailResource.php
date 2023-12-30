@@ -21,9 +21,10 @@ class ProductDetailResource extends JsonResource
             "image" => $this->image,
             "actual_price" => $this->actual_price,
             "primary_price" => $this->primary_price,
-            "primary_unit" => $this->primary_unit,
             "stock" => $this->stock,
+            "primary_unit" => $this->unit,
             "categories" => ProductCategoryResource::collection($this->categories),
+            "product_units" => $this->productUnits
         ];
     }
 }

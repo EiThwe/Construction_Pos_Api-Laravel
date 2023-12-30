@@ -22,7 +22,6 @@ class StorePromotionRequest extends FormRequest
             'amount' => 'required|numeric',
             'started_at' => 'required|date',
             'expired_at' => 'required|date|after:started_at',
-
         ];
     }
 }
