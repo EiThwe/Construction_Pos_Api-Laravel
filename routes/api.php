@@ -44,7 +44,8 @@ Route::prefix("v1")->group(function () {
 
         Route::apiResource("categories", CategoryController::class);
 
-        Route::apiResource("products", ProductController::class);
+        Route::apiResource("products", ProductController::class)->except("update");
+        Route::post("products/{id}/update", [ProductController::class, "update"]);
 
         Route::apiResource("stocks", StockController::class);
 
@@ -53,11 +54,9 @@ Route::prefix("v1")->group(function () {
         Route::apiResource("debts", DebtController::class)->except("update");
         Route::post("debts/pay", [DebtController::class, "payDebt"]);
 
-        Route::get('/purchases', [PurchaseController::class, 'index']);
-        Route::get('/purchases/{id}', [PurchaseController::class, 'show']);
-        Route::delete('/purchases/{id}', [PurchaseController::class, 'destroy']);
-        Route::post("purchases", [PurchaseController::class, "purchase"]);
+        Route::apiResource("purchases", PurchaseController::class)->except("update");
         Route::post("purchases/{id}/records", [PurchaseController::class, "addRecords"]);
+        Route::post("purchases/{id}/receive", [PurchaseController::class, "allReceive"]);
 
         Route::post("/checkout", [CheckoutController::class, "checkout"]);
 

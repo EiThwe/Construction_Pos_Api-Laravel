@@ -26,11 +26,8 @@ class PurchaseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function purchase(StorePurchaseRequest $request)
+    public function store(StorePurchaseRequest $request)
     {
-        // Validate the request data
-
-        // Create a new Purchase
         $purchase = Purchase::create([
             'place' => $request->place,
             'cost' => $request->cost,
@@ -40,7 +37,6 @@ class PurchaseController extends Controller
             'status' => 'left',
         ]);
 
-        // Loop through purchase items and associate them with the purchase
         foreach ($request->purchase_items as $item) {
             $purchaseItem = new PurchaseItem([
                 'name' => $item['name'],
@@ -58,7 +54,6 @@ class PurchaseController extends Controller
      */
     public function show(string $id)
     {
-        // Retrieve a specific purchase with its associated items
         $purchase = Purchase::with('purchaseItems')->find($id);
 
         if (!$purchase) {
@@ -66,14 +61,6 @@ class PurchaseController extends Controller
         }
 
         return new PurchaseDetailResource($purchase);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
     }
 
     /**
@@ -109,5 +96,19 @@ class PurchaseController extends Controller
         ]);
 
         return response()->json(['message' => 'Purchase records added successfully']);
+    }
+
+    public function allReceive(Request $request, string $id)
+    {
+        $purchase = Purchase::find($id);
+
+        if (is_null($purchase)) {
+            return response()->json(["message" => "မှာယူမှတ်တမ်းမရှိပါ"], 400);
+        }
+
+        $purchase->status = "received";
+        $purchase->update();
+
+        return response()->json(["message" => "ပစ္စည်းအားလုံးရောက်ရှိကြောင်း အတည်ပြုပြီးပါပြီ"]);
     }
 }
