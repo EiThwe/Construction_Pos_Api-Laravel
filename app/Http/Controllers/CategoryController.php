@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Category\CreateCategoryRequest;
+use App\Http\Resources\Category\CategoryDetailResource;
 use App\Http\Resources\Category\CategoryResource;
 use App\Http\Resources\Product\ProductResource;
 use App\Models\Category;
@@ -34,7 +35,7 @@ class CategoryController extends Controller
                     "remark" => $request->remark
                 ]);
             } else  return response()->json(["message" => "Category doesn't exist"], 400);
-        }else{
+        } else {
             Category::create([
                 "name" => $request->name,
                 "parent_id" => null,
@@ -55,7 +56,7 @@ class CategoryController extends Controller
             return response()->json(["message" => "အမျိုးအစားမရှိပါ"]);
         }
 
-        return response()->json(["data" => ProductResource::collection($category->products)]);
+        return new CategoryDetailResource($category);
     }
 
     /**

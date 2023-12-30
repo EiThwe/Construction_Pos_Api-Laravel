@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("voucher_number");
             $table->float("cost");
             $table->float("profit");
+            $table->float("promotion_amount");
             $table->integer("item_count");
             $table->foreignId("user_id");
             $table->timestamps();

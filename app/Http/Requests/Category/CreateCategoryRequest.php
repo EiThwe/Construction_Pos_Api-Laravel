@@ -23,7 +23,6 @@ class CreateCategoryRequest extends FormRequest
     {
         return [
             "name" => "required|unique:categories,name",
-            "remark" => "string"
         ];
     }
 }

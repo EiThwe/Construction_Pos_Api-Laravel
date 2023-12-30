@@ -83,7 +83,7 @@ class HelperController extends Controller
             DB::rollBack();
 
             // Re-throw the exception after rollback
-            return response()->json(["error" => $e->getMessage()], 400);
+            return response()->json(["message" => $e->getMessage()], 400);
         }
     }
 }
