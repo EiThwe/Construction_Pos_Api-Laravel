@@ -57,8 +57,9 @@ Route::prefix("v1")->group(function () {
         Route::get('/purchases/{id}', [PurchaseController::class, 'show']);
         Route::delete('/purchases/{id}', [PurchaseController::class, 'destroy']);
         Route::post("purchases", [PurchaseController::class, "purchase"]);
+        Route::post("purchases/{id}/records", [PurchaseController::class, "addRecords"]);
 
-        Route::post("/checkout",[CheckoutController::class,"checkout"]);
+        Route::post("/checkout", [CheckoutController::class, "checkout"]);
 
         Route::apiResource("app-settings", AppSettingController::class)->only(["index", "update"]);
     });

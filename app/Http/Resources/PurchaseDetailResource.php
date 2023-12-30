@@ -21,6 +21,7 @@ class PurchaseDetailResource extends JsonResource
             'item_quantity' => $this->item_quantity,
             'remark' => $this->remark,
             'status' => $this->status,
+            'purchase_records' => PurchaseRecordResource::collection($this->purchaseRecords),
             'purchase_items' => PurchaseItemResource::collection($this->whenLoaded('purchaseItems')),
         ];
     }
