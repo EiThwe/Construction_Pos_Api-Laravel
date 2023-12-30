@@ -18,7 +18,7 @@ class PurchaseItemResource extends JsonResource
 
             'name' => $this->name,
             'quantity' => $this->quantity,
-            'unit' => $this->unit,
+            'unit' => $this->unit->name,
 
         ];
     }

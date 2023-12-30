@@ -44,7 +44,7 @@ class PurchaseController extends Controller
             $purchaseItem = new PurchaseItem([
                 'name' => $item['name'],
                 'quantity' => $item['quantity'],
-                'unit' => $item['unit'],
+                'unit_id' => $item['unit_id'],
             ]);
             $purchase->purchaseItems()->save($purchaseItem);
         }

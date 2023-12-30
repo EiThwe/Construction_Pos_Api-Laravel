@@ -9,7 +9,7 @@ use App\Models\Expense;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseController extends Controller
 {
@@ -32,7 +32,7 @@ class ExpenseController extends Controller
             "description" => $request->description,
             "amount" => $request->amount,
             "remark" => $request->remark,
-            "user_id" => 1,
+            "user_id" => Auth::id(),
         ]);
         return response()->json(['message' => "Expense has been created successfully"], 201);
     }

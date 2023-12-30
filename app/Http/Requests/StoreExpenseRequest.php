@@ -22,10 +22,8 @@ class StoreExpenseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
-            "description"=>"required|min:20",
-            "amount"=>"required|integer",
-            "remark"=>"min:50"
+            "description" => "required|min:5",
+            "amount" => "required|numeric",
         ];
     }
 }
