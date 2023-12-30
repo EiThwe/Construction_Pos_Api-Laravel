@@ -5,6 +5,7 @@ namespace App\Http\Resources\Product;
 use App\Http\Resources\Category\ProductCategoryResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class ProductDetailResource extends JsonResource
 {
@@ -18,11 +19,12 @@ class ProductDetailResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "image" => $this->image,
+            "image" => asset(Storage::url($this->image)),
             "actual_price" => $this->actual_price,
             "primary_price" => $this->primary_price,
             "stock" => $this->stock,
-            "primary_unit" => $this->unit,
+            "primary_unit_id" => $this->primary_unit_id,
+            "remark" => $this->remark,
             "categories" => ProductCategoryResource::collection($this->categories),
             "product_units" => $this->productUnits
         ];

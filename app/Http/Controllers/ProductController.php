@@ -112,7 +112,7 @@ class ProductController extends Controller
         $product->primary_unit_id = $request->primary_unit_id ?? $product->primary_unit_id;
         $product->primary_price = $request->primary_price ?? $product->primary_price;
         $product->remark = $request->remark ?? $product->remark;
-        $product->image = HelperController::handleLogoUpload($request->file('image'), null);
+        $product->image = $request->file('image') ? HelperController::handleLogoUpload($request->file('image'), null) : $product->image;
         $product->user_id = Auth::id();
 
         if ($request->categories) {
@@ -125,8 +125,9 @@ class ProductController extends Controller
             }
         }
 
+        ProductUnit::where("product_id", $product->id)->delete();
+
         if ($request->units) {
-            ProductUnit::where("product_id", $product->id)->delete();
 
             $units = array_map(function ($unit) use ($product) {
                 $unit["product_id"] = $product->id;

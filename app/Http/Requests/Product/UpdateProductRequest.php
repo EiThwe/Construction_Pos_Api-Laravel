@@ -27,7 +27,6 @@ class UpdateProductRequest extends FormRequest
             'primary_unit' => 'string',
             'primary_price' => 'numeric',
             'remark' => 'nullable|string|max:255',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'categories' => 'array',
             'categories.*' => 'integer|exists:categories,id',
             'units' => 'array',
