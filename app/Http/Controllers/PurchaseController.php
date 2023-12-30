@@ -7,6 +7,7 @@ use App\Http\Resources\PurchaseDetailResource;
 use App\Http\Resources\PurchaseResource;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
+use App\Models\PurchaseRecords;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -93,5 +94,20 @@ class PurchaseController extends Controller
         $purchase->delete();
 
         return response()->json(['message' => 'Purchase deleted successfully']);
+    }
+
+    public function addRecords(Request $request, string $id)
+    {
+        $request->validate([
+            "description" => "required"
+        ]);
+
+        PurchaseRecords::create([
+            "purchase_id" => $id,
+            "user_id" => Auth::id(),
+            "description" => $request->description
+        ]);
+
+        return response()->json(['message' => 'Purchase records added successfully']);
     }
 }
