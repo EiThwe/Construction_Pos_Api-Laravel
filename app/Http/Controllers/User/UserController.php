@@ -7,6 +7,7 @@ use App\Http\Controllers\HelperController;
 use App\Http\Resources\User\UserDetailResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -36,8 +37,8 @@ class UserController extends Controller
         User::create([
             "name" => $request->name,
             "phone" => $request->phone,
-            "birth_date" => $request->birth_date,
-            "join_date" => $request->join_date,
+            "birth_date" => HelperController::handleToDateString($request->birth_date),
+            "join_date" => HelperController::handleToDateString($request->join_date),
             "gender" => $request->gender,
             "address" => $request->address,
             "password" => Hash::make($request->password),
@@ -65,17 +66,16 @@ class UserController extends Controller
 
     public function update(Request $request, string $id)
     {
+        logger($request);
+
         $this->validate($request, [
             "name" => "min:3",
-            "phone" => "numeric|min:9",
+            "phone" => "numeric|min:6",
             "birth_date" => "string",
             "join_date" => "string",
-            "gender" => "in:male,female",
+            "gender" => "in:ကျား,မ",
             "role" => "in:admin,manager,cashier",
-            "address" => "min:50",
-            "password" => "min:6",
             "salary" => "numeric",
-            'profile' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $user = User::find($id);
@@ -88,14 +88,14 @@ class UserController extends Controller
         $user->update([
             'name' => $request->name ?? $user->name,
             'phone' => $request->phone ?? $user->phone,
-            'birth_date' => $request->birth_date ?? $user->birth_date,
-            'join_date' => $request->join_date ?? $user->join_date,
+            'birth_date' => $request->birth_date ? HelperController::handleToDateString($request->birth_date) : $user->birth_date,
+            'join_date' => $request->join_date ? HelperController::handleToDateString($request->join_date) : $user->join_date,
             'gender' => $request->gender ?? $user->gender,
             'role' => $request->role ?? $user->role,
             'address' => $request->address ?? $user->address,
-            'password' => $request->password ?? $user->password,
+            'password' => $request->password ? Hash::make($request->password) : $user->password,
             'salary' => $request->salary ?? $user->salary,
-            'profile' => HelperController::handleLogoUpload($request->file('profile'), $user->profile)
+            'profile' => $request->file("profile") ? HelperController::handleLogoUpload($request->file('profile'), $user->profile) : $user->profile,
         ]);
 
         return response()->json(["message" => "အကောင့်ပြင်ဆင်ခြင်း အောင်မြင်ပါသည်"]);

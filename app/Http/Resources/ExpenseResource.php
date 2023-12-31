@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Controllers\HelperController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Crypt;
@@ -20,6 +21,7 @@ class ExpenseResource extends JsonResource
             "description" => $this->description,
             "amount" => $this->amount,
             "remark" => $this->remark,
+            "date" => HelperController::parseReturnDate($this->created_at),
             "user_id" => $this->user_id,
         ];
     }

@@ -32,8 +32,8 @@ class PromotionController extends Controller
             'name' => $request->name,
             'type' => $request->type,
             'amount' => $request->amount,
-            'started_at' => Carbon::parse($request->started_at)->endOfDay()->toDateTimeString(),
-            'expired_at' => Carbon::parse($request->expired_at)->endOfDay()->toDateTimeString(),
+            'expired_at' => HelperController::handleToDateString($request->expired_at),
+            'started_at' => HelperController::handleToDateString($request->started_at),
             'user_id' => Auth::id(),
         ]);
 
@@ -60,6 +60,7 @@ class PromotionController extends Controller
      */
     public function update(UpdatePromotionRequest $request, string $id)
     {
+        logger($request);
         $promotion = Promotion::find($id);
         if (is_null($promotion)) {
             return response()->json([
@@ -69,8 +70,8 @@ class PromotionController extends Controller
         $promotion->name = $request->name ?? $promotion->name;
         $promotion->type = $request->type ?? $promotion->type;
         $promotion->amount = $request->amount ?? $promotion->amount;
-        $promotion->started_at = $request->started_at ? Carbon::parse($request->started_at)->endOfDay()->toDateTimeString() : $promotion->started_at;
-        $promotion->expired_at = $request->expired_at ? Carbon::parse($request->expired_at)->endOfDay()->toDateTimeString() : $promotion->expired_at;
+        $promotion->started_at = $request->started_at ? HelperController::handleToDateString($request->started_at) : $promotion->started_at;
+        $promotion->expired_at = $request->expired_at ? HelperController::handleToDateString($request->expired_at) : $promotion->expired_at;
         $promotion->user_id = Auth::id();
 
         $promotion->update();

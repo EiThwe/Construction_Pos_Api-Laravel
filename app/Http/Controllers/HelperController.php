@@ -86,4 +86,22 @@ class HelperController extends Controller
             return response()->json(["message" => $e->getMessage()], 400);
         }
     }
+
+    static public function handleToDateString($originalDateString)
+    {
+        $carbonDate = Carbon::createFromFormat('d-m-Y', $originalDateString);
+
+        $formattedDate = $carbonDate->toDateString();
+
+        return $formattedDate;
+    }
+
+    static public function parseReturnDate($date, $getAlsoTime = false)
+    {
+        if ($getAlsoTime) {
+            return Carbon::parse($date)->format('d M Y h:i A');
+        }
+
+        return Carbon::parse($date)->format('d M Y');
+    }
 }

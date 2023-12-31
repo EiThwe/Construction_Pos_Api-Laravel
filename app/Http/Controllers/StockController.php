@@ -60,6 +60,7 @@ class StockController extends Controller
             "unit_id" => $request->unit_id,
             "user_id" => Auth::id(),
             "quantity" => $request->quantity,
+            "remark" => $request->remark,
         ]);
 
         return response()->json(["message" => "စတော့ထည့်သွင်းခြင်းအောင်မြင်ပါသည်"]);

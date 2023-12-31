@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Controllers\HelperController;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,7 +19,7 @@ class PurchaseRecordResource extends JsonResource
         return [
             "description" => $this->description,
             "cashier" => $this->user->name,
-            "date" =>  Carbon::parse($this->created_at)->format('j M Y'),
+            "date" =>  HelperController::parseReturnDate($this->created_at, true),
         ];
     }
 }
