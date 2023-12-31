@@ -4,6 +4,7 @@ namespace App\Http\Resources\Stock;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class StockResource extends JsonResource
 {
@@ -16,7 +17,7 @@ class StockResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'image' => $this->image,
+            'image' => asset(Storage::url($this->image)),
             'name' => $this->name,
             'unit' => $this->unit->name,
             'sale_price' => $this->primary_price,

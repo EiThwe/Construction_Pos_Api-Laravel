@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Resources\Product\ProdcutUnitResource;
 use App\Http\Resources\Product\ProductDetailResource;
 use App\Http\Resources\Product\ProductResource;
 use App\Models\Category;
@@ -150,13 +151,24 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::find($id);
+
+        if (is_null($product)) {
+            return response()->json(["message" => "ပစ္စည်းမရှီပါ"], 400);
+        }
+
         $product->delete();
 
         return response()->json(["message" => "ပစ္စည်းဖျက်သိမ်းခြင်း အောင်မြင်ပါသည်"]);
     }
 
-    public function stockHistory(string $id)
+    public function productUnits(string $id)
     {
-        $stocks = Stoc::where("product_id", $id);
+        $product = Product::find($id);
+
+        if (is_null($product)) {
+            return response()->json(["message" => "ပစ္စည်းမရှီပါ"], 400);
+        }
+
+        return new ProdcutUnitResource($product);
     }
 }

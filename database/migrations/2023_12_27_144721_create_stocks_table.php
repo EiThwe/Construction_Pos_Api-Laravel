@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
             $table->foreignId("product_id");
-            $table->float("quantity");
-            $table->float("cost");
+            $table->decimal("quantity", 12, 2);
+            $table->decimal("cost", 12, 2);
             $table->foreignId("unit_id");
             $table->foreignId("user_id");
+            $table->text("remark")->nullable();
             $table->timestamps();
         });
     }

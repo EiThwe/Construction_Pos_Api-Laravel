@@ -20,8 +20,8 @@ return new class extends Migration
             $table->enum('role', ["admin", "cashier", "manager"]);
             $table->enum('gender', ["ကျား", "မ"]);
             $table->integer('salary');
-            $table->string("birth_date");
-            $table->string("join_date");
+            $table->timestamp("birth_date");
+            $table->timestamp("join_date")->default(now());
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('profile')->nullable();
