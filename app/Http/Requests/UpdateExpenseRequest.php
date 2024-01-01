@@ -22,7 +22,7 @@ class UpdateExpenseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "description" => "min:5",
+            "description" => "string",
             "amount" => "integer",
 
         ];
