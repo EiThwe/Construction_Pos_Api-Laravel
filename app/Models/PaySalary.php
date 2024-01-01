@@ -10,6 +10,6 @@ class PaySalary extends Model
     use HasFactory;
 
     protected $fillable = [
-        "actual_salary", "type", "amount", "user_id", "created_by"
+        "actual_salary", "type", "amount", "user_id", "created_by", "pay_month"
     ];
 }

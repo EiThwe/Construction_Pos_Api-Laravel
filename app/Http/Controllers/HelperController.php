@@ -104,4 +104,11 @@ class HelperController extends Controller
 
         return Carbon::parse($date)->format('d M Y');
     }
+
+    static public function parseReturnImage($image)
+    {
+        if (is_null($image)) return "https://i.postimg.cc/FzL0bSm3/pngtree-building-and-construction-logo-design-template-image-317780.jpg";
+
+        return asset(Storage::url($image));
+    }
 }

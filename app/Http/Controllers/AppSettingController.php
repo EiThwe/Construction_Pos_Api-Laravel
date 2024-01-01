@@ -15,7 +15,7 @@ class AppSettingController extends Controller
     public function index()
     {
         $setting = AppSetting::latest()->first();
-        $setting["logo"] = asset(Storage::url($setting->logo));
+        $setting["logo"] = HelperController::parseReturnImage($setting->logo);
 
         return response()->json(["data" => $setting]);
     }

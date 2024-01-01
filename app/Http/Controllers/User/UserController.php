@@ -28,10 +28,9 @@ class UserController extends Controller
             "birth_date" => "required",
             "join_date" => "required",
             "gender" => "required|in:ကျား,မ",
-            "role" => "required|in:admin,manager,cashier",
+            "role" => "required|in:admin,manager,cashier,staff",
             "address" => "required",
             "salary" => "required",
-            "password" => "required|min:6",
         ]);
 
         User::create([
@@ -43,6 +42,7 @@ class UserController extends Controller
             "address" => $request->address,
             "password" => Hash::make($request->password),
             "role" => $request->role,
+            "position" => $request->position,
             "salary" => $request->salary,
             "profile" => HelperController::handleLogoUpload($request->file('profile'), null)
         ]);
@@ -74,7 +74,7 @@ class UserController extends Controller
             "birth_date" => "string",
             "join_date" => "string",
             "gender" => "in:ကျား,မ",
-            "role" => "in:admin,manager,cashier",
+            "role" => "in:admin,manager,cashier,staff",
             "salary" => "numeric",
         ]);
 
@@ -92,6 +92,7 @@ class UserController extends Controller
             'join_date' => $request->join_date ? HelperController::handleToDateString($request->join_date) : $user->join_date,
             'gender' => $request->gender ?? $user->gender,
             'role' => $request->role ?? $user->role,
+            'position' => $request->position ?? $user->position,
             'address' => $request->address ?? $user->address,
             'password' => $request->password ? Hash::make($request->password) : $user->password,
             'salary' => $request->salary ?? $user->salary,

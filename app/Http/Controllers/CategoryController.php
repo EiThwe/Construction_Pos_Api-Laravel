@@ -70,10 +70,11 @@ class CategoryController extends Controller
             return response()->json(["message" => "အမျိုးအစားမရှိပါ"], 404);
         }
 
+        logger($request);
+
         $category->name = $request->name ?? $category->name;
         $category->remark = $request->remark ?? $category->remark;
-        $category->parent_id = $request->parent_id ?? $category->parent_id;
-
+        $category->parent_id =  $request->parent_id;
         $category->update();
 
         return response()->json(["message" => "အမျိုးအစားပြင်ဆင်ခြင်း အောင်မြင်ပါသည်"]);

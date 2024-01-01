@@ -22,6 +22,7 @@ class UserSeeder extends Seeder
             "join_date" =>  Carbon::now()->toDateString(),
             "gender" => "ကျား",
             "role" => "admin",
+            "position" => "မန်နေဂျာ",
             "address" => "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta fugit impedit magnam eos dicta nesciunt rem facilis laudantium alias minima dolorem consequuntur hic explicabo, ipsam at? Deserunt perspiciatis pariatur accusantium!            ",
             "salary" => 3000000,
             "password" => Hash::make("123123"),

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamp('started_at');
             $table->timestamp('expired_at')->default(now());
             $table->foreignId('user_id');
+            $table->text("remark")->nullable();
             $table->timestamps();
         });
     }

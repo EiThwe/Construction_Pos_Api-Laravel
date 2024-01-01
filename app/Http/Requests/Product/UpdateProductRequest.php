@@ -24,13 +24,13 @@ class UpdateProductRequest extends FormRequest
         return [
             'name' => 'string|min:1',
             'actual_price' => 'numeric',
-            'primary_unit' => 'string',
+            'primary_unit_id' => 'exists:units,id',
             'primary_price' => 'numeric',
             'remark' => 'nullable|string|max:255',
             'categories' => 'array',
             'categories.*' => 'integer|exists:categories,id',
             'units' => 'array',
-            'units.*.unit' => 'string|min:1',
+            'units.*.unit_id' => 'exists:units,id',
             'units.*.price' => 'numeric|min:0',
         ];
     }

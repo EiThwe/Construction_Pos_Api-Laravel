@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer("amount")->nullable();
             $table->foreignId("user_id");
             $table->string("created_by");
+            $table->string("pay_month");
             $table->timestamps();
         });
     }

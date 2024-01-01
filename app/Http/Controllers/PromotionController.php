@@ -32,6 +32,7 @@ class PromotionController extends Controller
             'name' => $request->name,
             'type' => $request->type,
             'amount' => $request->amount,
+            'remark' => $request->remark,
             'expired_at' => HelperController::handleToDateString($request->expired_at),
             'started_at' => HelperController::handleToDateString($request->started_at),
             'user_id' => Auth::id(),
@@ -70,6 +71,7 @@ class PromotionController extends Controller
         $promotion->name = $request->name ?? $promotion->name;
         $promotion->type = $request->type ?? $promotion->type;
         $promotion->amount = $request->amount ?? $promotion->amount;
+        $promotion->remark = $request->remark ?? $promotion->remark;
         $promotion->started_at = $request->started_at ? HelperController::handleToDateString($request->started_at) : $promotion->started_at;
         $promotion->expired_at = $request->expired_at ? HelperController::handleToDateString($request->expired_at) : $promotion->expired_at;
         $promotion->user_id = Auth::id();

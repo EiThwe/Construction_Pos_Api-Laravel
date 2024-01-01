@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('product_units', function (Blueprint $table) {
             $table->id();
             $table->foreignId("unit_id");
-            $table->float("price");
+            $table->decimal("price", 15, 2);
             $table->foreignId("product_id");
         });
     }

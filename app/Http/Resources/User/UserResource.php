@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\User;
 
+use App\Http\Controllers\HelperController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,7 +22,8 @@ class UserResource extends JsonResource
             "phone" => $this->phone,
             "salary" => $this->salary,
             "role" => $this->role,
-            "profile" => asset('storage/' . $this->profile),
+            "position" => $this->position,
+            "profile" => HelperController::parseReturnImage($this->profile),
         ];
     }
 }

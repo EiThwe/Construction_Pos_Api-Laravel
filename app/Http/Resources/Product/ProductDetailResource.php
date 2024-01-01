@@ -23,12 +23,13 @@ class ProductDetailResource extends JsonResource
             "image" => asset(Storage::url($this->image)),
             "actual_price" => $this->actual_price,
             "primary_price" => $this->primary_price,
+            "primary_unit_id" => $this->primary_unit_id,
             "stock" => $this->stock,
             "unit" => $this->unit->name,
             "remark" => $this->remark,
             "categories" => ProductCategoryResource::collection($this->categories),
             "stock_histories" => StockHistoryResource::collection($this->stocks),
-            "units" => [$this->unit, ...$this->productUnits],
+            "product_units" => $this->productUnits
         ];
     }
 }

@@ -128,8 +128,7 @@ class ProductController extends Controller
 
         ProductUnit::where("product_id", $product->id)->delete();
 
-        if ($request->units) {
-
+        if ($request->units && count($request->units) > 0) {
             $units = array_map(function ($unit) use ($product) {
                 $unit["product_id"] = $product->id;
 

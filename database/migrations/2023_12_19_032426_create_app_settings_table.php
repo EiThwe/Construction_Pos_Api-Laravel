@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("email");
             $table->string("address");
             $table->string("google_map_url");
-            $table->string("logo");
+            $table->string("logo")->nullable();
             $table->foreignId("user_id");
             $table->timestamps();
         });

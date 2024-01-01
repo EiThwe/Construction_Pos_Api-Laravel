@@ -20,7 +20,7 @@ class AppSettingSeeder extends Seeder
             'address' => '123 Main St, City',
             'google_map_url' => 'https://maps.google.com/example',
             'user_id' => 1,
-            'logo' => "https://i.postimg.cc/FzL0bSm3/pngtree-building-and-construction-logo-design-template-image-317780.jpg"
+            // 'logo' => "https://i.postimg.cc/FzL0bSm3/pngtree-building-and-construction-logo-design-template-image-317780.jpg"
         ]);
     }
 }
