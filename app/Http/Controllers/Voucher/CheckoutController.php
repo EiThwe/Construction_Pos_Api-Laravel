@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Voucher;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HelperController;
 use App\Http\Requests\Voucher\CheckoutRequest;
+use App\Http\Resources\Voucher\VoucherRecordResource;
 use App\Models\ConversionFactor;
+use App\Models\Debt;
 use App\Models\Product;
 use App\Models\Voucher;
 use App\Models\VoucherRecord;
@@ -144,14 +146,42 @@ class CheckoutController extends Controller
                 # code...
             }
 
+
+            if ($request->pay_amount < $total_cost) {
+                $debt_amount = $total_cost - $request->pay_amount;
+                $change = 0;
+                $is_debt = true;
+            } else {
+                $change = $request->pay_amount - $total_cost;
+                $debt_amount = 0;
+                $is_debt = false;
+            }
+
+
             $voucher = Voucher::create([
                 "voucher_number" => Voucher::generateVoucherNumber(),
                 "cost" => $total_cost,
                 "profit" => $total_profit,
                 "promotion_amount" => $total_promotion_amount,
+                "pay_amount" => $request->pay_amount,
+                "change" => $change,
+                "debt_amount" => $debt_amount,
                 "item_count" => $total_quantity,
                 "user_id" => Auth::id()
             ]);
+
+            if ($is_debt) {
+                Debt::create([
+                    "voucher_id" => $voucher->id,
+                    "user_id" => Auth::id(),
+                    "actual_amount" => $debt_amount,
+                    "left_amount" => $debt_amount,
+                    "name" => $request->debt_info["name"],
+                    "phone" => $request->debt_info["phone"],
+                    "address" => $request->debt_info["address"],
+                    "remark" => $request->debt_info["remark"],
+                ]);
+            }
 
             $voucher_records = array_map(function ($record) use ($voucher) {
                 $record["voucher_id"] = $voucher->id;
@@ -163,7 +193,18 @@ class CheckoutController extends Controller
 
             VoucherRecord::insert($voucher_records);
 
-            return response()->json(["message" => "အောင်မြင်ပါသည်"]);
+            $insertedRecords = VoucherRecord::where('voucher_id', $voucher->id)->get();
+
+            return response()->json(["message" => "အောင်မြင်ပါသည်", "data" => [
+                "voucher_number" => $voucher->voucher_number,
+                "staff" => $voucher->user->name,
+                "cost" => $total_cost,
+                "pay_amount" => $request->pay_amount,
+                "promotion_amount" => $total_promotion_amount,
+                "change" => $change,
+                "debt_amount" => $debt_amount,
+                "items" => VoucherRecordResource::collection($insertedRecords)
+            ]]);
         });
     }
 }

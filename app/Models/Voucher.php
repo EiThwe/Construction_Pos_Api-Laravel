@@ -11,7 +11,12 @@ class Voucher extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["voucher_number", "cost", "profit", "item_count", "user_id", "promotion_amount"];
+    protected $fillable = ["voucher_number", "cost", "profit", "item_count", "user_id", "promotion_amount", "pay_amount", "change", "debt_amount"];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public static function generateVoucherNumber()
     {

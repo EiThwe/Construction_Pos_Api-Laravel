@@ -16,6 +16,7 @@ class CheckoutController extends Controller
 {
     public function checkout(CheckoutRequest $request)
     {
+        // this is copy
         $voucher_records = [];
         $total_cost = 0;
         $total_profit = 0;
