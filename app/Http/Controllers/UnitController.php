@@ -30,12 +30,13 @@ class UnitController extends Controller
         $unit = Unit::create([
             "name" => $request->name,
             "unit_type_id" => $request->unit_type_id,
+            "remark" => $request->remark,
         ]);
+
 
         if ($request->conversions) {
             $conversions = [];
             $reverse_conversions = [];
-
 
             foreach ($request->conversions as $conversion) {
                 array_push($conversions, [
