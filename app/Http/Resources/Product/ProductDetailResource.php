@@ -26,10 +26,11 @@ class ProductDetailResource extends JsonResource
             "primary_unit_id" => $this->primary_unit_id,
             "stock" => $this->stock,
             "unit" => $this->unit->name,
+            "units" =>  [$this->unit, ...NestedUnitResource::collection($this->productUnits)],
             "remark" => $this->remark,
             "categories" => ProductCategoryResource::collection($this->categories),
             "stock_histories" => StockHistoryResource::collection($this->stocks),
-            "product_units" => $this->productUnits
+
         ];
     }
 }

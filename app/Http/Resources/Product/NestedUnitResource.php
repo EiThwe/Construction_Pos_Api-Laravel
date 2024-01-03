@@ -5,7 +5,7 @@ namespace App\Http\Resources\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProdcutUnitResource extends JsonResource
+class NestedUnitResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,7 +15,8 @@ class ProdcutUnitResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "data" => [$this->unit, ...NestedUnitResource::collection($this->productUnits)],
+            "id" => $this->unit->id,
+            "name" => $this->unit->name,
         ];
     }
 }

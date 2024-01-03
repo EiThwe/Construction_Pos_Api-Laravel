@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\ConversionFactor;
 use App\Models\Product;
 use App\Models\ProductUnit;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,12 +34,14 @@ class ProductController extends Controller
     {
         if ($request->units) {
             foreach ($request->units as $unit) {
-                logger($unit);
                 $isUnitRelation = ConversionFactor::where("from_unit_id", $request->primary_unit_id)
                     ->where("to_unit_id", $unit["unit_id"])->first();
 
                 if (is_null($isUnitRelation)) {
-                    return response()->json(["message" => "ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
+                    $fromUnit = Unit::find($request->primary_unit_id);
+                    $toUnit = Unit::find($unit["unit_id"]);
+
+                    return response()->json(["message" => "$fromUnit->name နှင့် $toUnit->name တို့ ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
                 }
             }
         }
@@ -98,7 +101,10 @@ class ProductController extends Controller
                     ->where("to_unit_id", $unit["unit_id"])->first();
 
                 if (is_null($isUnitRelation)) {
-                    return response()->json(["message" => "ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
+                    $fromUnit = Unit::find($request->primary_unit_id);
+                    $toUnit = Unit::find($unit["unit_id"]);
+
+                    return response()->json(["message" => "$fromUnit->name နှင့် $toUnit->name တို့ ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
                 }
             }
         }
