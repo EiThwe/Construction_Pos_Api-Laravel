@@ -15,6 +15,7 @@ use App\Http\Controllers\User\PaySalaryController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Voucher\CashierController;
 use App\Http\Controllers\Voucher\CheckoutController;
+use App\Http\Controllers\Voucher\VoucherController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,6 +48,8 @@ Route::prefix("v1")->group(function () {
         Route::apiResource("categories", CategoryController::class);
 
         Route::get("cashiers", [CashierController::class, "index"]);
+
+        Route::get("vouchers", [VoucherController::class, "index"]);
 
         Route::apiResource("products", ProductController::class)->except("update");
         Route::post("products/{id}/update", [ProductController::class, "update"]);
