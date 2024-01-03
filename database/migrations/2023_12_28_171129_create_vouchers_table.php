@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
             $table->string("voucher_number");
-            $table->float("cost");
-            $table->float("profit");
-            $table->float("promotion_amount");
+            $table->decimal("cost", 20, 2);
+            $table->decimal("profit", 20, 2);
+            $table->decimal("pay_amount", 20, 2);
+            $table->decimal("change", 20, 2);
+            $table->decimal("debt_amount", 20, 2);
+            $table->decimal("promotion_amount", 20, 2);
             $table->integer("item_count");
             $table->foreignId("user_id");
             $table->timestamps();

@@ -9,7 +9,7 @@ class Debt extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["name", "phone", "address", "user_id", "voucher_id", "actual_amount", "left_amount"];
+    protected $fillable = ["name", "phone", "address", "user_id", "voucher_id", "actual_amount", "left_amount", "remark"];
 
     public function user()
     {
