@@ -68,11 +68,10 @@ Route::prefix("v1")->group(function () {
         Route::post("purchases/{id}/receive", [PurchaseController::class, "allReceive"]);
 
         Route::post("/checkout", [CheckoutController::class, "checkout"]);
-
-        Route::apiResource("app-settings", AppSettingController::class)->only(["index", "store"]);
         
         Route::apiResource("/customers", CustomerController::class);
     });
+    Route::apiResource("app-settings", AppSettingController::class)->only(["index", "store"]);
 
     Route::post("auth/login", [AuthController::class, 'login']);
 });
