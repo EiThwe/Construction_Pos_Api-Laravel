@@ -30,6 +30,7 @@ class ProductDetailResource extends JsonResource
             "remark" => $this->remark,
             "categories" => ProductCategoryResource::collection($this->categories),
             "stock_histories" => StockHistoryResource::collection($this->stocks),
+            "product_units" => $this->productUnits
 
         ];
     }

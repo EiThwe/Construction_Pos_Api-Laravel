@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Voucher;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HelperController;
+use App\Http\Resources\Voucher\VoucherDetailResource;
 use App\Http\Resources\VouchersResource;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
@@ -33,7 +34,12 @@ class VoucherController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $voucher = Voucher::find($id);
+        if (is_null($voucher)) {
+            return response()->json(["message" => "ဘောက်ချာမရှိပါ"], 400);
+        }
+
+        return new VoucherDetailResource($voucher);
     }
 
     /**

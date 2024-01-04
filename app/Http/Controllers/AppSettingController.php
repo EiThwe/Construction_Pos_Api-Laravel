@@ -44,7 +44,6 @@ class AppSettingController extends Controller
             'email' => $request->input('email', $setting->email),
             'address' => $request->input('address', $setting->address),
             'google_map_url' => $request->input('google_map_url', $setting->google_map_url),
-            'user_id' => Auth::id(),
             'logo' => HelperController::handleLogoUpload($request->file('logo'), null),
         ]);
 
