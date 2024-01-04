@@ -34,7 +34,7 @@ class ExpenseController extends Controller
             "remark" => $request->remark,
             "user_id" => Auth::id(),
         ]);
-        return response()->json(['message' => "Expense has been created successfully"], 201);
+        return response()->json(['message' => "ထွက်ငွေထည့်သွင်းခြင်း အောင်မြင်ပါသည်"], 201);
     }
 
     public function show(string $id)
@@ -43,7 +43,7 @@ class ExpenseController extends Controller
 
         if (is_null($expense)) {
             return response()->json([
-                "message" => "expense not found"
+                "message" => "ရှာမတွေ့ပါ"
             ], 404);
         }
 
@@ -58,7 +58,7 @@ class ExpenseController extends Controller
         $expense = Expense::find($id);
         if (is_null($expense)) {
             return response()->json([
-                "message" => "expense not found"
+                "message" => "ရှာမတွေ့ပါ"
             ], 404);
         }
         $expense->description = $request->description ?? $expense->description;
@@ -66,7 +66,7 @@ class ExpenseController extends Controller
         $expense->remark = $request->remark ?? $expense->remark;
         $expense->update();
 
-        return  response()->json(['message' => "expense has been updated successfully"]);
+        return  response()->json(['message' => "ထွက်ငွေ ပြင်ဆင်ခြင်း အောင်မြင်ပါသည်"]);
     }
 
     /**
@@ -77,14 +77,14 @@ class ExpenseController extends Controller
         $expense = Expense::find($id);
         if (is_null($expense)) {
             return response()->json([
-                "message" => "Expense is not found"
+                "message" => "ရှာမတွေ့ပါ"
             ], 404);
         }
-        
+
         $expense->delete();
 
         return response()->json([
-            "message" => "An expense is deleted successfully"
+            "message" => "ထွက်ငွေ ဖျက်ခြင်း အောင်မြင်ပါသည်"
         ], 200);
     }
 }

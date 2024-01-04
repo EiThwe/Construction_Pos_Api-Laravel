@@ -4,6 +4,7 @@
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DebtController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\PurchaseController;
@@ -66,6 +67,8 @@ Route::prefix("v1")->group(function () {
         Route::post("/checkout", [CheckoutController::class, "checkout"]);
 
         Route::apiResource("app-settings", AppSettingController::class)->only(["index", "store"]);
+        
+        Route::apiResource("/customers", CustomerController::class);
     });
 
     Route::post("auth/login", [AuthController::class, 'login']);
