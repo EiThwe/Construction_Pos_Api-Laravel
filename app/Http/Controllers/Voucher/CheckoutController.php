@@ -176,10 +176,8 @@ class CheckoutController extends Controller
                     "user_id" => Auth::id(),
                     "actual_amount" => $debt_amount,
                     "left_amount" => $debt_amount,
-                    "name" => $request->debt_info["name"],
-                    "phone" => $request->debt_info["phone"],
-                    "address" => $request->debt_info["address"],
-                    "remark" => $request->debt_info["remark"],
+                    "customer_id" => $request->customer_id,
+                    "remark" => $request->remark
                 ]);
             }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Controllers\HelperController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,7 +20,8 @@ class CustomersResource extends JsonResource
             "name" => $this->name,
             "phone" => $this->phone,
             "address" => $this->address,
-            "staff" => $this->user->name
+            "staff" => $this->user->name,
+            "profile" => HelperController::parseReturnImage($this->profile)
         ];
     }
 }

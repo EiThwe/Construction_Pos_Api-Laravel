@@ -23,7 +23,7 @@ class StoreCustomerRequest extends FormRequest
     {
         return [
             "name" => "required",
-            "phone" => "required",
+            "phone" => "required|unique:customers,phone",
             "address" => "required"
         ];
     }
