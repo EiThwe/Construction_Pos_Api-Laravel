@@ -4,6 +4,7 @@
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DebtController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\PurchaseController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\User\PaySalaryController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Voucher\CashierController;
 use App\Http\Controllers\Voucher\CheckoutController;
+use App\Http\Controllers\Voucher\VoucherController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,6 +50,8 @@ Route::prefix("v1")->group(function () {
 
         Route::get("cashiers", [CashierController::class, "index"]);
 
+        Route::get("vouchers", [VoucherController::class, "index"]);
+
         Route::apiResource("products", ProductController::class)->except("update");
         Route::post("products/{id}/update", [ProductController::class, "update"]);
         Route::get("products/{id}/units", [ProductController::class, "productUnits"]);
@@ -64,6 +68,8 @@ Route::prefix("v1")->group(function () {
         Route::post("purchases/{id}/receive", [PurchaseController::class, "allReceive"]);
 
         Route::post("/checkout", [CheckoutController::class, "checkout"]);
+        
+        Route::apiResource("/customers", CustomerController::class);
     });
     Route::apiResource("app-settings", AppSettingController::class)->only(["index", "store"]);
 
