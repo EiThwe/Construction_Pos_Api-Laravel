@@ -19,7 +19,8 @@ class StockController extends Controller
     {
         $orderBy = $request->input('order_by', 'stock');
         $orderDirection = $request->input('order_direction', 'asc');
-        $additionalConditions = [["stock", "<=", 20]];
+        // $additionalConditions = [["stock", "<=", 20]];
+        $additionalConditions = [];
 
         $products = HelperController::findAllQuery(Product::class, $request, [], $additionalConditions, $orderBy, $orderDirection);
 
@@ -88,5 +89,17 @@ class StockController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function lowStocks(Request $request)
+    {
+        logger("call me");
+        $orderBy = $request->input('order_by', 'stock');
+        $orderDirection = $request->input('order_direction', 'asc');
+        $additionalConditions = [["stock", "<=", 20]];
+
+        $products = HelperController::findAllQuery(Product::class, $request, [], $additionalConditions, $orderBy, $orderDirection);
+
+        return StockResource::collection($products);
     }
 }

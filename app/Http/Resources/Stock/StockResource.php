@@ -35,7 +35,7 @@ class StockResource extends JsonResource
         } elseif ($this->stock < 20) {
             return 'ဝယ်ယူသင့်';
         } else {
-            return '';
+            return 'ကောင်း';
         }
     }
 }

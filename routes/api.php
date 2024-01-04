@@ -50,13 +50,14 @@ Route::prefix("v1")->group(function () {
 
         Route::get("cashiers", [CashierController::class, "index"]);
 
-        Route::get("vouchers", [VoucherController::class, "index"]);
+        Route::apiResource("vouchers", VoucherController::class)->only(["index", "show"]);
 
         Route::apiResource("products", ProductController::class)->except("update");
         Route::post("products/{id}/update", [ProductController::class, "update"]);
         Route::get("products/{id}/units", [ProductController::class, "productUnits"]);
 
         Route::apiResource("stocks", StockController::class);
+        Route::get("lowstocks", [StockController::class, "lowStocks"]);
 
         Route::apiResource("units", UnitController::class);
 
@@ -68,7 +69,7 @@ Route::prefix("v1")->group(function () {
         Route::post("purchases/{id}/receive", [PurchaseController::class, "allReceive"]);
 
         Route::post("/checkout", [CheckoutController::class, "checkout"]);
-        
+
         Route::apiResource("/customers", CustomerController::class);
     });
     Route::apiResource("app-settings", AppSettingController::class)->only(["index", "store"]);
