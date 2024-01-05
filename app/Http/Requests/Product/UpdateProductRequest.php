@@ -29,7 +29,6 @@ class UpdateProductRequest extends FormRequest
             'remark' => 'nullable|string|max:255',
             'categories' => 'array',
             'categories.*' => 'integer|exists:categories,id',
-            'units' => 'array',
             'units.*.unit_id' => 'exists:units,id',
             'units.*.price' => 'numeric|min:0',
         ];
