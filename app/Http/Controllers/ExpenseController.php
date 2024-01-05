@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateExpenseRequest;
 use App\Http\Resources\ExpenseResource;
 use App\Models\Expense;
 use Carbon\Carbon;
+use HTMLPurifier;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,8 +29,9 @@ class ExpenseController extends Controller
      */
     public function store(StoreExpenseRequest $request)
     {
+        $purifier = new HTMLPurifier();
         $expense = Expense::create([
-            "description" => $request->description,
+            "description" => nl2br($purifier->purify($request->description)),
             "amount" => $request->amount,
             "remark" => $request->remark,
             "user_id" => Auth::id(),
