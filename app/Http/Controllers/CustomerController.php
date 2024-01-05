@@ -15,6 +15,10 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->limit === "0") {
+            return response()->json(["data" => []]);
+        }
+
         $customers = HelperController::findAllQuery(Customer::class, $request, ["name", "phone", "address"]);
 
         return CustomersResource::collection($customers);

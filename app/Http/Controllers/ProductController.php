@@ -95,6 +95,8 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, string $id)
     {
+        logger($request);
+
         if ($request->units) {
             foreach ($request->units as $unit) {
                 $isUnitRelation = ConversionFactor::where("from_unit_id", $request->primary_unit_id)
