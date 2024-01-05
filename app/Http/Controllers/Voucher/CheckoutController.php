@@ -194,6 +194,7 @@ class CheckoutController extends Controller
             $insertedRecords = VoucherRecord::where('voucher_id', $voucher->id)->get();
 
             return response()->json(["message" => "အောင်မြင်ပါသည်", "data" => [
+                "date" => HelperController::parseReturnDate($voucher->created_at, true),
                 "voucher_number" => $voucher->voucher_number,
                 "staff" => $voucher->user->name,
                 "cost" => $total_cost,

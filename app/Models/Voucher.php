@@ -18,6 +18,11 @@ class Voucher extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function voucherRecords()
+    {
+        return $this->hasMany(VoucherRecord::class);
+    }
+
     public static function generateVoucherNumber()
     {
         $voucherCode = Hashids::encode(random_int(1, 99999999));
