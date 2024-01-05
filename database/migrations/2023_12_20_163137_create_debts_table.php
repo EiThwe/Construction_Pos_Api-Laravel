@@ -15,11 +15,9 @@ return new class extends Migration
             $table->id();
             $table->decimal("actual_amount", 20, 2);
             $table->decimal("left_amount", 20, 2);
-            $table->string("name");
-            $table->string("phone");
-            $table->text("address");
             $table->foreignId("user_id");
             $table->foreignId("voucher_id");
+            $table->foreignId("customer_id");
             $table->text("remark")->nullable();
             $table->timestamps();
         });

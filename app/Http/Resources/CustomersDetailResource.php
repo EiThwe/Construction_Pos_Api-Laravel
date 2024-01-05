@@ -3,11 +3,10 @@
 namespace App\Http\Resources;
 
 use App\Http\Controllers\HelperController;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DebtResource extends JsonResource
+class CustomersDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,10 +17,12 @@ class DebtResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "actual_amount" => $this->actual_amount,
-            "left_amount" => $this->left_amount,
-            "date" => HelperController::parseReturnDate($this->created_at, true),
-            "staff" => $this->user->name
-        ];
+            "name" => $this->name,
+            "phone" => $this->phone,
+            "address" => $this->address,
+            "staff" => $this->user->name,
+            "profile" => HelperController::parseReturnImage($this->profile),
+            "debts" => DebtResource::collection($this->debts)
+        ];;
     }
 }
