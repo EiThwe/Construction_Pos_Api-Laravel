@@ -27,8 +27,6 @@ class PaySalaryController extends Controller
             ], 404);
         }
 
-        logger($request);
-
         PaySalary::create([
             "actual_salary" => $user->salary,
             "type" => $request->type,

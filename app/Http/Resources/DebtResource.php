@@ -18,10 +18,13 @@ class DebtResource extends JsonResource
     {
         return [
             "id" => $this->id,
+            "name" => $this->customer->name,
+            "phone" => $this->customer->phone,
             "actual_amount" => $this->actual_amount,
             "left_amount" => $this->left_amount,
             "date" => HelperController::parseReturnDate($this->created_at, true),
-            "staff" => $this->user->name
+            "staff" => $this->user->name,
+            "is_left" => $this->left_amount == 0 ? false : true
         ];
     }
 }

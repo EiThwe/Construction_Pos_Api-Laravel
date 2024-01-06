@@ -2,6 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Controllers\HelperController;
+use App\Http\Resources\Voucher\VoucherRecordResource;
+use App\Models\Voucher;
+use App\Models\VoucherRecord;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -15,16 +19,21 @@ class DebtDetailResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $voucher_records = VoucherRecord::where("voucher_id", $this->voucher_id)->get();
+
+
         return [
             "id" => $this->id,
             "actual_amount" => $this->actual_amount,
             "left_amount" => $this->left_amount,
-            "name" => $this->name,
-            "phone" => $this->phone,
-            "address" => $this->address,
-            "date" => Carbon::parse($this->created_at)->format("d-m-Y"),
+            "name" => $this->customer->name,
+            "phone" => $this->customer->phone,
+            "address" => $this->customer->address,
+            "date" => HelperController::parseReturnDate($this->created_at, true),
             "staff" => $this->user->name,
-            "debt_histories" => DebtHistoryResource::collection($this->debt_histories)
+            "debt_histories" => DebtHistoryResource::collection($this->debt_histories),
+            "items" => VoucherRecordResource::collection($voucher_records),
+            "is_left" => $this->left_amount == 0 ? false : true
         ];
     }
 }
