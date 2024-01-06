@@ -17,6 +17,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Voucher\CashierController;
 use App\Http\Controllers\Voucher\CheckoutController;
 use App\Http\Controllers\Voucher\VoucherController;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -68,9 +69,10 @@ Route::prefix("v1")->group(function () {
         Route::post("purchases/{id}/records", [PurchaseController::class, "addRecords"]);
         Route::post("purchases/{id}/receive", [PurchaseController::class, "allReceive"]);
 
-        Route::post("/checkout", [CheckoutController::class, "checkout"]);
+        Route::post("checkout", [CheckoutController::class, "checkout"]);
 
-        Route::apiResource("/customers", CustomerController::class);
+        Route::apiResource("customers", CustomerController::class);
+        Route::get("customers/{id}/debts", [CustomerController::class, "debtRecords"]);
     });
     Route::apiResource("app-settings", AppSettingController::class)->only(["index", "store"]);
 

@@ -147,12 +147,13 @@ class CheckoutController extends Controller
             }
 
 
-            if ($request->pay_amount < $total_cost) {
-                $debt_amount = $total_cost - $request->pay_amount;
+
+            if (($request->pay_amount + $request->reduce_amount) < $total_cost) {
+                $debt_amount = $total_cost - ($request->pay_amount + $request->reduce_amount);
                 $change = 0;
                 $is_debt = true;
             } else {
-                $change = $request->pay_amount - $total_cost;
+                $change = ($request->pay_amount + $request->reduce_amount) - $total_cost;
                 $debt_amount = 0;
                 $is_debt = false;
             }
@@ -164,6 +165,7 @@ class CheckoutController extends Controller
                 "profit" => $total_profit,
                 "promotion_amount" => $total_promotion_amount,
                 "pay_amount" => $request->pay_amount,
+                "reduce_amount" => $request->reduce_amount,
                 "change" => $change,
                 "debt_amount" => $debt_amount,
                 "item_count" => $total_quantity,
@@ -198,7 +200,8 @@ class CheckoutController extends Controller
                 "voucher_number" => $voucher->voucher_number,
                 "staff" => $voucher->user->name,
                 "cost" => $total_cost,
-                "pay_amount" => $request->pay_amount,
+                "pay_amount" => $voucher->pay_amount,
+                "reduce_amount" => $voucher->reduce_amount,
                 "promotion_amount" => $total_promotion_amount,
                 "change" => $change,
                 "debt_amount" => $debt_amount,

@@ -12,7 +12,8 @@ class CashierController extends Controller
 {
     public function index(Request $request)
     {
-        $products = HelperController::findAllQuery(Product::class, $request, ["name", "primary_price", "actual_price"]);
+        $additionalConditions = [["stock", ">", 0]];
+        $products = HelperController::findAllQuery(Product::class, $request, ["name", "primary_price", "actual_price"], $additionalConditions);
 
         return CashierItemResource::collection($products);
     }

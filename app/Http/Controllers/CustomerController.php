@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Resources\CustomersDetailResource;
 use App\Http\Resources\CustomersResource;
+use App\Http\Resources\DebtResource;
 use App\Models\Customer;
+use App\Models\Debt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,6 +56,8 @@ class CustomerController extends Controller
             ], 404);
         }
 
+        // $debtsTotal = 
+
         return new CustomersDetailResource($customer);
     }
 
@@ -94,5 +98,14 @@ class CustomerController extends Controller
         return response()->json([
             "message" => "ဖျက်ခြင်း အောင်မြင်ပါသည်"
         ], 200);
+    }
+
+    public function debtRecords(Request $request, string $id)
+    {
+        logger($id);
+        $additionalConditions = [["customer_id", "=", $id]];
+        $debts = HelperController::findAllQuery(Debt::class, $request, [], $additionalConditions);
+
+        return DebtResource::collection($debts);
     }
 }

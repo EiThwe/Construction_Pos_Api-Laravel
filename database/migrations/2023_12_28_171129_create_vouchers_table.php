@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal("cost", 20, 2);
             $table->decimal("profit", 20, 2);
             $table->decimal("pay_amount", 20, 2);
+            $table->decimal("reduce_amount", 20, 2)->default(0);
             $table->decimal("change", 20, 2);
             $table->decimal("debt_amount", 20, 2);
             $table->decimal("promotion_amount", 20, 2);
