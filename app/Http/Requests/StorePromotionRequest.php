@@ -21,7 +21,7 @@ class StorePromotionRequest extends FormRequest
             'type' => 'required|in:percentage,amount',
             'amount' => 'required|numeric',
             'started_at' => 'required',
-            'expired_at' => 'required|after:started_at',
+            'expired_at' => 'required',
         ];
     }
 }
