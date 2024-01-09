@@ -56,6 +56,7 @@ Route::prefix("v1")->group(function () {
         Route::apiResource("products", ProductController::class)->except("update");
         Route::post("products/{id}/update", [ProductController::class, "update"]);
         Route::get("products/{id}/units", [ProductController::class, "productUnits"]);
+        Route::get("products/{id}/stocks", [ProductController::class, "productStockHistories"]);
 
         Route::apiResource("stocks", StockController::class);
         Route::get("lowstocks", [StockController::class, "lowStocks"]);

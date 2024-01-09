@@ -29,7 +29,6 @@ class UserController extends Controller
             "join_date" => "required",
             "gender" => "required|in:ကျား,မ",
             "role" => "required|in:admin,manager,cashier,staff",
-            "address" => "required",
             "salary" => "required",
         ]);
 

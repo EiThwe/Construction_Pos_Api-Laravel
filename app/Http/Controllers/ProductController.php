@@ -7,10 +7,12 @@ use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\Product\ProdcutUnitResource;
 use App\Http\Resources\Product\ProductDetailResource;
 use App\Http\Resources\Product\ProductResource;
+use App\Http\Resources\Stock\StockHistoryResource;
 use App\Models\Category;
 use App\Models\ConversionFactor;
 use App\Models\Product;
 use App\Models\ProductUnit;
+use App\Models\Stock;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +43,17 @@ class ProductController extends Controller
                     $fromUnit = Unit::find($request->primary_unit_id);
                     $toUnit = Unit::find($unit["unit_id"]);
 
-                    return response()->json(["message" => "$fromUnit->name နှင့် $toUnit->name တို့ ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
+                    return response()->json(["message" => "$fromUnit->name နှင့် $toUnit->name တို့ အပြန်အလှန် ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
+                }
+
+                $isConverseUnitRelation = ConversionFactor::where("from_unit_id", $unit["unit_id"])
+                    ->where("to_unit_id", $request->primary_unit_id)->first();
+
+                if (is_null($isConverseUnitRelation)) {
+                    $fromUnit = Unit::find($request->primary_unit_id);
+                    $toUnit = Unit::find($unit["unit_id"]);
+
+                    return response()->json(["message" => "$fromUnit->name နှင့် $toUnit->name တို့ အပြန်အလှန် ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
                 }
             }
         }
@@ -95,7 +107,11 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, string $id)
     {
-        logger($request);
+        $product = Product::find($id);
+
+        if (is_null($product)) {
+            return response()->json(["message" => "ပစ္စည်းမရှီပါ"], 400);
+        }
 
         if ($request->units) {
             foreach ($request->units as $unit) {
@@ -106,15 +122,21 @@ class ProductController extends Controller
                     $fromUnit = Unit::find($request->primary_unit_id);
                     $toUnit = Unit::find($unit["unit_id"]);
 
-                    return response()->json(["message" => "$fromUnit->name နှင့် $toUnit->name တို့ ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
+                    return response()->json(["message" => "$fromUnit->name နှင့် $toUnit->name တို့ အပြန်အလှန် ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
+                }
+
+                $isConverseUnitRelation = ConversionFactor::where("from_unit_id", $unit["unit_id"])
+                    ->where("to_unit_id", $request->primary_unit_id)->first();
+
+                if (is_null($isConverseUnitRelation)) {
+                    $fromUnit = Unit::find($request->primary_unit_id);
+                    $toUnit = Unit::find($unit["unit_id"]);
+
+                    return response()->json(["message" => "$fromUnit->name နှင့် $toUnit->name တို့ အပြန်အလှန် ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
                 }
             }
         }
 
-        $product = Product::find($id);
-        if (is_null($product)) {
-            return response()->json(["message" => "ပစ္စည်းမရှီပါ"], 400);
-        }
 
         $product->name = $request->name ?? $product->name;
         $product->actual_price = $request->actual_price ?? $product->actual_price;
@@ -177,5 +199,13 @@ class ProductController extends Controller
         }
 
         return new ProdcutUnitResource($product);
+    }
+
+    public function productStockHistories(Request $request, string $id)
+    {
+        $additionalConditions = [["product_id", "=", $id]];
+        $stockHistories = HelperController::findAllQuery(Stock::class, $request, [], $additionalConditions);
+
+        return StockHistoryResource::collection($stockHistories);
     }
 }

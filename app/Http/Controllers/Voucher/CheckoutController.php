@@ -93,11 +93,7 @@ class CheckoutController extends Controller
 
                     $reduce_quantity = 0;
 
-                    if ($conversion->status === "more") {
-                        $reduce_quantity = $item["quantity"] * $conversion->value;
-                    } else if ($conversion->status === "less") {
-                        $reduce_quantity = $item["quantity"] / $conversion->value;
-                    }
+                    $reduce_quantity = $item["quantity"] * $conversion->value;
 
                     $new_stock = $product->stock - $reduce_quantity;
 

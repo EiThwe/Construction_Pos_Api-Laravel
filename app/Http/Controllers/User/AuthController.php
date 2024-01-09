@@ -25,7 +25,8 @@ class AuthController extends Controller
 
         return response()->json([
             "message" => "အကောင့်ဝင်ခြင်း အောင်မြင်ပါသည်",
-            "token" => $token
+            "token" => $token,
+            "role" => Auth::user()->role
         ]);
     }
 

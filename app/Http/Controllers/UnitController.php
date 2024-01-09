@@ -43,16 +43,6 @@ class UnitController extends Controller
                     "from_unit_id" => $unit->id,
                     "to_unit_id" => $conversion["to_unit_id"],
                     "value" => $conversion["value"],
-                    "status" => $conversion["status"],
-                    "created_at" => Date::now(),
-                    "updated_at" => Date::now(),
-                ]);
-
-                array_push($reverse_conversions, [
-                    "to_unit_id" => $unit->id,
-                    "from_unit_id" => $conversion["to_unit_id"],
-                    "value" => $conversion["value"],
-                    "status" => $conversion["status"] === "more" ? "less" : "more",
                     "created_at" => Date::now(),
                     "updated_at" => Date::now(),
                 ]);
@@ -98,23 +88,12 @@ class UnitController extends Controller
             $reverse_conversions = [];
 
             foreach ($request->conversions as $conversion) {
-                ConversionFactor::where('from_unit_id', $id)->where("to_unit_id", $conversion["to_unit_id"])->delete();
-                ConversionFactor::where('to_unit_id', $id)->where("from_unit_id", $conversion["to_unit_id"])->delete();
+                ConversionFactor::where('from_unit_id', $id)->delete();
 
                 array_push($conversions, [
                     "from_unit_id" => $unit->id,
                     "to_unit_id" => $conversion["to_unit_id"],
                     "value" => $conversion["value"],
-                    "status" => $conversion["status"],
-                    "created_at" => Date::now(),
-                    "updated_at" => Date::now(),
-                ]);
-
-                array_push($conversions, [
-                    "to_unit_id" => $unit->id,
-                    "from_unit_id" => $conversion["to_unit_id"],
-                    "value" => $conversion["value"],
-                    "status" => $conversion["status"] === "more" ? "less" : "more",
                     "created_at" => Date::now(),
                     "updated_at" => Date::now(),
                 ]);

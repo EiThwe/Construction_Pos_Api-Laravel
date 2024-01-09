@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId("from_unit_id")->constrained('units')->onDelete('cascade');
             $table->foreignId("to_unit_id")->constrained('units')->onDelete('cascade');
-            $table->float("value");
-            $table->enum("status", ["more", "less"]);
+            $table->decimal("value", 10, 4);
             $table->timestamps();
         });
     }

@@ -8,6 +8,8 @@ use App\Http\Resources\DebtDetailResource;
 use App\Http\Resources\DebtResource;
 use App\Models\Debt;
 use App\Models\DebtHistory;
+use Carbon\Carbon;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +20,25 @@ class DebtController extends Controller
      */
     public function index(Request $request)
     {
-        $debts = HelperController::findAllQuery(Debt::class, $request, ["actual_amount", "name", "phone", "address", "left_amount"]);
+        $debts = Debt::when($request->has("search"), function ($query) use ($request) {
+            $search = $request->search;
+
+            $query->where(function (Builder $builder) use ($search) {
+                $builder->where("actual_amount", 'like', '%' . $search . '%');
+                $builder->orWhere("left_amount", 'like', '%' . $search . '%');
+            });
+
+            $query->orWhereHas('customer', function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%');
+                $q->orWhere('phone', 'like', '%' . $search . '%');
+            });
+        })
+            ->when($request->has('start_date') && $request->has('end_date'), function ($query) use ($request) {
+                $query->whereBetween('created_at', [$request->start_date, Carbon::parse($request->end_date)->addDay()]);
+            })
+            ->paginate($request->limit ?? 20)
+            ->withQueryString();
+
 
         return DebtResource::collection($debts);
     }
