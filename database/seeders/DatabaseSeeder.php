@@ -23,13 +23,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AppSettingSeeder::class,
             UserSeeder::class,
-            UnitSeeder::class,
-            ExpenseSeeder::class,
-            PromotionSeeder::class,
-            CategorySeeder::class,
-            ProductSeeder::class,
             UnitTypeSeeder::class,
-            VoucherSeeder::class,
+            CategorySeeder::class,
+            UnitSeeder::class,
+            // ExpenseSeeder::class,
+            // PromotionSeeder::class,
+            // ProductSeeder::class,
+            // VoucherSeeder::class,
         ]);
     }
 }
