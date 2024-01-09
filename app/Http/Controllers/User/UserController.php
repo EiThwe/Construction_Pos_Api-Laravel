@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\CheckPermissionController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HelperController;
 use App\Http\Resources\User\UserDetailResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,9 +15,13 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $users = HelperController::findAllQuery(User::class, $request, ["name", "phone", "salary"]);
+        return CheckPermissionController::check(function () use ($request) {
+            $this->authorize("checkPermission", []);
 
-        return UserResource::collection($users);
+            $users = HelperController::findAllQuery(User::class, $request, ["name", "phone", "salary"]);
+
+            return UserResource::collection($users);
+        });
     }
 
     public function store(Request $request)
