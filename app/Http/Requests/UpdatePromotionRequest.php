@@ -26,7 +26,7 @@ class UpdatePromotionRequest extends FormRequest
             'type' => 'in:percentage,amount',
             'amount' => 'numeric',
             'started_at' => 'date',
-            'expired_at' => 'date|after:started_at',
+            'expired_at' => 'date',
         ];
     }
 }
