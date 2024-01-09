@@ -11,6 +11,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Report\ReportController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\PaySalaryController;
 use App\Http\Controllers\User\UserController;
@@ -74,6 +75,9 @@ Route::prefix("v1")->group(function () {
 
         Route::apiResource("customers", CustomerController::class);
         Route::get("customers/{id}/debts", [CustomerController::class, "debtRecords"]);
+
+        Route::post("sale/close", [ReportController::class, "saleClose"]);
+        Route::post("sale/month", [ReportController::class, "monthlyClose"]);
     });
     Route::apiResource("app-settings", AppSettingController::class)->only(["index", "store"]);
 
