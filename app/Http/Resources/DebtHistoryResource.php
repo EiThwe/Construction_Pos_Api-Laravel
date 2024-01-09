@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Controllers\HelperController;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -17,7 +18,7 @@ class DebtHistoryResource extends JsonResource
     {
         return [
             "amount" => $this->amount,
-            "date" => Carbon::parse($this->created_at)->format("d-m-Y"),
+            "date" => HelperController::parseReturnDate($this->created_at, true),
             "staff" => $this->user->name,
         ];
     }

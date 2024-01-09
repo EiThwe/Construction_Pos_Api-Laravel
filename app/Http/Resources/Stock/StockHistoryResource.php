@@ -17,6 +17,7 @@ class StockHistoryResource extends JsonResource
     {
         return [
             "staff" => $this->user->name,
+            "unit" => $this->unit->name,
             "quantity" => $this->quantity,
             "cost" => $this->cost,
             "remark" => $this->remark,

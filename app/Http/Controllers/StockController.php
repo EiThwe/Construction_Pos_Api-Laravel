@@ -44,12 +44,7 @@ class StockController extends Controller
                 return response()->json(["message" => "ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
             }
 
-
-            if ($conversion->status === "more") {
-                $total_quantity = $request->quantity * $conversion->value;
-            } else if ($conversion->status === "less") {
-                $total_quantity = $request->quantity / $conversion->value;
-            }
+            $total_quantity = $request->quantity * $conversion->value;
         }
 
         $product->stock = $product->stock + $total_quantity;

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->string("phone");
-            $table->string("profile");
+            $table->string("profile")->nullable();
             $table->text("address");
             $table->foreignId("user_id");
             $table->timestamps();

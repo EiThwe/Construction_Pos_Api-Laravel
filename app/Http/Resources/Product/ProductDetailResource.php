@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Product;
 
+use App\Http\Controllers\HelperController;
 use App\Http\Resources\Category\ProductCategoryResource;
 use App\Http\Resources\Stock\StockHistoryResource;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class ProductDetailResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "image" => asset(Storage::url($this->image)),
+            "image" => HelperController::parseReturnImage($this->image),
             "actual_price" => $this->actual_price,
             "primary_price" => $this->primary_price,
             "primary_unit_id" => $this->primary_unit_id,
