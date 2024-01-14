@@ -8,6 +8,7 @@ use App\Http\Resources\Unit\UnitResource;
 use App\Models\ConversionFactor;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Date;
 
 class UnitController extends Controller
@@ -41,7 +42,7 @@ class UnitController extends Controller
             foreach ($request->conversions as $conversion) {
                 array_push($conversions, [
                     "from_unit_id" => $unit->id,
-                    "to_unit_id" => $conversion["to_unit_id"],
+                    "to_unit_id" => Crypt::decrypt($conversion["to_unit_id"]),
                     "value" => $conversion["value"],
                     "created_at" => Date::now(),
                     "updated_at" => Date::now(),
@@ -59,7 +60,7 @@ class UnitController extends Controller
      */
     public function show(string $id)
     {
-        $unit = Unit::find($id);
+        $unit = Unit::find(Crypt::decrypt($id));
         if (is_null($unit)) {
             return response()->json(["message" => "ယူနစ်မရှိပါ"], 400);
         }
@@ -72,7 +73,7 @@ class UnitController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $unit = Unit::find($id);
+        $unit = Unit::find(Crypt::decrypt($id));
         if (is_null($unit)) {
             return response()->json(["message" => "ယူနစ်မရှိပါ"], 400);
         }
@@ -88,11 +89,11 @@ class UnitController extends Controller
             $reverse_conversions = [];
 
             foreach ($request->conversions as $conversion) {
-                ConversionFactor::where('from_unit_id', $id)->delete();
+                ConversionFactor::where('from_unit_id', Crypt::decrypt($id))->delete();
 
                 array_push($conversions, [
                     "from_unit_id" => $unit->id,
-                    "to_unit_id" => $conversion["to_unit_id"],
+                    "to_unit_id" => Crypt::decrypt($conversion["to_unit_id"]),
                     "value" => $conversion["value"],
                     "created_at" => Date::now(),
                     "updated_at" => Date::now(),
@@ -110,7 +111,7 @@ class UnitController extends Controller
      */
     public function destroy(string $id)
     {
-        $unit = Unit::find($id);
+        $unit = Unit::find(Crypt::decrypt($id));
         if (is_null($unit)) {
             return response()->json(["message" => "ယူနစ်မရှိပါ"], 400);
         }

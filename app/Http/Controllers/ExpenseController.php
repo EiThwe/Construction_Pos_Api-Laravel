@@ -28,7 +28,7 @@ class ExpenseController extends Controller
     public function store(StoreExpenseRequest $request)
     {
         $purifier = new HTMLPurifier();
-        $expense = Expense::create([
+        Expense::create([
             "description" => nl2br($purifier->purify($request->description)),
             "amount" => $request->amount,
             "remark" => $request->remark,
@@ -39,7 +39,7 @@ class ExpenseController extends Controller
 
     public function show(string $id)
     {
-        $expense = Expense::find($id);
+        $expense = Expense::find(decrypt($id));
 
         if (is_null($expense)) {
             return response()->json([
@@ -55,7 +55,7 @@ class ExpenseController extends Controller
      */
     public function update(UpdateExpenseRequest $request, string $id)
     {
-        $expense = Expense::find($id);
+        $expense = Expense::find(decrypt($id));
         if (is_null($expense)) {
             return response()->json([
                 "message" => "ရှာမတွေ့ပါ"
@@ -74,7 +74,7 @@ class ExpenseController extends Controller
      */
     public function destroy(string $id)
     {
-        $expense = Expense::find($id);
+        $expense = Expense::find(decrypt($id));
         if (is_null($expense)) {
             return response()->json([
                 "message" => "ရှာမတွေ့ပါ"

@@ -46,8 +46,7 @@ class PromotionController extends Controller
      */
     public function show(string $id)
     {
-
-        $promotion = Promotion::find($id);
+        $promotion = Promotion::find(decrypt($id));
         if (is_null($promotion)) {
             return response()->json([
                 "message" => "promotion not found"
@@ -61,8 +60,7 @@ class PromotionController extends Controller
      */
     public function update(UpdatePromotionRequest $request, string $id)
     {
-        logger($request);
-        $promotion = Promotion::find($id);
+        $promotion = Promotion::find(decrypt($id));
         if (is_null($promotion)) {
             return response()->json([
                 "message" => "promotion not found"
@@ -86,7 +84,7 @@ class PromotionController extends Controller
      */
     public function destroy(string $id)
     {
-        $promotion = Promotion::find($id);
+        $promotion = Promotion::find(decrypt($id));
 
         if (!$promotion) {
             return response()->json(['error' => 'promotion not found'], 404);

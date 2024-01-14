@@ -16,7 +16,7 @@ class VouchersResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
+            "id" => encrypt($this->id),
             "sale_person" => $this->user->name,
             "voucher_no" => $this->voucher_number,
             "time" => HelperController::parseReturnDate($this->created_at, true),

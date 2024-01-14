@@ -24,12 +24,12 @@ class CreateProductRequest extends FormRequest
         return [
             'name' => 'required|string|min:1',
             'actual_price' => 'required|numeric',
-            'primary_unit_id' => 'required|exists:units,id',
+            'primary_unit_id' => 'required',
             'primary_price' => 'required|numeric',
             'remark' => 'nullable|string|max:255',
             'categories' => 'required|array',
-            'categories.*' => 'integer|exists:categories,id',
-            'units.*.unit_id' => 'exists:units,id',
+            'categories.*' => '',
+            'units.*.unit_id' => '',
             'units.*.price' => 'numeric|min:0',
         ];
     }

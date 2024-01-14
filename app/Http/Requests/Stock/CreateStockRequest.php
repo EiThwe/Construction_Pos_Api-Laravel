@@ -22,8 +22,8 @@ class CreateStockRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "product_id" => "required|exists:products,id",
-            "unit_id" => "required|exists:units,id",
+            "product_id" => "required",
+            "unit_id" => "required",
             "quantity" => "required|integer",
             "cost" => "required|integer"
         ];

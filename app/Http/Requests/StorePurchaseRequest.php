@@ -20,7 +20,7 @@ class StorePurchaseRequest extends FormRequest
             'purchase_items' => 'required|array|min:1',
             'purchase_items.*.name' => 'required|string',
             'purchase_items.*.quantity' => 'required|integer|min:1',
-            'purchase_items.*.unit_id' => 'required|exists:units,id',
+            'purchase_items.*.unit_id' => 'required',
         ];
     }
 }

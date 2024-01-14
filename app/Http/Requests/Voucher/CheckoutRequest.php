@@ -23,8 +23,8 @@ class CheckoutRequest extends FormRequest
     {
         return [
             'items' => 'required|array',
-            'items.*.product_id' => 'required|integer|exists:products,id',
-            'items.*.unit_id' => 'required|integer|exists:units,id',
+            'items.*.product_id' => 'required',
+            'items.*.unit_id' => 'required',
             'items.*.quantity' => 'required|min:1',
         ];
     }

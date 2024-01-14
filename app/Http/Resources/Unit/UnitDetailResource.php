@@ -16,7 +16,9 @@ class UnitDetailResource extends JsonResource
     {
         return [
             "name" => $this->name,
+            "id" => $this->id,
             "type" => $this->unitType,
+            "remark" => $this->remark,
             "conversions" => ConversionsResource::collection($this->conversions)
         ];;
     }

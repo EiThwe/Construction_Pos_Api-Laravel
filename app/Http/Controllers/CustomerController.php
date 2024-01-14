@@ -32,7 +32,6 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        logger(HelperController::handleLogoUpload($request->file('profile'), null));
         Customer::create([
             "name" => $request->name,
             "phone" => $request->phone,
@@ -48,7 +47,7 @@ class CustomerController extends Controller
      */
     public function show(string $id)
     {
-        $customer = Customer::find($id);
+        $customer = Customer::find(decrypt($id));
 
         if (is_null($customer)) {
             return response()->json([
@@ -66,7 +65,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $customer = Customer::find($id);
+        $customer = Customer::find(decrypt($id));
         if (is_null($customer)) {
             return response()->json([
                 "message" => "ရှာမတွေ့ပါ"
@@ -86,7 +85,7 @@ class CustomerController extends Controller
      */
     public function destroy(string $id)
     {
-        $customer = Customer::find($id);
+        $customer = Customer::find(decrypt($id));
         if (is_null($customer)) {
             return response()->json([
                 "message" => "ရှာမတွေ့ပါ"
@@ -102,8 +101,7 @@ class CustomerController extends Controller
 
     public function debtRecords(Request $request, string $id)
     {
-        logger($id);
-        $additionalConditions = [["customer_id", "=", $id]];
+        $additionalConditions = [["customer_id", "=", decrypt($id)]];
         $debts = HelperController::findAllQuery(Debt::class, $request, [], $additionalConditions);
 
         return DebtResource::collection($debts);

@@ -15,8 +15,8 @@ class CashierItemUnitResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
-            "unit_id" => $this->unit_id,
+            "id" => encrypt($this->id),
+            "unit_id" => encrypt($this->unit_id),
             "name" => $this->unit->name,
             "price" => $this->price,
         ];

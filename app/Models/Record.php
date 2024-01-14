@@ -9,7 +9,7 @@ class Record extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["revenue", "expense", "profit", "user_id", "status", "month_date"];
+    protected $fillable = ["revenue", "expense", "profit", "user_id", "status", "month_date", "voucher_count"];
 
     public function user()
     {

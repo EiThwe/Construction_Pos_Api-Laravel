@@ -41,7 +41,7 @@ class PurchaseController extends Controller
             $purchaseItem = new PurchaseItem([
                 'name' => $item['name'],
                 'quantity' => $item['quantity'],
-                'unit_id' => $item['unit_id'],
+                'unit_id' => decrypt($item['unit_id']),
             ]);
             $purchase->purchaseItems()->save($purchaseItem);
         }
@@ -54,7 +54,7 @@ class PurchaseController extends Controller
      */
     public function show(string $id)
     {
-        $purchase = Purchase::with('purchaseItems')->find($id);
+        $purchase = Purchase::with('purchaseItems')->find(decrypt($id));
 
         if (!$purchase) {
             return response()->json(['error' => 'Purchase not found'], 404);
@@ -68,7 +68,7 @@ class PurchaseController extends Controller
      */
     public function destroy(string $id)
     {
-        $purchase = Purchase::find($id);
+        $purchase = Purchase::find(decrypt($id));
 
         if (!$purchase) {
             return response()->json(['error' => 'Purchase not found'], 404);
@@ -90,7 +90,7 @@ class PurchaseController extends Controller
         ]);
 
         PurchaseRecords::create([
-            "purchase_id" => $id,
+            "purchase_id" => decrypt($id),
             "user_id" => Auth::id(),
             "description" => $request->description
         ]);
@@ -100,7 +100,7 @@ class PurchaseController extends Controller
 
     public function allReceive(Request $request, string $id)
     {
-        $purchase = Purchase::find($id);
+        $purchase = Purchase::find(decrypt($id));
 
         if (is_null($purchase)) {
             return response()->json(["message" => "မှာယူမှတ်တမ်းမရှိပါ"], 400);

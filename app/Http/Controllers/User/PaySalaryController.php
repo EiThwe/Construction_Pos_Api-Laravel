@@ -19,7 +19,7 @@ class PaySalaryController extends Controller
             "pay_month" => "required|string",
         ]);
 
-        $user = User::find($id);
+        $user = User::find(decrypt($id));
 
         if (is_null($user)) {
             return response()->json([
@@ -31,7 +31,7 @@ class PaySalaryController extends Controller
             "actual_salary" => $user->salary,
             "type" => $request->type,
             "amount" => $request->amount,
-            "user_id" => $id,
+            "user_id" => decrypt($id),
             "pay_month" => $request->pay_month,
             "created_by" => Auth::user()->name,
         ]);

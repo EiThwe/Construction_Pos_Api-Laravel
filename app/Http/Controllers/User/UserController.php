@@ -57,7 +57,7 @@ class UserController extends Controller
 
     public function show(string $id)
     {
-        $user = User::find($id);
+        $user = User::find(decrypt($id));
         if (is_null($user)) {
             return response()->json([
                 "message" => "အကောင့်ရှာမတွေ့ပါ"
@@ -69,8 +69,6 @@ class UserController extends Controller
 
     public function update(Request $request, string $id)
     {
-        logger($request);
-
         $this->validate($request, [
             "name" => "min:3",
             "phone" => "numeric|min:6",
@@ -81,7 +79,7 @@ class UserController extends Controller
             "salary" => "numeric",
         ]);
 
-        $user = User::find($id);
+        $user = User::find(decrypt($id));
 
         if (!$user) {
             return response()->json(["message" => "အကောင့်ရှာမတွေ့ပါ"], 400);
@@ -107,7 +105,7 @@ class UserController extends Controller
 
     public function destroy(string $id)
     {
-        $user = User::find($id);
+        $user = User::find(decrypt($id));
         $user->delete();
 
         return response()->json(["message" => "အကောင့်ပယ်ဖျက်ခြင်း အောင်မြင်ပါသည်"]);

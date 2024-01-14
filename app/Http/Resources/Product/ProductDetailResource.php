@@ -19,12 +19,13 @@ class ProductDetailResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
+            "id" => encrypt($this->id),
             "name" => $this->name,
             "image" => HelperController::parseReturnImage($this->image),
             "actual_price" => $this->actual_price,
             "primary_price" => $this->primary_price,
-            "primary_unit_id" => $this->primary_unit_id,
+            "primary_unit_id" => encrypt($this->primary_unit_id),
+            "normal_primary_unit_id" => $this->primary_unit_id,
             "stock" => $this->stock,
             "unit" => $this->unit->name,
             "units" =>  [$this->unit, ...NestedUnitResource::collection($this->productUnits)],
