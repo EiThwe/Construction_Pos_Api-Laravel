@@ -26,9 +26,9 @@ class DatabaseSeeder extends Seeder
             UnitTypeSeeder::class,
             CategorySeeder::class,
             UnitSeeder::class,
-            // ExpenseSeeder::class,
-            // PromotionSeeder::class,
-            // ProductSeeder::class,
+            ExpenseSeeder::class,
+            PromotionSeeder::class,
+            ProductSeeder::class,
             // VoucherSeeder::class,
         ]);
     }

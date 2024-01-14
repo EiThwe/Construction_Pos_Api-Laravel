@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer("expense");
             $table->enum("status", ["daily", "monthly"])->default("daily");
             $table->foreignId("user_id");
+            $table->timestamp("month_date")->nullable();
             $table->timestamps();
         });
     }
