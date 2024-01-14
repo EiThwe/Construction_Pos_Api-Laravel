@@ -9,5 +9,10 @@ class Record extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["revenue", "expense", "profit", "user_id", "status"];
+    protected $fillable = ["revenue", "expense", "profit", "user_id", "status", "month_date"];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

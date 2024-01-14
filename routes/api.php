@@ -5,6 +5,8 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\Dashboard\BestSellersController;
+use App\Http\Controllers\Dashboard\StatsController;
 use App\Http\Controllers\DebtController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\PurchaseController;
@@ -76,8 +78,14 @@ Route::prefix("v1")->group(function () {
         Route::apiResource("customers", CustomerController::class);
         Route::get("customers/{id}/debts", [CustomerController::class, "debtRecords"]);
 
-        Route::post("sale/close", [ReportController::class, "saleClose"]);
-        Route::post("sale/month", [ReportController::class, "monthlyClose"]);
+        Route::get("sale/isopen", [ReportController::class, "isOpen"]);
+        Route::post("sale/daily/close", [ReportController::class, "dailyClose"]);
+        Route::post("sale/monthly/close", [ReportController::class, "monthlyClose"]);
+        Route::get("sale/daily/list", [ReportController::class, "dailyList"]);
+        Route::get("sale/monthly/list", [ReportController::class, "monthlyList"]);
+
+        Route::get("dashboard/bestsellers", [BestSellersController::class, "bestSellers"]);
+        Route::get("dashboard/stats", [StatsController::class, "getStats"]);
     });
     Route::apiResource("app-settings", AppSettingController::class)->only(["index", "store"]);
 

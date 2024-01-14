@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HelperController;
+use App\Http\Resources\Record\RecordResource;
 use App\Models\DebtHistory;
 use App\Models\Expense;
 use App\Models\PaySalary;
@@ -11,28 +13,35 @@ use App\Models\Record;
 use App\Models\Stock;
 use App\Models\Voucher;
 use Carbon\Carbon;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
-    public function saleClose()
+    public function dailyClose()
     {
         $today = Carbon::today();
 
-        $todayFormatted = $today->toDateString();
-
-        $record = Record::whereDate("created_at", $todayFormatted)->first();
+        $record = Record::where("status", "daily")->whereDate("created_at", $today)->first();
 
         if (!is_null($record)) {
             return response()->json(["message" => "ဆိုင်ပိတ်သိမ်းပြီးပါပြီ"], 400);
         }
 
         $expenses = Expense::whereDate("created_at", $today)->get();
+
         $vouchers = Voucher::whereDate("created_at", $today)->get();
+        if (count($vouchers) === 0) {
+            return response()->json(["message" => "ယနေ့အတွက် ရောင်းချထားခြင်းမရှိပါ"], 400);
+        }
+
         $stocks = Stock::whereDate("created_at", $today)->get();
+
         $salaries = PaySalary::whereDate("created_at", $today)->get();
+
         $debt_histories = DebtHistory::whereDate("created_at", $today)->get();
+
         $products = Product::all();
 
         $product_amount = 0;
@@ -62,17 +71,25 @@ class ReportController extends Controller
         return response()->json(["message" => "တစ်နေ့စာ စာရင်းချုပ်ခြင်းအောင်မြင်ပါသည်"]);
     }
 
-    public function monthlyClose()
+    public function monthlyClose(Request $request)
     {
-        $month = Carbon::today()->month;
+        if (!($request->date)) {
+            return response(["message" => "လချုပ်ချုပ်မည့် လ နှင့် နှစ် လိုအပ်ပါသည်"], 400);
+        }
 
-        $monthRecord = Record::whereMonth("created_at", $month)->where("status", "monthly")->first();
+        $month = Carbon::parse($request->date)->format("n");
+
+        $monthRecord = Record::whereMonth("month_date", $month)->where("status", "monthly")->first();
 
         if (!is_null($monthRecord)) {
-            return response()->json(["message" => "ယခုလအတွက် စာရင်းချုပ်ပြီးပါပြီ"], 400);
+            return response()->json(["message" => "စာရင်းချုပ်ပြီးပါပြီ ထပ်မံချုပ်၍မရပါ"], 400);
         }
 
         $records = Record::whereMonth("created_at", $month)->where("status", "daily")->get();
+
+        if (count($records) === 0) {
+            return response(["message" => "ချုပ်မည့် လ တွင် နေ့ချုပ်စာရင်းများမရှိပါ"], 400);
+        }
 
         $total_expense = $records->sum("expense");
         $total_profit = $records->sum("profit");
@@ -83,9 +100,63 @@ class ReportController extends Controller
             "revenue" => $total_revenue,
             "profit" => $total_profit,
             "user_id" => Auth::id(),
+            "month_date" => Carbon::parse($request->date)->toDateString(),
             "status" => "monthly"
         ]);
 
         return response()->json(["message" => "လချုပ် စာရင်းချုပ်ခြင်းအောင်မြင်ပါသည်"]);
+    }
+
+    public function isOpen()
+    {
+        $status = $this->isSaleOpen();
+
+        return response()->json(["data" => ["status" => $status]]);
+    }
+
+    public function dailyList(Request $request)
+    {
+        $records = $this->getList($request, "daily");
+
+        return RecordResource::collection($records);
+    }
+
+    public function monthlyList(Request $request)
+    {
+        $records = $this->getList($request, "monthly");
+
+        return RecordResource::collection($records);
+    }
+
+    private function getList(Request $request, string $status)
+    {
+        return Record::when($request->has("search"), function ($query) use ($request) {
+            $search = $request->search;
+
+            $query->where(function (Builder $builder) use ($search) {
+                $builder->where("revenue", 'like', '%' . $search . '%');
+                $builder->orWhere("profit", 'like', '%' . $search . '%');
+                $builder->orWhere("expense", 'like', '%' . $search . '%');
+            });
+
+            $query->orWhereHas('user', function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%');
+            });
+        })
+            ->when($request->has('start_date') && $request->has('end_date'), function ($query) use ($request) {
+                $query->whereBetween('created_at', [$request->start_date, Carbon::parse($request->end_date)->addDay()]);
+            })
+            ->orderBy('created_at', 'desc')
+            ->where("status", $status)
+            ->paginate($request->limit ?? 20)
+            ->withQueryString();
+    }
+
+    static public function isSaleOpen()
+    {
+        $today = Carbon::today();
+        $record = Record::where("status", "daily")->whereDate("created_at", $today)->first();
+
+        return is_null($record) ? true : false;
     }
 }
