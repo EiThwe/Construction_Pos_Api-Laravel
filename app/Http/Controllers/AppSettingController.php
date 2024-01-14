@@ -36,9 +36,8 @@ class AppSettingController extends Controller
         // Assuming you only have one row in the settings table
         $setting = AppSetting::firstOrFail();
 
-
         // Update the fields
-        $setting->update([
+        $newSetting = $setting->update([
             'name' => $request->input('name', $setting->name),
             'phone' => $request->input('phone', $setting->phone),
             'email' => $request->input('email', $setting->email),
@@ -47,6 +46,9 @@ class AppSettingController extends Controller
             'logo' => HelperController::handleLogoUpload($request->file('logo'), null),
         ]);
 
-        return response()->json(["message" => "ပြင်ဆင်ခြင်းအောင်မြင်ပါသည်"]);
+        $newSetting = AppSetting::firstOrFail();
+        $newSetting["logo"] = HelperController::parseReturnImage($newSetting->logo);
+
+        return response()->json(["message" => "ပြင်ဆင်ခြင်းအောင်မြင်ပါသည်", "data" => $newSetting]);
     }
 }

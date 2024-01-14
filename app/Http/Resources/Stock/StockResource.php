@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Stock;
 
+use App\Http\Controllers\HelperController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
@@ -16,8 +17,8 @@ class StockResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'image' => asset(Storage::url($this->image)),
+            'id' => encrypt($this->id),
+            'image' => HelperController::parseReturnImage($this->image),
             'name' => $this->name,
             'unit' => $this->unit->name,
             'sale_price' => $this->primary_price,

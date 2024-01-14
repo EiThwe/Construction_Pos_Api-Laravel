@@ -19,9 +19,10 @@ class RecordResource extends JsonResource
             'revenue' => $this->revenue,
             'profit' => $this->profit,
             'expense' => $this->expense,
+            'voucher_count' => $this->voucher_count,
             'staff' => $this->user->name,
             'status' => $this->getStatus(),
-            'time' => HelperController::parseReturnDate($this->created_at, true),
+            'date' => HelperController::parseReturnDate($this->created_at, true),
         ];
     }
 

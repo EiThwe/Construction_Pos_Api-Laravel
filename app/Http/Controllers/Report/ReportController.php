@@ -60,10 +60,13 @@ class ReportController extends Controller
         $total_revenue =  $revenue + $product_amount + $debt_amount;
         $total_profit = $total_revenue - $total_expense;
 
+        logger($vouchers->count());
+
         Record::create([
             "expense" => $total_expense,
             "revenue" => $total_revenue,
             "profit" => $total_profit,
+            "voucher_count" => $vouchers->count(),
             "user_id" => Auth::id(),
             "status" => "daily"
         ]);

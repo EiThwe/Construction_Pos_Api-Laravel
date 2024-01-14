@@ -23,10 +23,11 @@ class DebtDetailResource extends JsonResource
 
 
         return [
-            "id" => $this->id,
+            "id" => encrypt($this->id),
             "actual_amount" => $this->actual_amount,
             "left_amount" => $this->left_amount,
             "name" => $this->customer->name,
+            "customer_id" => encrypt($this->customer->id),
             "phone" => $this->customer->phone,
             "address" => $this->customer->address,
             "date" => HelperController::parseReturnDate($this->created_at, true),

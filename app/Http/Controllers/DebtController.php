@@ -48,23 +48,12 @@ class DebtController extends Controller
      */
     public function store(StoreDebtRequest $request)
     {
-        Debt::create([
-            "name" => $request->name,
-            "phone" => $request->phone,
-            "address" => $request->address,
-            "user_id" => Auth::id(),
-            "voucher_id" => 1,
-            "actual_amount" => $request->actual_amount,
-            "left_amount" => $request->actual_amount,
-            "remark" => $request->remark,
-        ]);
-
-        return response()->json(["message" => "အကြွေးစာရင်းတည်ဆောက်မှု အောင်မြင်ပါသည်"], 201);
+        //
     }
 
     public function payDebt(PayDebtRequest $request)
     {
-        $debt = Debt::where("id", $request->debt_id)->first();
+        $debt = Debt::where("id", decrypt($request->debt_id))->first();
 
         if (is_null($debt)) {
             return response()->json([
@@ -82,7 +71,7 @@ class DebtController extends Controller
 
         DebtHistory::create([
             "amount" => $request->amount,
-            "debt_id" => $request->debt_id,
+            "debt_id" => decrypt($request->debt_id),
             "user_id" => Auth::id()
         ]);
 
@@ -94,7 +83,7 @@ class DebtController extends Controller
      */
     public function show(string $id)
     {
-        $debt = Debt::where("id", $id)->first();
+        $debt = Debt::find(decrypt($id));
 
         if (is_null($debt)) {
             return response()->json([
@@ -118,7 +107,7 @@ class DebtController extends Controller
      */
     public function destroy(string $id)
     {
-        $debt = Debt::find($id);
+        $debt = Debt::find(decrypt($id));
         if (is_null($debt)) {
             return response()->json([
                 "message" => "အကြွေးစာရင်းမရှိပါ"

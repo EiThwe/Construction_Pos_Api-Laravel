@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer("revenue");
             $table->integer("profit");
             $table->integer("expense");
+            $table->integer("voucher_count");
             $table->enum("status", ["daily", "monthly"])->default("daily");
             $table->foreignId("user_id");
             $table->timestamp("month_date")->nullable();

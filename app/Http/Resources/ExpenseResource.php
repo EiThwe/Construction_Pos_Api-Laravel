@@ -17,12 +17,12 @@ class ExpenseResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
+            "id" => encrypt($this->id),
             "description" => $this->description,
             "amount" => $this->amount,
             "remark" => $this->remark,
             "date" => HelperController::parseReturnDate($this->created_at),
-            "user_id" => $this->user_id,
+            "user_id" => encrypt($this->user_id),
         ];
     }
 }

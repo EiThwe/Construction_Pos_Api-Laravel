@@ -32,14 +32,15 @@ class StockController extends Controller
      */
     public function store(CreateStockRequest $request)
     {
-        $product = Product::find($request->product_id);
+        $product = Product::find(decrypt($request->product_id));
 
         $total_quantity = 0;
 
         if ($request->unit_id === $product->primary_unit_id) {
             $total_quantity = $request->quantity;
         } else {
-            $conversion = ConversionFactor::where("from_unit_id", $request->unit_id)->where("to_unit_id", $product->primary_unit_id)->first();
+            $conversion = ConversionFactor::where("from_unit_id", $request->unit_id)
+                ->where("to_unit_id", $product->primary_unit_id)->first();
             if (is_null($conversion)) {
                 return response()->json(["message" => "ယူနစ်ချိတ်ဆက်မှုမရှိပါ"], 400);
             }
@@ -51,7 +52,7 @@ class StockController extends Controller
         $product->update();
 
         Stock::create([
-            "product_id" => $request->product_id,
+            "product_id" => decrypt($request->product_id),
             "cost" => $request->cost,
             "unit_id" => $request->unit_id,
             "user_id" => Auth::id(),

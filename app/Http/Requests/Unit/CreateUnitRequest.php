@@ -25,7 +25,7 @@ class CreateUnitRequest extends FormRequest
             'name' => 'required|string|min:1|unique:units,name',
             'unit_type_id' => 'required|integer|exists:unit_types,id',
             'conversions' => 'array',
-            'conversions.*.to_unit_id' => 'integer|exists:units,id',
+            'conversions.*.to_unit_id' => '',
             'conversions.*.value' => 'min:0',
             'conversions.*.status' => 'in:more,less',
         ];

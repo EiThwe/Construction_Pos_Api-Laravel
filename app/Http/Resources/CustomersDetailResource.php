@@ -17,8 +17,9 @@ class CustomersDetailResource extends JsonResource
     public function toArray(Request $request): array
     {
         $total_debt = Debt::where("customer_id", $this->id)->sum("actual_amount");
+
         return [
-            "id" => $this->id,
+            "id" => encrypt($this->id),
             "name" => $this->name,
             "phone" => $this->phone,
             "address" => $this->address,

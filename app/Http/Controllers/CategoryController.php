@@ -51,7 +51,7 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        $category = Category::find($id);
+        $category = Category::find(decrypt($id));
         if (is_null($category)) {
             return response()->json(["message" => "အမျိုးအစားမရှိပါ"]);
         }
@@ -64,17 +64,15 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $category = Category::find($id);
+        $category = Category::find(decrypt($id));
 
         if (is_null($category)) {
             return response()->json(["message" => "အမျိုးအစားမရှိပါ"], 404);
         }
 
-        logger($request);
-
         $category->name = $request->name ?? $category->name;
         $category->remark = $request->remark ?? $category->remark;
-        $category->parent_id =  $request->parent_id;
+        $category->parent_id = $request->parent_id;
         $category->update();
 
         return response()->json(["message" => "အမျိုးအစားပြင်ဆင်ခြင်း အောင်မြင်ပါသည်"]);
@@ -85,7 +83,7 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $category = Category::find($id);
+        $category = Category::find(decrypt($id));
 
         if (is_null($category)) {
             return response()->json(["message" => "အမျိုးအစားမရှိပါ"], 404);

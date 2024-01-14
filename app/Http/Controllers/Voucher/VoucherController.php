@@ -34,7 +34,7 @@ class VoucherController extends Controller
      */
     public function show(string $id)
     {
-        $voucher = Voucher::find($id);
+        $voucher = Voucher::find(decrypt($id));
         if (is_null($voucher)) {
             return response()->json(["message" => "ဘောက်ချာမရှိပါ"], 400);
         }

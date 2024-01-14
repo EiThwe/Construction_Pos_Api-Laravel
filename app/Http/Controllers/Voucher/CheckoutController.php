@@ -27,7 +27,7 @@ class CheckoutController extends Controller
             $total_promotion_amount = 0;
 
             foreach ($request->items as $item) {
-                $product = Product::find($item["product_id"]);
+                $product = Product::find(decrypt($item["product_id"]));
 
                 $promotion = $product->promotion;
 
@@ -70,7 +70,7 @@ class CheckoutController extends Controller
 
                     $voucher_records[] = [
                         "unit_id" => $item["unit_id"],
-                        "product_id" => $item["product_id"],
+                        "product_id" => decrypt($item["product_id"]),
                         "quantity" => $item["quantity"],
                         "cost" => $cost
                     ];
@@ -88,7 +88,7 @@ class CheckoutController extends Controller
                     $conversion = ConversionFactor::where("from_unit_id", $item["unit_id"])->where("to_unit_id", $product->primary_unit_id)->first();
 
                     if (is_null($conversion)) {
-                        throw new \Exception("ယူနစ်ချိတ်ဆက်ထားခြင်းမရှိပါ");
+                        throw new \Exception("ယူနစ်အပြန်အလှန်ချိတ်ဆက်ထားခြင်းမရှိပါ");
                     }
 
                     $reduce_quantity = 0;
@@ -134,15 +134,13 @@ class CheckoutController extends Controller
 
                     $voucher_records[] = [
                         "unit_id" => $item["unit_id"],
-                        "product_id" => $item["product_id"],
+                        "product_id" => decrypt($item["product_id"]),
                         "quantity" => $item["quantity"],
                         "cost" => $cost
                     ];
                 }
                 # code...
             }
-
-
 
             if (($request->pay_amount + $request->reduce_amount) < $total_cost) {
                 $debt_amount = $total_cost - ($request->pay_amount + $request->reduce_amount);
@@ -174,7 +172,7 @@ class CheckoutController extends Controller
                     "user_id" => Auth::id(),
                     "actual_amount" => $debt_amount,
                     "left_amount" => $debt_amount,
-                    "customer_id" => $request->customer_id,
+                    "customer_id" => decrypt($request->customer_id),
                     "remark" => $request->remark
                 ]);
             }

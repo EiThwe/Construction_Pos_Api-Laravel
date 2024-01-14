@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Product;
 
+use App\Http\Controllers\HelperController;
 use App\Http\Resources\Category\ProductCategoryResource;
 use App\Http\Resources\Stock\StockHistoryResource;
 use Illuminate\Http\Request;
@@ -18,9 +19,9 @@ class ProductResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
+            "id" => encrypt($this->id),
             "name" => $this->name,
-            "image" =>  asset(Storage::url($this->image)),
+            "image" =>  HelperController::parseReturnImage($this->image),
             "actual_price" => $this->actual_price,
             "sale_price" => $this->primary_price,
             "unit" => $this->unit->name,
