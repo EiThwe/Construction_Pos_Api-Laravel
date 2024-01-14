@@ -6,6 +6,9 @@ use App\Http\Controllers\AppSettingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Dashboard\BestSellersController;
+use App\Http\Controllers\Dashboard\ExpenseChartController;
+use App\Http\Controllers\Dashboard\ProfitChartController;
+use App\Http\Controllers\Dashboard\RevenueChartController;
 use App\Http\Controllers\Dashboard\StatsController;
 use App\Http\Controllers\DebtController;
 use App\Http\Controllers\PromotionController;
@@ -86,6 +89,9 @@ Route::prefix("v1")->group(function () {
 
         Route::get("dashboard/bestsellers", [BestSellersController::class, "bestSellers"]);
         Route::get("dashboard/stats", [StatsController::class, "getStats"]);
+        Route::get("dashboard/profit", [ProfitChartController::class, "get"]);
+        Route::get("dashboard/expense", [ExpenseChartController::class, "get"]);
+        Route::get("dashboard/revenue", [RevenueChartController::class, "get"]);
     });
     Route::apiResource("app-settings", AppSettingController::class)->only(["index", "store"]);
 
