@@ -97,11 +97,13 @@ class ReportController extends Controller
         $total_expense = $records->sum("expense");
         $total_profit = $records->sum("profit");
         $total_revenue = $records->sum("revenue");
+        $total_voucher_count = $records->sum("voucher_count");
 
         Record::create([
             "expense" => $total_expense,
             "revenue" => $total_revenue,
             "profit" => $total_profit,
+            "voucher_count" => $total_voucher_count,
             "user_id" => Auth::id(),
             "month_date" => Carbon::parse($request->date)->toDateString(),
             "status" => "monthly"

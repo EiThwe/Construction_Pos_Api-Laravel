@@ -39,7 +39,7 @@ class DashboardHelperController extends Controller
             ->get()
             ->map(function ($record) use ($type, $key) {
                 $date = Carbon::parse($record["created_at"])->format(
-                    $type === "monthly" ? "d" : ($type === "yearly" ? "m-d" : "l")
+                    $type === "monthly" ? "d" : ($type === "yearly" ? "F" : "l")
                 );
 
                 return [
@@ -54,6 +54,25 @@ class DashboardHelperController extends Controller
     {
         $lastRecord = end($records);
 
+        if ($type === "yearly") {
+            $currentMonth = Carbon::parse($lastRecord ? $lastRecord["created_at"] : Carbon::now()->subDay())->format("n");
+            $endMonth = Carbon::now()->endOfYear()->format("n");
+
+            $additionalRecords = [];
+
+            for ($i = $lastRecord ? 1 : 0; $i <= $endMonth - $currentMonth; $i++) {
+                $date = Carbon::create()->month($currentMonth + $i)->format("F");
+
+                $additionalRecords[] = [
+                    "amount" => 0,
+                    "date" => $date
+                ];
+            }
+
+            return $additionalRecords;
+        }
+
+
         $currentDate = Carbon::parse($lastRecord ? $lastRecord["created_at"] : Carbon::now()->subDay())->format("d");
 
         $endDay = ($type === "monthly") ? Carbon::now()->endOfMonth()->format("d") : Carbon::now()->endOfWeek()->format("d");
@@ -62,7 +81,7 @@ class DashboardHelperController extends Controller
 
         for ($i = 1; $i <= $endDay - $currentDate; $i++) {
             $date = Carbon::now()->startOfMonth()->day($currentDate + $i)->addHour(14)
-                ->format($type === "monthly" ? "d" : ($type === "yearly" ? "m-d" : "l"));
+                ->format($type === "monthly" ? "d" : ($type === "yearly" ? "F" : "l"));
 
             $additionalRecords[] = [
                 "amount" => 0,

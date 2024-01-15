@@ -78,7 +78,8 @@ Route::prefix("v1")->group(function () {
 
         Route::post("checkout", [CheckoutController::class, "checkout"]);
 
-        Route::apiResource("customers", CustomerController::class);
+        Route::apiResource("customers", CustomerController::class)->except("update");
+        Route::post("customers/update/{id}", [CustomerController::class, "update"]);
         Route::get("customers/{id}/debts", [CustomerController::class, "debtRecords"]);
 
         Route::get("sale/isopen", [ReportController::class, "isOpen"]);
