@@ -52,6 +52,8 @@ Route::prefix("v1")->group(function () {
         Route::apiResource("expenses", ExpenseController::class);
 
         Route::apiResource("promotions", PromotionController::class);
+        Route::post("promotions/set", [PromotionController::class, "setPromotions"]);
+        Route::post("promotions/remove", [PromotionController::class, "removePromotions"]);
 
         Route::apiResource("categories", CategoryController::class);
 

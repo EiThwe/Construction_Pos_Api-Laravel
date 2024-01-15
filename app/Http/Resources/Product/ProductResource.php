@@ -26,7 +26,8 @@ class ProductResource extends JsonResource
             "sale_price" => $this->primary_price,
             "unit" => $this->unit->name,
             "categories" => ProductCategoryResource::collection($this->categories),
-            "stock_histories" => StockHistoryResource::collection($this->stocks)
+            "stock_histories" => StockHistoryResource::collection($this->stocks),
+            "promotion" => $this->promotion
         ];
     }
 }

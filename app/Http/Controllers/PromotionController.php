@@ -6,6 +6,7 @@ use App\Http\Requests\StorePromotionRequest;
 use App\Http\Requests\UpdatePromotionRequest;
 use App\Http\Resources\PromotionsDetailResource;
 use App\Http\Resources\PromotionsResource;
+use App\Models\Product;
 use App\Models\Promotion;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -49,7 +50,7 @@ class PromotionController extends Controller
         $promotion = Promotion::find(decrypt($id));
         if (is_null($promotion)) {
             return response()->json([
-                "message" => "promotion not found"
+                "message" => "ပရိုမိုးရှင်းမရှိပါ"
             ], 404);
         }
         return new PromotionsDetailResource($promotion);
@@ -63,7 +64,7 @@ class PromotionController extends Controller
         $promotion = Promotion::find(decrypt($id));
         if (is_null($promotion)) {
             return response()->json([
-                "message" => "promotion not found"
+                "message" => "ပရိုမိုးရှင်းမရှိပါ"
             ], 404);
         }
         $promotion->name = $request->name ?? $promotion->name;
@@ -87,12 +88,42 @@ class PromotionController extends Controller
         $promotion = Promotion::find(decrypt($id));
 
         if (!$promotion) {
-            return response()->json(['error' => 'promotion not found'], 404);
+            return response()->json(['error' => 'ပရိုမိုးရှင်းမရှိပါ'], 404);
         }
 
         // Delete the promotion
         $promotion->delete();
 
-        return response()->json(['message' => 'Promotion deleted successfully']);
+        return response()->json(['message' => 'ပရိုမိုးရှင်းဖျက်သိမ်းခြင်း အောင်မြင်ပါသည်']);
+    }
+
+    public function setPromotions(Request $request)
+    {
+        $promotion = Promotion::find(decrypt($request->promotion_id));
+
+        if (!$promotion) {
+            return response()->json(['error' => 'ပရိုမိုးရှင်းမရှိပါ'], 404);
+        }
+
+        $product_ids = array_map(function ($product_id) {
+            return decrypt($product_id);
+        }, $request->product_ids);
+
+        Product::whereIn('id', $product_ids)
+            ->update(['promotion_id' => $promotion->id]);
+
+        return response()->json(['message' => 'အောင်မြင်ပါသည်']);
+    }
+
+    public function removePromotions(Request $request)
+    {
+        $product_ids = array_map(function ($product_id) {
+            return decrypt($product_id);
+        }, $request->product_ids);
+
+        Product::whereIn('id', $product_ids)
+            ->update(['promotion_id' => null]);
+
+        return response()->json(['message' => 'အောင်မြင်ပါသည်']);
     }
 }

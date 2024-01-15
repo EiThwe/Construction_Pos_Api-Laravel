@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('voucher_records', function (Blueprint $table) {
             $table->id();
-            $table->float("cost");
-            $table->float("quantity");
+            $table->decimal("cost", 20, 2);
+            $table->decimal("quantity", 20, 2);
             $table->foreignId("unit_id");
             $table->foreignId("product_id");
             $table->foreignId("voucher_id");
