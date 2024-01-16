@@ -20,7 +20,7 @@ class AuthController extends Controller
             return response()->json([
                 "message" => "မှားယွင်းနေပါသည်",
             ], 400);
-        }
+        };
 
         $token = Auth::user()->createToken($request->has("device") ? $request->device : 'unknown')->plainTextToken;
 

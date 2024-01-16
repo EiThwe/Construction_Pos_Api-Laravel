@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Promotion\RemovePromotionRequest;
+use App\Http\Requests\Promotion\SetPromotionRequest;
 use App\Http\Requests\StorePromotionRequest;
 use App\Http\Requests\UpdatePromotionRequest;
 use App\Http\Resources\PromotionsDetailResource;
@@ -19,7 +21,14 @@ class PromotionController extends Controller
      */
     public function index(Request $request)
     {
-        $promotions = HelperController::findAllQuery(Promotion::class, $request, ["place", "cost", "item_quantity", "remark"]);
+
+        if ($request->has("only_active")) {
+            $additional = [["status", "=", "active"]];
+        } else {
+            $additional = [];
+        }
+
+        $promotions = HelperController::findAllQuery(Promotion::class, $request, ["place", "cost", "item_quantity", "remark"], $additional);
 
         return PromotionsResource::collection($promotions);
     }
@@ -37,6 +46,7 @@ class PromotionController extends Controller
             'expired_at' => HelperController::handleToDateString($request->expired_at),
             'started_at' => HelperController::handleToDateString($request->started_at),
             'user_id' => Auth::id(),
+            'status' => 'active'
         ]);
 
         return response()->json(['message' => 'Promotion saved successfully']);
@@ -97,7 +107,7 @@ class PromotionController extends Controller
         return response()->json(['message' => 'ပရိုမိုးရှင်းဖျက်သိမ်းခြင်း အောင်မြင်ပါသည်']);
     }
 
-    public function setPromotions(Request $request)
+    public function setPromotions(SetPromotionRequest $request)
     {
         $promotion = Promotion::find(decrypt($request->promotion_id));
 
@@ -115,13 +125,29 @@ class PromotionController extends Controller
         return response()->json(['message' => 'အောင်မြင်ပါသည်']);
     }
 
-    public function removePromotions(Request $request)
+    public function removePromotions(RemovePromotionRequest $request)
     {
         $product_ids = array_map(function ($product_id) {
             return decrypt($product_id);
         }, $request->product_ids);
 
         Product::whereIn('id', $product_ids)
+            ->update(['promotion_id' => null]);
+
+        return response()->json(['message' => 'အောင်မြင်ပါသည်']);
+    }
+
+    public function deactivateExpiredPromotions()
+    {
+        $currentDate = Carbon::now();
+
+        $expiredPromotions = Promotion::where("status", "active")->whereDate("expired_at", "<", $currentDate);
+
+        $expiredPromotionIds = $expiredPromotions->select("id")->get();
+
+        $expiredPromotions->update(["status" => "expired"]);
+
+        Product::whereIn('promotion_id', $expiredPromotionIds)
             ->update(['promotion_id' => null]);
 
         return response()->json(['message' => 'အောင်မြင်ပါသည်']);

@@ -23,7 +23,7 @@ class SetPromotionRequest extends FormRequest
     {
         return [
             "promotion_id" => "required",
-            "product_ids" => "array",
+            "product_ids" => "required|array",
         ];
     }
 }

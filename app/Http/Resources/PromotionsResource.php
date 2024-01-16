@@ -21,6 +21,7 @@ class PromotionsResource extends JsonResource
             'name' => $this->name,
             'type' => $this->type === "percentage" ? "ရာခိုင်နှုန်း" : "ပမာဏနှုတ်",
             'amount' => $this->amount,
+            'status' => $this->status,
             'started_at' => HelperController::parseReturnDate($this->started_at),
             'expired_at' => HelperController::parseReturnDate($this->expired_at),
             'user' => $this->user->name,

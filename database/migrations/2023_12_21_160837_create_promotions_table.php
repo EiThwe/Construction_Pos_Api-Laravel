@@ -18,6 +18,7 @@ return new class extends Migration
             $table->float("amount");
             $table->timestamp('started_at');
             $table->timestamp('expired_at')->default(now());
+            $table->enum("status", ["active", "expired"]);
             $table->foreignId('user_id');
             $table->text("remark")->nullable();
             $table->timestamps();

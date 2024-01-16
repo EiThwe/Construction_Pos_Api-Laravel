@@ -19,6 +19,7 @@ class CashierItemResource extends JsonResource
         return [
             "id" => encrypt($this->id),
             "name" => $this->name,
+            "stock" => $this->stock,
             "image" => HelperController::parseReturnImage($this->image),
             "primary_unit_id" => $this->primary_unit_id,
             "primary_price" => $this->primary_price,

@@ -22,7 +22,7 @@ class RemovePromotionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "product_ids" => "array",
+            "product_ids" => "required|array",
         ];
     }
 }
