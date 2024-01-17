@@ -95,12 +95,16 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::find(decrypt($id));
+        $id = decrypt($id);
+
+        $product = Product::find($id);
         if (is_null($product)) {
             return response()->json(["message" => "ပစ္စည်းမရှီပါ"], 400);
         }
 
-        return new ProductDetailResource($product);
+        $response = new ProductDetailResource($product);
+
+        return $response;
     }
 
     /**
