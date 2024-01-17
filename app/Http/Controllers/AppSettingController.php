@@ -14,10 +14,18 @@ class AppSettingController extends Controller
      */
     public function index()
     {
+        $cacheValue = cache("app-setting");
+
+        if ($cacheValue) return $cacheValue;
+
         $setting = AppSetting::latest()->first();
         $setting["logo"] = HelperController::parseReturnImage($setting->logo);
 
-        return response()->json(["data" => $setting]);
+        $response = response()->json(["data" => $setting]);
+
+        cache()->put("app-setting", $response, 120);
+
+        return $response;
     }
 
     /**
@@ -26,17 +34,15 @@ class AppSettingController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string|min:3',
-            'phone' => 'required|string|max:20',
-            'email' => 'required|email|max:255',
-            'address' => 'required|string|max:255',
-            'google_map_url' => 'required|url|max:255',
+            'name' => 'string|min:3',
+            'phone' => 'string|max:20',
+            'email' => 'email|max:255',
+            'address' => 'string|max:255',
+            'google_map_url' => 'url|max:255',
         ]);
 
-        // Assuming you only have one row in the settings table
         $setting = AppSetting::firstOrFail();
 
-        // Update the fields
         $newSetting = $setting->update([
             'name' => $request->input('name', $setting->name),
             'phone' => $request->input('phone', $setting->phone),
@@ -48,6 +54,10 @@ class AppSettingController extends Controller
 
         $newSetting = AppSetting::firstOrFail();
         $newSetting["logo"] = HelperController::parseReturnImage($newSetting->logo);
+
+        cache()->forget('app-setting');
+        cache()->put("app-setting", ["data" => $newSetting], 120);
+
 
         return response()->json(["message" => "ပြင်ဆင်ခြင်းအောင်မြင်ပါသည်", "data" => $newSetting]);
     }

@@ -29,8 +29,8 @@ class DatabaseSeeder extends Seeder
             ExpenseSeeder::class,
             PromotionSeeder::class,
             ProductSeeder::class,
-            RecordSeeder::class
-            // VoucherSeeder::class,
+            RecordSeeder::class,
+            VoucherSeeder::class,
         ]);
     }
 }

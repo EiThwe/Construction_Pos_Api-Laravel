@@ -29,14 +29,24 @@ class StockResource extends JsonResource
 
     private function getStockLevel(): string
     {
-        if ($this->stock < 5) {
-            return 'အလွန်နည်း';
-        } elseif ($this->stock < 10) {
-            return 'နည်း';
-        } elseif ($this->stock < 20) {
-            return 'ဝယ်ယူသင့်';
-        } else {
-            return 'ကောင်း';
+        switch (true) {
+            case ($this->stock == 0):
+                $result = 'စတော့ကုန်';
+                break;
+            case ($this->stock < 5):
+                $result = 'အလွန်နည်း';
+                break;
+            case ($this->stock < 10):
+                $result = 'နည်း';
+                break;
+            case ($this->stock < 20):
+                $result = 'ဝယ်ယူသင့်';
+                break;
+            default:
+                $result = 'ကောင်း';
+                break;
         }
+
+        return $result;
     }
 }
