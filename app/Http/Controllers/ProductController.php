@@ -19,6 +19,18 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            try {
+                $this->authorize("checkPermission", "all");
+            } catch (\Throwable $th) {
+                return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+            }
+
+            return $next($request);
+        });
+    }
     /**
      * Display a listing of the resource.
      */

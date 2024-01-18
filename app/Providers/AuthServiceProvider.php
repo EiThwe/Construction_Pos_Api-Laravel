@@ -33,6 +33,9 @@ class AuthServiceProvider extends ServiceProvider
                 return true; // Admin has all permissions
             } else {
                 if (empty($roleString)) return false;
+
+                if ($roleString === "all") return true;
+
                 $roles = explode(",", $roleString);
 
                 return in_array(Auth::user()->role, $roles);

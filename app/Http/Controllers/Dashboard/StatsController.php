@@ -13,8 +13,7 @@ class StatsController extends Controller
 {
     public function getStats()
     {
-        if (!Gate::allows("checkPermission", "cashier,manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
-
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
 
         $staff_count = User::count();
         $customer_count = Customer::count();
