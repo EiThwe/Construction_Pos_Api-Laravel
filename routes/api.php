@@ -96,8 +96,13 @@ Route::prefix("v1")->group(function () {
         Route::get("dashboard/profit", [ProfitChartController::class, "get"]);
         Route::get("dashboard/expense", [ExpenseChartController::class, "get"]);
         Route::get("dashboard/revenue", [RevenueChartController::class, "get"]);
+
+        Route::post("app-settings", [AppSettingController::class, "store"]);
     });
-    Route::apiResource("app-settings", AppSettingController::class)->only(["index", "store"]);
+
+    Route::get("app-settings", [AppSettingController::class, "index"]);
+
+
 
     Route::post("auth/login", [AuthController::class, 'login']);
 });

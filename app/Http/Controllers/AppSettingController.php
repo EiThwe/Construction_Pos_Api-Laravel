@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AppSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class AppSettingController extends Controller
@@ -33,6 +34,8 @@ class AppSettingController extends Controller
      */
     public function store(Request $request)
     {
+        if (!(Gate::allows("checkPermission", ""))) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $this->validate($request, [
             'name' => 'string|min:3',
             'phone' => 'string|max:20',

@@ -14,11 +14,14 @@ use App\Models\VoucherRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Gate;
 
 class CheckoutController extends Controller
 {
     public function checkout(CheckoutRequest $request)
     {
+        if (!Gate::allows("checkPermission", "cashier")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         return HelperController::transaction(function () use ($request) {
             $voucher_records = [];
             $total_cost = 0;

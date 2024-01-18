@@ -9,6 +9,7 @@ use App\Models\Expense;
 use HTMLPurifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ExpenseController extends Controller
 {
@@ -27,6 +28,8 @@ class ExpenseController extends Controller
      */
     public function store(StoreExpenseRequest $request)
     {
+        if (!Gate::allows("checkPermission", "cashier")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $purifier = new HTMLPurifier();
         Expense::create([
             "description" => nl2br($purifier->purify($request->description)),
@@ -55,6 +58,8 @@ class ExpenseController extends Controller
      */
     public function update(UpdateExpenseRequest $request, string $id)
     {
+        if (!Gate::allows("checkPermission", "all")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $expense = Expense::find(decrypt($id));
         if (is_null($expense)) {
             return response()->json([
@@ -74,6 +79,8 @@ class ExpenseController extends Controller
      */
     public function destroy(string $id)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $expense = Expense::find(decrypt($id));
         if (is_null($expense)) {
             return response()->json([
