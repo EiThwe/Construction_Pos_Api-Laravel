@@ -7,11 +7,14 @@ use App\Http\Resources\Dashboard\BestSellersResource;
 use App\Models\VoucherRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class BestSellersController extends Controller
 {
     public function bestSellers(Request $request)
+
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
         $validTypes = ["weekly", "monthly", "yearly"];
 
         if (!in_array($request->type, $validTypes)) {

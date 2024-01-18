@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class StockController extends Controller
 {
@@ -89,6 +90,7 @@ class StockController extends Controller
 
     public function lowStocks(Request $request)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
         logger("call me");
         $orderBy = $request->input('order_by', 'stock');
         $orderDirection = $request->input('order_direction', 'asc');

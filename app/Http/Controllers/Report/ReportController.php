@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ReportController extends Controller
 {
@@ -59,8 +60,6 @@ class ReportController extends Controller
         $total_expense = $stock_cost + $expense_amount + $salary_cost;
         $total_revenue =  $revenue + $product_amount + $debt_amount;
         $total_profit = $total_revenue - $total_expense;
-
-        logger($vouchers->count());
 
         Record::create([
             "expense" => $total_expense,
@@ -121,6 +120,8 @@ class ReportController extends Controller
 
     public function dailyList(Request $request)
     {
+        if (!Gate::allows("checkPermission", "cashier")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $records = $this->getList($request, "daily");
 
         return RecordResource::collection($records);
@@ -128,6 +129,8 @@ class ReportController extends Controller
 
     public function monthlyList(Request $request)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $records = $this->getList($request, "monthly");
 
         return RecordResource::collection($records);

@@ -10,9 +10,22 @@ use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Gate;
 
 class UnitController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            try {
+                $this->authorize("checkPermission", "manager");
+            } catch (\Throwable $th) {
+                return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+            }
+
+            return $next($request);
+        });
+    }
     /**
      * Display a listing of the resource.
      */
@@ -28,6 +41,8 @@ class UnitController extends Controller
      */
     public function store(CreateUnitRequest $request)
     {
+        if (!Gate::allows("checkPermission", "")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $unit = Unit::create([
             "name" => $request->name,
             "unit_type_id" => $request->unit_type_id,

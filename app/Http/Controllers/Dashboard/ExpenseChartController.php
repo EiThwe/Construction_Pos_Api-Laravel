@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Record;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ExpenseChartController extends Controller
 {
     public function get(Request $request)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
         $type = $request->type;
         $validTypes = ["weekly", "monthly", "yearly"];
 
@@ -21,7 +23,7 @@ class ExpenseChartController extends Controller
         $dates = DashboardHelperController::calculateDateRange($type);
         $status = ($type === "yearly") ? "monthly" : "daily";
 
-        $records = DashboardHelperController::getRecords($dates, $status, $type,"expense");
+        $records = DashboardHelperController::getRecords($dates, $status, $type, "expense");
 
         $total_amount = array_reduce($records, fn ($pv, $cv) => $pv += $cv["amount"], 0);
 

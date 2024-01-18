@@ -8,6 +8,7 @@ use App\Http\Resources\Voucher\VoucherDetailResource;
 use App\Http\Resources\VouchersResource;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class VoucherController extends Controller
 {
@@ -16,6 +17,7 @@ class VoucherController extends Controller
      */
     public function index(Request $request)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
         $vouchers = HelperController::findAllQuery(Voucher::class, $request, []);
 
         return VouchersResource::collection($vouchers);
@@ -34,6 +36,7 @@ class VoucherController extends Controller
      */
     public function show(string $id)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
         $voucher = Voucher::find(decrypt($id));
         if (is_null($voucher)) {
             return response()->json(["message" => "ဘောက်ချာမရှိပါ"], 400);

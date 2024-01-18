@@ -7,12 +7,14 @@ use App\Models\Customer;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Voucher;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class StatsController extends Controller
 {
     public function getStats()
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $staff_count = User::count();
         $customer_count = Customer::count();
         $product_count = Product::count();

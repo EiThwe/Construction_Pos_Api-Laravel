@@ -15,13 +15,9 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        return CheckPermissionController::check(function () use ($request) {
-            $this->authorize("checkPermission", []);
+        $users = HelperController::findAllQuery(User::class, $request, ["name", "phone", "salary"]);
 
-            $users = HelperController::findAllQuery(User::class, $request, ["name", "phone", "salary"]);
-
-            return UserResource::collection($users);
-        });
+        return UserResource::collection($users);
     }
 
     public function store(Request $request)

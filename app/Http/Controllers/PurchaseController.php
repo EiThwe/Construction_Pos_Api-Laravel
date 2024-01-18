@@ -10,6 +10,7 @@ use App\Models\PurchaseItem;
 use App\Models\PurchaseRecords;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class PurchaseController extends Controller
 {
@@ -28,6 +29,7 @@ class PurchaseController extends Controller
      */
     public function store(StorePurchaseRequest $request)
     {
+        if (!Gate::allows("checkPermission", "cashier")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
         $purchase = Purchase::create([
             'place' => $request->place,
             'cost' => $request->cost,
@@ -54,6 +56,7 @@ class PurchaseController extends Controller
      */
     public function show(string $id)
     {
+
         $purchase = Purchase::with('purchaseItems')->find(decrypt($id));
 
         if (!$purchase) {
@@ -68,6 +71,8 @@ class PurchaseController extends Controller
      */
     public function destroy(string $id)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $purchase = Purchase::find(decrypt($id));
 
         if (!$purchase) {

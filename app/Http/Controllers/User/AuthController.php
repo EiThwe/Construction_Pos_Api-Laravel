@@ -25,13 +25,15 @@ class AuthController extends Controller
         $token = Auth::user()->createToken($request->has("device") ? $request->device : 'unknown')->plainTextToken;
 
         $userInfo = Auth::user();
-        $userInfo["profile"] = HelperController::parseReturnImage($userInfo->profile);
 
         return response()->json([
             "message" => "အကောင့်ဝင်ခြင်း အောင်မြင်ပါသည်",
             "token" => $token,
             "role" => Auth::user()->role,
-            "user_info" => $userInfo
+            "user_info" => [
+                "name" => $userInfo->name,
+                "profile" =>  HelperController::parseReturnImage($userInfo->profile)
+            ]
         ]);
     }
 

@@ -28,12 +28,17 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('checkPermission', function ($permissions) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        Gate::define('checkPermission', function ($user, $roleString) {
             if (Auth::user()->role === "admin") {
                 return true; // Admin has all permissions
             } else {
-                // Check if user's role exists in the permissions array
-                return in_array(Auth::user()->role, $permissions);
+                if (empty($roleString)) return false;
+
+                if ($roleString === "all") return true;
+
+                $roles = explode(",", $roleString);
+
+                return in_array(Auth::user()->role, $roles);
             }
         });
     }

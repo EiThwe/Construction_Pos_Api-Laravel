@@ -16,14 +16,28 @@ use App\Models\Stock;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware(function ($request, $next) {
+    //         try {
+    //             $this->authorize("checkPermission", "all");
+    //         } catch (\Throwable $th) {
+    //             return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+    //         }
+
+    //         return $next($request);
+    //     });
+    // }
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        
         $products = HelperController::findAllQuery(Product::class, $request, ["name", "primary_price", "actual_price"]);
 
         return ProductResource::collection($products);
@@ -34,6 +48,8 @@ class ProductController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
+        if (!Gate::allows("checkPermission", "cashier")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         if ($request->units) {
             foreach ($request->units as $unit) {
                 $isUnitRelation = ConversionFactor::where("from_unit_id", decrypt($request->primary_unit_id))

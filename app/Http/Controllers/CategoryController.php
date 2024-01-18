@@ -8,9 +8,22 @@ use App\Http\Resources\Category\CategoryResource;
 use App\Http\Resources\Product\ProductResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            try {
+                $this->authorize("checkPermission", "manager");
+            } catch (\Throwable $th) {
+                return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+            }
+
+            return $next($request);
+        });
+    }
     /**
      * Display a listing of the resource.
      */
@@ -26,6 +39,8 @@ class CategoryController extends Controller
      */
     public function store(CreateCategoryRequest $request)
     {
+
+
         if (!(is_null($request->parent_id))) {
             $category = Category::find($request->parent_id);
             if (!(is_null($category))) {
