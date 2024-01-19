@@ -13,6 +13,12 @@ class ProductUnit extends Model
         "unit_id", "price", "product_id"
     ];
 
+    protected $casts = [
+        "unit_id" => "string",
+        "price" => "integer",
+        "product_id" => "string"
+    ];
+
     public function unit()
     {
         return $this->belongsTo(Unit::class);

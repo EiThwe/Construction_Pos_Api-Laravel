@@ -34,7 +34,7 @@ class CheckoutController extends Controller
 
                 $promotion = $product->promotion;
 
-                if ($product->primary_unit_id === $item["unit_id"]) {
+                if ($product->primary_unit_id === decrypt($item["unit_id"])) {
                     $new_stock =  $product->stock - $item["quantity"];
 
                     if ($new_stock < 0) {
@@ -72,14 +72,14 @@ class CheckoutController extends Controller
                     $product->update();
 
                     $voucher_records[] = [
-                        "unit_id" => $item["unit_id"],
+                        "unit_id" => decrypt($item["unit_id"]),
                         "product_id" => decrypt($item["product_id"]),
                         "quantity" => $item["quantity"],
                         "cost" => $cost
                     ];
                 } else {
                     $productUnits = array_filter(json_decode($product->productUnits, true) ?? [], function ($productUnit) use ($item) {
-                        return $productUnit["unit_id"] === $item["unit_id"];
+                        return $productUnit["unit_id"] === decrypt($item["unit_id"]);
                     });
 
                     if (empty($productUnits)) {
@@ -88,7 +88,7 @@ class CheckoutController extends Controller
 
                     $productUnit = $productUnits[0];
 
-                    $conversion = ConversionFactor::where("from_unit_id", $item["unit_id"])->where("to_unit_id", $product->primary_unit_id)->first();
+                    $conversion = ConversionFactor::where("from_unit_id", decrypt($item["unit_id"]))->where("to_unit_id", $product->primary_unit_id)->first();
 
                     if (is_null($conversion)) {
                         throw new \Exception("ယူနစ်အပြန်အလှန်ချိတ်ဆက်ထားခြင်းမရှိပါ");
@@ -136,7 +136,7 @@ class CheckoutController extends Controller
                     $product->update();
 
                     $voucher_records[] = [
-                        "unit_id" => $item["unit_id"],
+                        "unit_id" => decrypt($item["unit_id"]),
                         "product_id" => decrypt($item["product_id"]),
                         "quantity" => $item["quantity"],
                         "cost" => $cost

@@ -12,4 +12,13 @@ class PaySalary extends Model
     protected $fillable = [
         "actual_salary", "type", "amount", "user_id", "created_by", "pay_month"
     ];
+
+    protected $casts = [
+        "actual_salary" => "integer",
+        "amount" => "integer",
+        "type" => "string",
+        "user_id" => "string",
+        "created_by" => "string",
+        "pay_month" => "string",
+    ];
 }

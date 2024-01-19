@@ -31,6 +31,22 @@ class User extends Authenticatable
         "profile"
     ];
 
+    protected $casts = [
+        "name" => "string",
+        "phone" => "string",
+        "birth_date" => "timestamp",
+        "join_date" => "timestamp",
+        "gender" => "string",
+        "address" => "string",
+        "password" => "string",
+        "role" => "string",
+        "position" => "string",
+        "salary" => "integer",
+        "profile" => "string",
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -46,10 +62,7 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+
 
     public function salaries()
     {

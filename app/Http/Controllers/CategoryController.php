@@ -41,12 +41,12 @@ class CategoryController extends Controller
     {
 
 
-        if (!(is_null($request->parent_id))) {
-            $category = Category::find($request->parent_id);
+        if (!(is_null(decrypt($request->parent_id)))) {
+            $category = Category::find(decrypt($request->parent_id));
             if (!(is_null($category))) {
                 Category::create([
                     "name" => $request->name,
-                    "parent_id" => $request->parent_id,
+                    "parent_id" => decrypt($request->parent_id),
                     "remark" => $request->remark
                 ]);
             } else  return response()->json(["message" => "Category doesn't exist"], 400);

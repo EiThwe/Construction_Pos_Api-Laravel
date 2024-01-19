@@ -14,7 +14,7 @@ class RecordSeeder extends Seeder
      */
     public function run(): void
     {
-        $currentDate = Carbon::now()->format("d");
+        $currentDate = Carbon::now()->format("d") - 1;
 
         for ($i = 1; $i <= $currentDate; $i++) {
             $revenue = rand(10000, 1000000);

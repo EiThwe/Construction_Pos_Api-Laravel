@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string("image")->nullable();
             $table->string("name");
-            $table->float("actual_price");
+            $table->integer("actual_price");
             $table->foreignId("primary_unit_id");
-            $table->float("primary_price");
+            $table->integer("primary_price");
             $table->text("remark")->nullable();
-            $table->float("stock");
+            $table->decimal("stock", 12, 2);
             $table->foreignId("user_id");
             $table->foreignId("promotion_id")->nullable();
             $table->timestamps();

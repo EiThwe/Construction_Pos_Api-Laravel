@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Http\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -20,9 +22,14 @@ class Handler extends ExceptionHandler
      */
     // public function render($request, Throwable $exception)
     // {
-    //     if ($request->expectsJson()) {
-    //         return (new ApiException())->render($request, $exception);
+
+
+    //     // Get the HTTP status code
+    //     if ($exception instanceof HttpExceptionInterface) {
+    //         logger($exception->getStatusCode());
     //     }
+
+    //     // You can now use $statusCode as needed
 
     //     return parent::render($request, $exception);
     // }

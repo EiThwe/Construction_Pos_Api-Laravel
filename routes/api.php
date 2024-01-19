@@ -11,6 +11,7 @@ use App\Http\Controllers\Dashboard\ProfitChartController;
 use App\Http\Controllers\Dashboard\RevenueChartController;
 use App\Http\Controllers\Dashboard\StatsController;
 use App\Http\Controllers\DebtController;
+use App\Http\Controllers\OperationController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\StockController;
@@ -98,6 +99,12 @@ Route::prefix("v1")->group(function () {
         Route::get("dashboard/revenue", [RevenueChartController::class, "get"]);
 
         Route::post("app-settings", [AppSettingController::class, "store"]);
+
+        Route::prefix("operations")->group(function () {
+            Route::post("migration", [OperationController::class, "migration"]);
+            Route::post("storage-link", [OperationController::class, "storageLink"]);
+            Route::post("cache-clear", [OperationController::class, "clearCache"]);
+        });
     });
 
     Route::get("app-settings", [AppSettingController::class, "index"]);

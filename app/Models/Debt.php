@@ -11,6 +11,15 @@ class Debt extends Model
 
     protected $fillable = ["customer_id", "user_id", "voucher_id", "actual_amount", "left_amount", "remark"];
 
+    protected $casts = [
+        "customer_id" => "string",
+        "user_id" => "string",
+        "voucher_id" => "string",
+        "actual_amount" => "integer",
+        "left_amount" => "integer",
+        "remark" => "string"
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

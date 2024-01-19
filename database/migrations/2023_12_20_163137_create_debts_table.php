@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('debts', function (Blueprint $table) {
             $table->id();
-            $table->decimal("actual_amount", 20, 2);
-            $table->decimal("left_amount", 20, 2);
+            $table->integer("actual_amount");
+            $table->integer("left_amount");
             $table->foreignId("user_id");
             $table->foreignId("voucher_id");
             $table->foreignId("customer_id");

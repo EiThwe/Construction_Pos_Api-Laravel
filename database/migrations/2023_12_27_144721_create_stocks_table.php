@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId("product_id");
             $table->decimal("quantity", 12, 2);
-            $table->decimal("cost", 12, 2);
+            $table->integer("cost");
             $table->foreignId("unit_id");
             $table->foreignId("user_id");
             $table->text("remark")->nullable();

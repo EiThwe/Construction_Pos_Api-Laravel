@@ -11,6 +11,14 @@ class VoucherRecord extends Model
 
     protected $fillable = ["unit_id", "product_id", "quantity", "cost", "voucher_id"];
 
+    protected $casts = [
+        "unit_id" => "string",
+        "product_id" => "string",
+        "quantity" => "double",
+        "cost" => "integer",
+        "voucher_id" => "string"
+    ];
+
     public function product()
     {
         return $this->belongsTo(Product::class);

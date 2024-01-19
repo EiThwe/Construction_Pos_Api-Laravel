@@ -11,6 +11,8 @@ class ConversionFactor extends Model
 
     protected $fillable = ["from_unit_id", "to_unit_id", "value", "status"];
 
+    protected $casts = ["from_unit_id" => "string", "to_unit_id" => "string", "value" => "double", "status" => "string"];
+
     public function fromUnit()
     {
         return $this->belongsTo(Unit::class, 'from_unit_id');
