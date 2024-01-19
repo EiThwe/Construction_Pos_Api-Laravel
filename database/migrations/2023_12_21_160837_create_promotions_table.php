@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('type', ['percentage', 'amount']);
-            $table->float("amount");
+            $table->decimal("amount", 12, 2);
             $table->timestamp('started_at');
             $table->timestamp('expired_at')->default(now());
             $table->enum("status", ["active", "expired"]);

@@ -16,6 +16,19 @@ class Voucher extends Model
         "reduce_amount", "change", "debt_amount"
     ];
 
+    protected $casts = [
+        "voucher_number" => "string",
+        "cost" => "integer",
+        "profit" => "integer",
+        "item_count" => "integer",
+        "user_id" => "string",
+        "promotion_amount" => "integer",
+        "pay_amount" => "integer",
+        "reduce_amount" => "integer",
+        "change" => "integer",
+        "debt_amount"
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

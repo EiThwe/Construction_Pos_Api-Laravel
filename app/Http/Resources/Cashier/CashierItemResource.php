@@ -16,16 +16,18 @@ class CashierItemResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $primary_unit_id = encrypt($this->primary_unit_id);
+
         return [
             "id" => encrypt($this->id),
             "name" => $this->name,
             "stock" => $this->stock,
             "image" => HelperController::parseReturnImage($this->image),
-            "primary_unit_id" => $this->primary_unit_id,
+            "primary_unit_id" =>  $primary_unit_id,
             "primary_price" => $this->primary_price,
             "categories" => ProductCategoryResource::collection($this->categories),
             "units" =>  [
-                ["price" => $this->primary_price, "unit_id" => $this->unit->id, "name" => $this->unit->name, "id" => $this->id],
+                ["price" => $this->primary_price, "unit_id" =>  $primary_unit_id, "name" => $this->unit->name, "id" => encrypt($this->id)],
                 ...CashierItemUnitResource::collection($this->productUnits)
             ],
             "promotion" => $this->promotion

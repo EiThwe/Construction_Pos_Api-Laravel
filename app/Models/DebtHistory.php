@@ -11,6 +11,12 @@ class DebtHistory extends Model
 
     protected $fillable = ["amount", "debt_id", "user_id"];
 
+    protected $casts = [
+        "amount" => "integer",
+        "debt_id" => "string",
+        "user_id" => "string"
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

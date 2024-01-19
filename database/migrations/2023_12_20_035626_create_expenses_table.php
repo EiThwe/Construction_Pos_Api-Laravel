@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
             $table->text("description");
-            $table->float("amount");
+            $table->integer("amount");
             $table->text("remark")->nullable();
             $table->foreignId("user_id");
             $table->timestamps();

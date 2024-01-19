@@ -10,11 +10,12 @@ class ApiException extends Exception
     /**
      * Report or log an exception.
      *
-     * @return void
+     * @return bool
      */
-    public function report()
+    public function shouldReport()
     {
-        // You can log the exception if needed
+        // Report the exception only if the status code is 500
+        return $this->getCode() === JsonResponse::HTTP_INTERNAL_SERVER_ERROR;
     }
 
     /**

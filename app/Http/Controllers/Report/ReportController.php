@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Report;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\HelperController;
 use App\Http\Resources\Record\RecordResource;
 use App\Models\DebtHistory;
 use App\Models\Expense;
@@ -24,7 +23,7 @@ class ReportController extends Controller
     {
         $today = Carbon::today();
 
-        $record = Record::where("status", "daily")->whereDate("created_at", $today)->first();
+        $record = Record::where("created_at", $today)->whereDate("status", "daily")->first();
 
         if (!is_null($record)) {
             return response()->json(["message" => "ဆိုင်ပိတ်သိမ်းပြီးပါပြီ"], 400);
@@ -36,6 +35,7 @@ class ReportController extends Controller
         if (count($vouchers) === 0) {
             return response()->json(["message" => "ယနေ့အတွက် ရောင်းချထားခြင်းမရှိပါ"], 400);
         }
+
 
         $stocks = Stock::whereDate("created_at", $today)->get();
 
@@ -63,7 +63,7 @@ class ReportController extends Controller
 
         Record::create([
             "expense" => $total_expense,
-            "revenue" => $total_revenue,
+            "revenue" => $total_revenue - ($product_amount + $debt_amount),
             "profit" => $total_profit,
             "voucher_count" => $vouchers->count(),
             "user_id" => Auth::id(),

@@ -19,6 +19,17 @@ class Promotion extends Model
         'status'
     ];
 
+    protected $casts = [
+        'name' => "string",
+        'type' => "string",
+        'amount' => "double",
+        'started_at' => "string",
+        'expired_at' => "string",
+        'remark' => "string",
+        'user_id' => "string",
+        'status' => "string"
+    ];
+
     // Make sure the user relationship is defined in your model
     public function user()
     {

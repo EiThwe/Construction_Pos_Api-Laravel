@@ -11,6 +11,8 @@ class PurchaseItem extends Model
 
     protected $fillable = ['name', 'quantity', 'unit_id'];
 
+    protected $casts = ['name' => "string", 'quantity' => "integer", 'unit_id' => "string"];
+
     public function purchase()
     {
         return $this->belongsTo(Purchase::class);
