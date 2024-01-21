@@ -131,6 +131,10 @@ class UnitController extends Controller
             return response()->json(["message" => "ယူနစ်မရှိပါ"], 400);
         }
 
+        ConversionFactor::where("from_unit_id", $unit->id)
+            ->orWhere("to_unit_id", $unit->id)
+            ->delete();
+
         $unit->delete();
 
         return response()->json(["message" => "ယူနစ်ဖျက်သိမ်းခြင်းအောင်မြင်ပါသည်"]);
