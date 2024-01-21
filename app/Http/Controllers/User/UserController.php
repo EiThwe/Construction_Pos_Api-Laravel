@@ -9,12 +9,16 @@ use App\Http\Resources\User\UserDetailResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     public function index(Request $request)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $users = HelperController::findAllQuery(User::class, $request, ["name", "phone", "salary"]);
 
         return UserResource::collection($users);
@@ -22,14 +26,20 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
+        if (Auth::user()->role == "manager" && $request->role == "admin") {
+            return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+        }
+
         $request->validate([
             "name" => "required|min:3",
             "phone" => "required|min:6",
-            "birth_date" => "required",
-            "join_date" => "required",
+            "birth_date" => "",
+            "join_date" => "",
             "gender" => "required|in:ကျား,မ",
             "role" => "required|in:admin,manager,cashier,staff",
-            "salary" => "required",
+            "salary" => "",
         ]);
 
         User::create([
@@ -53,6 +63,8 @@ class UserController extends Controller
 
     public function show(string $id)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $user = User::find(decrypt($id));
         if (is_null($user)) {
             return response()->json([
@@ -65,6 +77,12 @@ class UserController extends Controller
 
     public function update(Request $request, string $id)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
+        if (Auth::user()->role == "manager" && $request->role == "admin") {
+            return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+        }
+
         $this->validate($request, [
             "name" => "min:3",
             "phone" => "numeric|min:6",
@@ -101,6 +119,8 @@ class UserController extends Controller
 
     public function destroy(string $id)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $user = User::find(decrypt($id));
         $user->delete();
 

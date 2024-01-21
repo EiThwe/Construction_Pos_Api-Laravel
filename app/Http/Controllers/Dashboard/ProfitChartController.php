@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Gate;
 class ProfitChartController extends Controller
 {
     public function get(Request $request)
-
     {
         if (!Gate::allows("checkPermission", "")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
         $type = $request->type;

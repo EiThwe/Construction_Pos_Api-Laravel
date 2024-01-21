@@ -17,23 +17,24 @@ use Illuminate\Support\Facades\Gate;
 
 class PromotionController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            try {
-                $this->authorize("checkPermission", "manager");
-            } catch (\Throwable $th) {
-                return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
-            }
+    // public function __construct()
+    // {
+    //     $this->middleware(function ($request, $next) {
+    //         try {
+    //             $this->authorize("checkPermission", "manager");
+    //         } catch (\Throwable $th) {
+    //             return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+    //         }
 
-            return $next($request);
-        });
-    }
+    //         return $next($request);
+    //     });
+    // }
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
 
         if ($request->has("only_active")) {
             $additional = [["status", "=", "active"]];
@@ -51,7 +52,8 @@ class PromotionController extends Controller
      */
     public function store(StorePromotionRequest $request)
     {
-        if (!Gate::allows("checkPermission", "")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         Promotion::create([
             'name' => $request->name,
             'type' => $request->type,
@@ -71,6 +73,8 @@ class PromotionController extends Controller
      */
     public function show(string $id)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $promotion = Promotion::find(decrypt($id));
         if (is_null($promotion)) {
             return response()->json([
@@ -85,6 +89,8 @@ class PromotionController extends Controller
      */
     public function update(UpdatePromotionRequest $request, string $id)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $promotion = Promotion::find(decrypt($id));
         if (is_null($promotion)) {
             return response()->json([
@@ -109,6 +115,8 @@ class PromotionController extends Controller
      */
     public function destroy(string $id)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $promotion = Promotion::find(decrypt($id));
 
         if (!$promotion) {
@@ -123,6 +131,8 @@ class PromotionController extends Controller
 
     public function setPromotions(SetPromotionRequest $request)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $promotion = Promotion::find(decrypt($request->promotion_id));
 
         if (!$promotion) {
@@ -141,6 +151,8 @@ class PromotionController extends Controller
 
     public function removePromotions(RemovePromotionRequest $request)
     {
+        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $product_ids = array_map(function ($product_id) {
             return decrypt($product_id);
         }, $request->product_ids);
@@ -153,6 +165,8 @@ class PromotionController extends Controller
 
     public function deactivateExpiredPromotions()
     {
+        if (!Gate::allows("checkPermission", "all")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $currentDate = Carbon::now();
 
         $expiredPromotions = Promotion::where("status", "active")->whereDate("expired_at", "<", $currentDate);

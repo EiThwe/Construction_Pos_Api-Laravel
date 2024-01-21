@@ -58,6 +58,15 @@ class VoucherController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $voucher = Voucher::find(decrypt($id));
+
+        if (!$voucher) {
+
+            return response()->json(["message" => "ဘောက်ချာမရှိပါ", 400]);
+        }
+
+        $voucher->delete();
+
+        return response()->json(["message" => "ဘောက်ချာဖျက်ခြင်း အောင်မြင်ပါသည်"]);
     }
 }
