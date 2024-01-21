@@ -16,7 +16,7 @@ class CategoryController extends Controller
     {
         $this->middleware(function ($request, $next) {
             try {
-                $this->authorize("checkPermission", "manager");
+                $this->authorize("checkPermission", "all");
             } catch (\Throwable $th) {
                 return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
             }
@@ -39,9 +39,7 @@ class CategoryController extends Controller
      */
     public function store(CreateCategoryRequest $request)
     {
-
-
-        if (!(is_null(decrypt($request->parent_id)))) {
+        if (!(is_null($request->parent_id))) {
             $category = Category::find(decrypt($request->parent_id));
             if (!(is_null($category))) {
                 Category::create([

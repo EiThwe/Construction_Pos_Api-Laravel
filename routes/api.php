@@ -61,7 +61,7 @@ Route::prefix("v1")->group(function () {
 
         Route::get("cashiers", [CashierController::class, "index"]);
 
-        Route::apiResource("vouchers", VoucherController::class)->only(["index", "show"]);
+        Route::apiResource("vouchers", VoucherController::class)->only(["index", "show", "destroy"]);
 
         Route::apiResource("products", ProductController::class)->except("update");
         Route::post("products/{id}/update", [ProductController::class, "update"]);

@@ -120,7 +120,7 @@ class ReportController extends Controller
 
     public function dailyList(Request $request)
     {
-        if (!Gate::allows("checkPermission", "cashier")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+        if (!Gate::allows("checkPermission", "all")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
 
         $records = $this->getList($request, "daily");
 
@@ -129,7 +129,7 @@ class ReportController extends Controller
 
     public function monthlyList(Request $request)
     {
-        if (!Gate::allows("checkPermission", "manager")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+        if (!Gate::allows("checkPermission", "all")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
 
         $records = $this->getList($request, "monthly");
 
