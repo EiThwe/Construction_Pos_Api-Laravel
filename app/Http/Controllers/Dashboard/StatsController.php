@@ -24,22 +24,26 @@ class StatsController extends Controller
             [
                 "count" =>  $staff_count,
                 "label" => "ဝန်ထမ်းအရေအတွက်",
-                "icon" => "fa-solid:users"
+                "icon" => "fa-solid:users",
+                "link" => "/users/staff/list"
             ],
             [
                 "count" =>  $customer_count,
                 "label" => "ဝယ်ယူသူအရေအတွက်",
-                "icon" => "ri:customer-service-fill"
+                "icon" => "ri:customer-service-fill",
+                "link" => "/customers/list"
             ],
             [
                 "count" =>  $product_count,
                 "label" => "ပစ္စည်းအရေအတွက်",
-                "icon" => "ic:outline-construction"
+                "icon" => "ic:outline-construction",
+                "link" => "/products/list"
             ],
             [
                 "count" =>  $voucher_count,
                 "label" => "ဘောက်ချာအရေအတွက်",
-                "icon" => "mdi:voucher"
+                "icon" => "mdi:voucher",
+                "link" => "/overviews/vouchers"
             ],
 
         ]]);
