@@ -27,10 +27,8 @@ class RevenueChartController extends Controller
 
         $total_amount = array_reduce($records, fn ($pv, $cv) => $pv += $cv["amount"], 0);
 
-        $additionalRecords = DashboardHelperController::generateAdditionalRecords($records, $type);
+        $allRecords = DashboardHelperController::generateAdditionalRecords($records, $type);
 
-        $mergedRecords = array_merge($records, $additionalRecords);
-
-        return response()->json(["data" => ["total_amount" => $total_amount, "records" => $mergedRecords,]]);
+        return response()->json(["data" => ["total_amount" => $total_amount, "records" => $allRecords]]);
     }
 }

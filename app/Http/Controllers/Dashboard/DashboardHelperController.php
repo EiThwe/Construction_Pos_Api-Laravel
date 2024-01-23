@@ -52,43 +52,67 @@ class DashboardHelperController extends Controller
 
     static public function generateAdditionalRecords($records, $type)
     {
-        $lastRecord = end($records);
-
         if ($type === "yearly") {
-            $currentMonth = Carbon::parse($lastRecord ? $lastRecord["created_at"] : Carbon::now()->subDay())->format("n");
-            $endMonth = Carbon::now()->endOfYear()->format("n");
+            $allRecords = [];
 
-            $additionalRecords = [];
+            for ($i = 1; $i <= 12; $i++) {
+                $isExist = array_filter($records, function ($record) use ($i) {
+                    $recordDate = Carbon::parse($record["created_at"])->format("m");
 
-            for ($i = $lastRecord ? 1 : 0; $i <= $endMonth - $currentMonth; $i++) {
-                $date = Carbon::create()->month($currentMonth + $i)->format("F");
+                    return $recordDate == $i;
+                });
 
-                $additionalRecords[] = [
-                    "amount" => 0,
-                    "date" => $date
-                ];
+                if ($isExist) {
+                    $foundRecord = reset($isExist); // Get the first element of the filtered array
+                    $allRecords[] = [
+                        "amount" => $foundRecord["amount"],
+                        "date" => $foundRecord["date"]
+                    ];
+                } else {
+                    $date = Carbon::create()->month($i)->format("F");
+
+                    $allRecords[] = [
+                        "amount" => 0,
+                        "date" => $date
+                    ];
+                }
             }
 
-            return $additionalRecords;
+            return $allRecords;
         }
 
+        $endDay = ($type === "monthly") ? Carbon::now()->endOfMonth()->format("d") :
+            Carbon::now()->endOfWeek()->format("d");
 
-        $currentDate = Carbon::parse($lastRecord ? $lastRecord["created_at"] : Carbon::now()->subDay())->format("d");
+        $allRecords = [];
 
-        $endDay = ($type === "monthly") ? Carbon::now()->endOfMonth()->format("d") : Carbon::now()->endOfWeek()->format("d");
+        logger($endDay);
 
-        $additionalRecords = [];
+        for ($i = $type === "monthly" ? 1 : Carbon::now()->startOfWeek()->format("d"); $i <= $endDay; $i++) {
+            $isExist = array_filter($records, function ($record) use ($i) {
+                $recordDate = Carbon::parse($record["created_at"])->format("d");
 
-        for ($i = 1; $i <= $endDay - $currentDate; $i++) {
-            $date = Carbon::now()->startOfMonth()->day($currentDate + $i)->addHour(14)
-                ->format($type === "monthly" ? "d" : ($type === "yearly" ? "F" : "l"));
+                return $recordDate == $i;
+            });
 
-            $additionalRecords[] = [
-                "amount" => 0,
-                "date" => $type === "monthly" ? "Day - $date" : $date
-            ];
+            if (count($isExist) > 0) {
+                $foundRecord = reset($isExist); // Get the first element of the filtered array
+                $allRecords[] = [
+                    "amount" => $foundRecord["amount"],
+                    "date" => $foundRecord["date"]
+                ];
+            } else {
+                $doubleDigitI =  $i < 10 ? "0$i" : $i;
+                $date = $type === "monthly" ? "Day - $doubleDigitI" :
+                    Carbon::now()->setDays($i)->format("l");
+
+                $allRecords[] = [
+                    "amount" => 0,
+                    "date" =>  $date
+                ];
+            }
         }
 
-        return $additionalRecords;
+        return $allRecords;
     }
 }
