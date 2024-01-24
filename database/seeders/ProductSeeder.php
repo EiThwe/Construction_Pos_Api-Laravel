@@ -22,7 +22,7 @@ class ProductSeeder extends Seeder
                 "actual_price" => $actual_price,
                 "primary_unit_id" => rand(1, 8),
                 "primary_price" => $actual_price + 300,
-                "stock" => 100,
+                "stock" => 0,
                 "user_id" => 1,
             ]);
 
