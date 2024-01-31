@@ -107,7 +107,7 @@ class PromotionController extends Controller
 
         $promotion->update();
 
-        return  response()->json(['message' => "promotion has been updated successfully"]);
+        return  response()->json(['message' => "ပြုပြင်ခြင်းအောင်မြင်ပါသည်"]);
     }
 
     /**

@@ -48,7 +48,7 @@ class PurchaseController extends Controller
             $purchase->purchaseItems()->save($purchaseItem);
         }
 
-        return response()->json(['message' => 'Purchase saved successfully']);
+        return response()->json(['message' => 'ပရိုမိုးရှင်းထည့်သွင်းခြင်းအောင်မြင်ပါသည်']);
     }
 
     /**
@@ -60,7 +60,7 @@ class PurchaseController extends Controller
         $purchase = Purchase::with('purchaseItems')->find(decrypt($id));
 
         if (!$purchase) {
-            return response()->json(['error' => 'Purchase not found'], 404);
+            return response()->json(['message' => 'ပရိုမိုးရှင်း ရှာမတွေ့ပါ'], 404);
         }
 
         return new PurchaseDetailResource($purchase);
@@ -76,7 +76,7 @@ class PurchaseController extends Controller
         $purchase = Purchase::find(decrypt($id));
 
         if (!$purchase) {
-            return response()->json(['error' => 'Purchase not found'], 404);
+            return response()->json(['message' => 'ပရိုမိုးရှင်း ရှာမတွေ့ပါ'], 404);
         }
 
         // Delete associated purchase items
@@ -85,7 +85,7 @@ class PurchaseController extends Controller
         // Delete the purchase
         $purchase->delete();
 
-        return response()->json(['message' => 'Purchase deleted successfully']);
+        return response()->json(['message' => 'ပရိုမိုးရှင်းဖျက်သိမ်းခြင်းအောင်မြင်ပါသည်']);
     }
 
     public function addRecords(Request $request, string $id)
@@ -100,7 +100,7 @@ class PurchaseController extends Controller
             "description" => $request->description
         ]);
 
-        return response()->json(['message' => 'Purchase records added successfully']);
+        return response()->json(['message' => 'မှတ်တမ်းထည့်ခြင်းအောင်မြင်ပါသည်']);
     }
 
     public function allReceive(Request $request, string $id)

@@ -47,7 +47,7 @@ class CategoryController extends Controller
                     "parent_id" => decrypt($request->parent_id),
                     "remark" => $request->remark
                 ]);
-            } else  return response()->json(["message" => "Category doesn't exist"], 400);
+            } else  return response()->json(["message" => "အမျိုးအစားမရှိပါ"], 400);
         } else {
             Category::create([
                 "name" => $request->name,
