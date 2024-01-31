@@ -63,7 +63,7 @@ class ReportController extends Controller
 
         Record::create([
             "expense" => $total_expense,
-            "revenue" => $total_revenue - ($product_amount + $debt_amount),
+            "revenue" => $total_revenue,
             "profit" => $total_profit,
             "voucher_count" => $vouchers->count(),
             "user_id" => Auth::id(),

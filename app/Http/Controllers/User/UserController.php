@@ -114,7 +114,9 @@ class UserController extends Controller
             'profile' => $request->file("profile") ? HelperController::handleLogoUpload($request->file('profile'), $user->profile) : $user->profile,
         ]);
 
-        return response()->json(["message" => "အကောင့်ပြင်ဆင်ခြင်း အောင်မြင်ပါသည်"]);
+        $user["profile"] = HelperController::parseReturnImage($user->profile);
+
+        return response()->json(["message" => "အကောင့်ပြင်ဆင်ခြင်း အောင်မြင်ပါသည်", "user" => $user]);
     }
 
     public function destroy(string $id)
