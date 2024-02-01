@@ -83,17 +83,28 @@ class DashboardHelperController extends Controller
 
         $endDay = ($type === "monthly") ? Carbon::now()->endOfMonth()->format("d") :
             Carbon::now()->endOfWeek()->format("d");
+        $startDay = Carbon::now()->startOfWeek()->format("d");
+        $lastDayOfPrevMonth =  Carbon::now()->subMonth()->endOfMonth()->format("d");
 
         $allRecords = [];
 
-        logger($endDay);
 
-        for ($i = $type === "monthly" ? 1 : Carbon::now()->startOfWeek()->format("d"); $i <= $endDay; $i++) {
-            $isExist = array_filter($records, function ($record) use ($i) {
-                $recordDate = Carbon::parse($record["created_at"])->format("d");
+        if ($type === "weekly" && ($startDay > $endDay)) {
+            $endDay += $lastDayOfPrevMonth;
+        }
+
+        for ($i = $type === "monthly" ? 1 : $startDay; $i <= $endDay; $i++) {
+
+            $isExist = array_filter($records, function ($record) use ($i, $lastDayOfPrevMonth, $type) {
+                $recordDate = Carbon::parse($record["created_at"])->format("j");
+
+                if ($type === "weekly" && ($i > $lastDayOfPrevMonth)) {
+                    $i -= $lastDayOfPrevMonth;
+                }
 
                 return $recordDate == $i;
             });
+
 
             if (count($isExist) > 0) {
                 $foundRecord = reset($isExist); // Get the first element of the filtered array
@@ -103,8 +114,21 @@ class DashboardHelperController extends Controller
                 ];
             } else {
                 $doubleDigitI =  $i < 10 ? "0$i" : $i;
-                $date = $type === "monthly" ? "Day - $doubleDigitI" :
-                    Carbon::now()->setDays($i)->format("l");
+
+                $date = "Day - $doubleDigitI";
+
+                if ($type === "weekly") {
+                    if ($endDay > $lastDayOfPrevMonth) {
+                        if ($i <= $lastDayOfPrevMonth) {
+                            $date =  Carbon::now()->subMonth()->setDays($i)->format("l");
+                        } else {
+                            $date = Carbon::now()->setDays($i - $lastDayOfPrevMonth)->format("l");
+                        }
+                    } else {
+                        $date =  Carbon::now()->setDays($i)->format("l");
+                    }
+                }
+
 
                 $allRecords[] = [
                     "amount" => 0,

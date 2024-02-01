@@ -27,7 +27,9 @@ class ProfitChartController extends Controller
 
         $total_amount = array_reduce($records, fn ($pv, $cv) => $pv += $cv["amount"], 0);
 
+
         $allRecords =  DashboardHelperController::generateAdditionalRecords($records, $type);
+
 
         // $mergedRecords = array_merge($records, $additionalRecords);
 
