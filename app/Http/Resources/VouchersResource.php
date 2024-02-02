@@ -20,7 +20,6 @@ class VouchersResource extends JsonResource
             "sale_person" => $this->user->name,
             "voucher_no" => $this->voucher_number,
             "time" => HelperController::parseReturnDate($this->created_at, true),
-            "item_count" => $this->item_count,
             "cash" => $this->cost
         ];
     }

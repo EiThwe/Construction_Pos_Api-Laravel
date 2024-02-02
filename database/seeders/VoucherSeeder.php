@@ -48,10 +48,8 @@ class VoucherSeeder extends Seeder
 
                         $date = Carbon::create($year, $m, $d)->setTime(rand(9, 16), rand(0, 59), rand(0, 59));
                         $total = 0;
-                        $item_count = 0;
                         foreach ($voucher_records as $record) {
                             $total += $record["quantity"] * $record["price"];
-                            $item_count += $record["quantity"];
                         };
                         $tax = $total * 0.05;
                         $net_total = $total + $tax;
@@ -63,7 +61,6 @@ class VoucherSeeder extends Seeder
                             "change" => 0,
                             "debt_amount" => 0,
                             "promotion_amount" => 0,
-                            "item_count" => $item_count,
                             "user_id" => 1,
                             "created_at" => $date,
                             "updated_at" => $date,
@@ -154,10 +151,8 @@ class VoucherSeeder extends Seeder
 
                     $date = Carbon::create(2023, 10, $d)->setTime(rand(9, 16), rand(0, 59), rand(0, 59));
                     $total = 0;
-                    $item_count = 0;
                     foreach ($voucher_records as $record) {
                         $total += $record["quantity"] * $record["price"];
-                        $item_count += $record["quantity"];
                     };
                     $tax = $total * 0.05;
                     $net_total = $total + $tax;
@@ -169,7 +164,6 @@ class VoucherSeeder extends Seeder
                         "change" => 0,
                         "debt_amount" => 0,
                         "promotion_amount" => 0,
-                        "item_count" => $item_count,
                         "user_id" => 1,
                         "created_at" => $date,
                         "updated_at" => $date,

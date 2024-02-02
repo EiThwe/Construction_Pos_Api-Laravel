@@ -160,12 +160,11 @@ class CheckoutController extends Controller
                 "voucher_number" => Voucher::generateVoucherNumber(),
                 "cost" => $total_cost,
                 "profit" => $total_profit,
-                "promotion_amount" => $total_promotion_amount,
-                "pay_amount" => $request->pay_amount,
-                "reduce_amount" => $request->reduce_amount,
-                "change" => $change,
-                "debt_amount" => $debt_amount,
-                "item_count" => $total_quantity,
+                "promotion_amount" => $total_promotion_amount || 0,
+                "pay_amount" => $request->pay_amount || 0,
+                "reduce_amount" => $request->reduce_amount || 0,
+                "change" => $change || 0,
+                "debt_amount" => $debt_amount || 0,
                 "user_id" => Auth::id()
             ]);
 

@@ -21,7 +21,6 @@ return new class extends Migration
             $table->integer("change")->default(0);
             $table->integer("debt_amount")->default(0);
             $table->integer("promotion_amount")->default(0);
-            $table->integer("item_count")->default(0);
             $table->foreignId("user_id");
             $table->timestamps();
         });

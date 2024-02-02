@@ -26,11 +26,11 @@ class DatabaseSeeder extends Seeder
             UnitTypeSeeder::class,
             CategorySeeder::class,
             UnitSeeder::class,
-            ExpenseSeeder::class,
-            PromotionSeeder::class,
-            ProductSeeder::class,
-            RecordSeeder::class,
-            VoucherSeeder::class,
+            // ExpenseSeeder::class,
+            // PromotionSeeder::class,
+            // ProductSeeder::class,
+            // RecordSeeder::class,
+            // VoucherSeeder::class,
         ]);
     }
 }
