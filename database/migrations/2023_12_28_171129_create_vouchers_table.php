@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("voucher_number");
             $table->integer("cost");
+            $table->integer("actual_cost");
             $table->integer("profit");
             $table->integer("pay_amount");
             $table->integer("reduce_amount");

@@ -36,9 +36,30 @@ class ReportController extends Controller
             return response()->json(["message" => "ယနေ့အတွက် ရောင်းချထားခြင်းမရှိပါ"], 400);
         }
 
-        $total_expense = $expenses->sum("amount");
-        $total_revenue =  $vouchers->sum("cost");
-        $total_profit = $total_revenue - ($total_expense + $vouchers->sum("actual_cost"));
+
+        $stocks = Stock::whereDate("created_at", $today)->get();
+
+        $salaries = PaySalary::whereDate("created_at", $today)->get();
+
+        $debt_histories = DebtHistory::whereDate("created_at", $today)->get();
+
+        $products = Product::all();
+
+        $product_amount = 0;
+
+        foreach ($products as $product) {
+            $product_amount += $product->stock * $product->actual_price;
+        }
+
+        $salary_cost = $salaries->sum("actual_salary") + $salaries->sum("amount");
+        $stock_cost = $stocks->sum("cost");
+        $expense_amount = $expenses->sum("amount");
+        $revenue = $vouchers->sum("cost") - $vouchers->sum("debt_amount");
+        $debt_amount = $debt_histories->sum("amount");
+
+        $total_expense = $stock_cost + $expense_amount + $salary_cost;
+        $total_revenue =  $revenue + $product_amount + $debt_amount;
+        $total_profit = $total_revenue - $total_expense;
 
         Record::create([
             "expense" => $total_expense,

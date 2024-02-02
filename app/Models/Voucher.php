@@ -12,13 +12,14 @@ class Voucher extends Model
     use HasFactory;
 
     protected $fillable = [
-        "voucher_number", "cost", "profit", "user_id", "promotion_amount", "pay_amount",
+        "voucher_number", "cost", "actual_cost", "profit", "user_id", "promotion_amount", "pay_amount",
         "reduce_amount", "change", "debt_amount"
     ];
 
     protected $casts = [
         "voucher_number" => "string",
         "cost" => "integer",
+        "actual_cost" => "integer",
         "profit" => "integer",
         "user_id" => "string",
         "promotion_amount" => "integer",
