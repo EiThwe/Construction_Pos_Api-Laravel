@@ -155,16 +155,18 @@ class CheckoutController extends Controller
                 $is_debt = false;
             }
 
+            logger("reduce amount - $request->reduce_amount");
+
 
             $voucher = Voucher::create([
                 "voucher_number" => Voucher::generateVoucherNumber(),
                 "cost" => $total_cost,
                 "profit" => $total_profit,
-                "promotion_amount" => $total_promotion_amount || 0,
-                "pay_amount" => $request->pay_amount || 0,
-                "reduce_amount" => $request->reduce_amount || 0,
-                "change" => $change || 0,
-                "debt_amount" => $debt_amount || 0,
+                "promotion_amount" => $total_promotion_amount ?? 0,
+                "pay_amount" => $request->pay_amount ?? 0,
+                "reduce_amount" => $request->reduce_amount ?? 0,
+                "change" => $change ?? 0,
+                "debt_amount" => $debt_amount ?? 0,
                 "user_id" => Auth::id()
             ]);
 

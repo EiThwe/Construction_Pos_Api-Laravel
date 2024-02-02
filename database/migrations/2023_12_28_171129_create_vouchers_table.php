@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
             $table->string("voucher_number");
-            $table->integer("cost")->default(0);
-            $table->integer("profit")->default(0);
-            $table->integer("pay_amount")->default(0);
-            $table->integer("reduce_amount")->default(0);
-            $table->integer("change")->default(0);
-            $table->integer("debt_amount")->default(0);
-            $table->integer("promotion_amount")->default(0);
+            $table->integer("cost");
+            $table->integer("profit");
+            $table->integer("pay_amount");
+            $table->integer("reduce_amount");
+            $table->integer("change");
+            $table->integer("debt_amount");
+            $table->integer("promotion_amount");
             $table->foreignId("user_id");
             $table->timestamps();
         });
