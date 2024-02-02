@@ -61,7 +61,7 @@ Route::prefix("v1")->group(function () {
 
         Route::get("cashiers", [CashierController::class, "index"]);
 
-        Route::apiResource("vouchers", VoucherController::class)->only(["index", "show", "destroy"]);
+        Route::apiResource("vouchers", VoucherController::class)->only(["index", "show", "destroy "]);
 
         Route::apiResource("products", ProductController::class)->except("update");
         Route::post("products/{id}/update", [ProductController::class, "update"]);
@@ -91,6 +91,7 @@ Route::prefix("v1")->group(function () {
         Route::post("sale/monthly/close", [ReportController::class, "monthlyClose"]);
         Route::get("sale/daily/list", [ReportController::class, "dailyList"]);
         Route::get("sale/monthly/list", [ReportController::class, "monthlyList"]);
+        Route::delete("sale/{id}", [ReportController::class, "destroy"]);
 
         Route::get("dashboard/bestsellers", [BestSellersController::class, "bestSellers"]);
         Route::get("dashboard/stats", [StatsController::class, "getStats"]);

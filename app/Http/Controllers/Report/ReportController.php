@@ -160,6 +160,19 @@ class ReportController extends Controller
             ->withQueryString();
     }
 
+    public function destroy(string $id)
+    {
+        $record = Record::find(decrypt($id));
+
+        if (is_null($record)) {
+            return response()->json(["message" => "စာရင်းမရှိပါ"], 404);
+        }
+
+        $record->delete();
+
+        return response()->json(["message" => "စာရင်းပယ်ဖျက်ခြင်း အောင်မြင်ပါသည်"]);
+    }
+
     static public function isSaleOpen()
     {
         $today = Carbon::today();

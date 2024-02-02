@@ -16,6 +16,7 @@ class RecordResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            "id" =>  encrypt($this->id),
             'revenue' => $this->revenue,
             'profit' => $this->profit,
             'expense' => $this->expense,
