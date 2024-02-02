@@ -155,7 +155,6 @@ class CheckoutController extends Controller
                 $is_debt = false;
             }
 
-            logger("reduce amount - $request->reduce_amount");
 
 
             $voucher = Voucher::create([
