@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId("unit_id");
             $table->integer("price");
-            $table->foreignId("product_id");
+            $table->foreignId("product_id")->constrained("products")->onDelete("cascade");
         });
     }
 

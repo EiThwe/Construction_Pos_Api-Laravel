@@ -61,7 +61,6 @@ class VoucherController extends Controller
         $voucher = Voucher::find(decrypt($id));
 
         if (!$voucher) {
-
             return response()->json(["message" => "ဘောက်ချာမရှိပါ", 400]);
         }
 

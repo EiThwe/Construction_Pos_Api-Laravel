@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer("amount");
             $table->foreignId("user_id");
-            $table->foreignId("debt_id");
+            $table->foreignId("debt_id")->constrained("debts")->onDelete("cascade");
             $table->timestamps();
         });
     }

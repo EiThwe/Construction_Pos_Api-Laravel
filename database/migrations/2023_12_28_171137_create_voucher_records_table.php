@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal("quantity", 20, 2);
             $table->foreignId("unit_id");
             $table->foreignId("product_id");
-            $table->foreignId("voucher_id");
+            $table->foreignId("voucher_id")->constrained('vouchers')->onDelete('cascade');
             $table->timestamps();
         });
     }

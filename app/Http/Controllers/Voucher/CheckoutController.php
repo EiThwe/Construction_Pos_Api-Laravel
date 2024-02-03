@@ -98,6 +98,7 @@ class CheckoutController extends Controller
 
                     $reduce_quantity = $item["quantity"] * $conversion->value;
 
+
                     $new_stock = $product->stock - $reduce_quantity;
 
                     if ($new_stock < 0) {
@@ -122,6 +123,7 @@ class CheckoutController extends Controller
                         // Use array syntax to access 'price' key
                         $cost = $productUnit["price"] * $item["quantity"];
                     }
+
 
                     $actual_cost = $product->actual_price * $reduce_quantity;
 
