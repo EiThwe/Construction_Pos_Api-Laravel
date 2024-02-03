@@ -106,7 +106,7 @@ class HelperController extends Controller
 
     static public function parseReturnImage($image)
     {
-        if (is_null($image)) return "https://i.postimg.cc/FzL0bSm3/pngtree-building-and-construction-logo-design-template-image-317780.jpg";
+        if (is_null($image)) return "https://i.postimg.cc/PrdNTr8y/photo-2024-02-03-20-49-42.jpg";
 
         return asset(Storage::url($image));
     }
