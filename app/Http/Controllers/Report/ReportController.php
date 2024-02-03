@@ -141,6 +141,8 @@ class ReportController extends Controller
 
     public function destroy(string $id)
     {
+        if (!Gate::allows("checkPermission", "")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $record = Record::find(decrypt($id));
 
         if (is_null($record)) {

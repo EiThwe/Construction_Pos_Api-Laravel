@@ -33,6 +33,6 @@ class ProfitChartController extends Controller
 
         // $mergedRecords = array_merge($records, $additionalRecords);
 
-        return response()->json(["data" => ["total_amount" => $total_amount, "records" => $allRecords]]);
+        return response()->json(["data" => ["total_amount" => $total_amount > 0 ? $total_amount : 0, "records" => $allRecords]]);
     }
 }
