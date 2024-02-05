@@ -14,23 +14,25 @@ use Illuminate\Support\Facades\Gate;
 
 class UnitController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            try {
-                $this->authorize("checkPermission", "manager");
-            } catch (\Throwable $th) {
-                return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
-            }
+    // public function __construct()
+    // {
+    //     $this->middleware(function ($request, $next) {
+    //         try {
+    //             $this->authorize("checkPermission", "manager");
+    //         } catch (\Throwable $th) {
+    //             return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+    //         }
 
-            return $next($request);
-        });
-    }
+    //         return $next($request);
+    //     });
+    // }
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        if (!Gate::allows("checkPermission", "all")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $units = HelperController::findAllQuery(Unit::class, $request, ["name"]);
 
         return UnitResource::collection($units);
@@ -75,6 +77,8 @@ class UnitController extends Controller
      */
     public function show(string $id)
     {
+        if (!Gate::allows("checkPermission", "all")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $unit = Unit::find(Crypt::decrypt($id));
         if (is_null($unit)) {
             return response()->json(["message" => "ယူနစ်မရှိပါ"], 400);
@@ -88,6 +92,8 @@ class UnitController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if (!Gate::allows("checkPermission", "")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $unit = Unit::find(Crypt::decrypt($id));
         if (is_null($unit)) {
             return response()->json(["message" => "ယူနစ်မရှိပါ"], 400);
@@ -126,6 +132,8 @@ class UnitController extends Controller
      */
     public function destroy(string $id)
     {
+        if (!Gate::allows("checkPermission", "")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
+
         $unit = Unit::find(Crypt::decrypt($id));
         if (is_null($unit)) {
             return response()->json(["message" => "ယူနစ်မရှိပါ"], 400);
