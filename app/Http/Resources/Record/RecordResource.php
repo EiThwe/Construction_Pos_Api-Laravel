@@ -29,9 +29,9 @@ class RecordResource extends JsonResource
 
     private function getStatus(): string
     {
-        if ($this->profit === $this->expense) {
+        if ($this->profit === 0) {
             return 'အရင်း';
-        } elseif ($this->profit > $this->expense) {
+        } elseif ($this->profit > 0) {
             return 'မြတ်';
         } else {
             return 'ရှုံး';
