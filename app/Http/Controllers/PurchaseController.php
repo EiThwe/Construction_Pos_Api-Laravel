@@ -30,25 +30,29 @@ class PurchaseController extends Controller
     public function store(StorePurchaseRequest $request)
     {
         if (!Gate::allows("checkPermission", "cashier")) return response()->json(["message" => "လုပ်ပိုင်ခွင့်မရှိပါ"], 403);
-        $purchase = Purchase::create([
-            'place' => $request->place,
-            'cost' => $request->cost,
-            'item_quantity' => count($request->purchase_items),
-            'remark' => $request->remark,
-            'user_id' => Auth::id(),
-            'status' => 'left',
-        ]);
 
-        foreach ($request->purchase_items as $item) {
-            $purchaseItem = new PurchaseItem([
-                'name' => $item['name'],
-                'quantity' => $item['quantity'],
-                'unit_id' => decrypt($item['unit_id']),
+
+        return HelperController::transaction(function () use ($request) {
+            $purchase = Purchase::create([
+                'place' => $request->place,
+                'cost' => $request->cost,
+                'item_quantity' => count($request->purchase_items),
+                'remark' => $request->remark,
+                'user_id' => Auth::id(),
+                'status' => 'left',
             ]);
-            $purchase->purchaseItems()->save($purchaseItem);
-        }
 
-        return response()->json(['message' => 'ပရိုမိုးရှင်းထည့်သွင်းခြင်းအောင်မြင်ပါသည်']);
+            foreach ($request->purchase_items as $item) {
+                $purchaseItem = new PurchaseItem([
+                    'name' => $item['name'],
+                    'quantity' => $item['quantity'],
+                    'unit_id' => decrypt($item['unit_id']),
+                ]);
+                $purchase->purchaseItems()->save($purchaseItem);
+            }
+
+            return response()->json(['message' => 'ထည့်သွင်းခြင်းအောင်မြင်ပါသည်']);
+        });
     }
 
     /**
@@ -60,7 +64,7 @@ class PurchaseController extends Controller
         $purchase = Purchase::with('purchaseItems')->find(decrypt($id));
 
         if (!$purchase) {
-            return response()->json(['message' => 'ပရိုမိုးရှင်း ရှာမတွေ့ပါ'], 404);
+            return response()->json(['message' => ' ရှာမတွေ့ပါ'], 404);
         }
 
         return new PurchaseDetailResource($purchase);
@@ -76,7 +80,7 @@ class PurchaseController extends Controller
         $purchase = Purchase::find(decrypt($id));
 
         if (!$purchase) {
-            return response()->json(['message' => 'ပရိုမိုးရှင်း ရှာမတွေ့ပါ'], 404);
+            return response()->json(['message' => ' ရှာမတွေ့ပါ'], 404);
         }
 
         // Delete associated purchase items
@@ -85,7 +89,7 @@ class PurchaseController extends Controller
         // Delete the purchase
         $purchase->delete();
 
-        return response()->json(['message' => 'ပရိုမိုးရှင်းဖျက်သိမ်းခြင်းအောင်မြင်ပါသည်']);
+        return response()->json(['message' => 'ဖျက်သိမ်းခြင်းအောင်မြင်ပါသည်']);
     }
 
     public function addRecords(Request $request, string $id)
