@@ -21,7 +21,7 @@ class ExpenseResource extends JsonResource
             "description" => $this->description,
             "amount" => $this->amount,
             "remark" => $this->remark,
-            "date" => HelperController::parseReturnDate($this->created_at),
+            "date" => HelperController::parseReturnDate($this->created_at, true),
             "user_id" => encrypt($this->user_id),
         ];
     }
